@@ -10,7 +10,7 @@ class Studentreg(models.Model):
     department=models.CharField(max_length=40)
     semester=models.IntegerField()
     contactno=models.CharField(max_length=10)
-    login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
+    login_id=models.OneToOneField('Login', on_delete=models.CASCADE,related_name = 'student_as_loginid')
 
 class Login(models.Model):
     email=models.EmailField()

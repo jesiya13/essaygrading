@@ -231,8 +231,8 @@ def removeanswer(request,id):
     a.delete()
     return redirect('viewanswer')
 def viewanswert(request):
-    tea_id=request.session.get('tea_id')
+    tea_id=request.session.get('t_id')
     login_details=get_object_or_404(teacherreg,login_id=tea_id)
-    view_id=Answer.objects.filter(t_id = login_details)
+    view_id=Answer.objects.filter(t_id = login_details).select_related('login_id__student_as_loginid')
    
     return render(request, 'viewanswert.html', {'view_ans': view_id})
