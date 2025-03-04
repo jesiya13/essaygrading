@@ -193,16 +193,6 @@ def viewessayt(request):
     view_id=Essay.objects.all()
     essays_with_student_info = []
 
-    for essay in view_id:
-        student = Studentreg.objects.get(login_id=essay.login_id)
-        essays_with_student_info.append({
-            'essay': essay,
-            'student_name': student.name,
-            'student_admno': student.admno,
-            'student_department': student.department,
-            'student_semester': student.semester,
-
-        })
 
     return render(request, 'viewessayt.html', {'essays_with_student_info': essays_with_student_info})
 

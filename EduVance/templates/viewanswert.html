@@ -346,9 +346,9 @@
                 <tr>
                     
                     <td>{{ item.login_id.student_as_loginid.name }}</td>
-                    <td>{{ item.student_admno }}</td>
-                    <td>{{ item.student_department }}</td>
-                    <td>{{ item.student_semester }}</td>
+                    <td>{{ item.login_id.student_as_loginid.admno }}</td>
+                    <td>{{ item.login_id.student_as_loginid.department }}</td>
+                    <td>{{ item.login_id.student_as_loginid.semester }}</td>
                     <td>
                       <a href="{{item.answer.answer.url}}" target="_blank" download> Download</a>
                     </td>
