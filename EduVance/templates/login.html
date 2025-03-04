@@ -142,11 +142,13 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="input-box">
-                    <label>Email</label>
+                    <h3>Email</h3>
+                    {% comment %} <label>Email</label> {% endcomment %}
                     {{ login.email }}
                 </div>
                 <div class="input-box">
-                    <label>Password</label>
+                    <h3>Password</h3>
+                    {% comment %} <label>Password</label> {% endcomment %}
                     {{ login.password }}
                 </div>
                 <!-- <div class="forgot-pass">

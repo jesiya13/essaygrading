@@ -27,8 +27,21 @@ urlpatterns=[
     path('viewanswer', views.viewanswer, name='viewanswer'),
     path('removeanswer/<int:id>', views.removeanswer, name='removeanswer'),
     path('viewanswert', views.viewanswert, name='viewanswert'),
+    path('removeanswert/<int:id>', views.removeanswert, name='removeanswert'),
     path('teachersview', views.teachersview, name='teachersview'),
     path('search_teacher', views.search_teacher, name='search_teacher'),
+    path('removeessayt/<int:id>', views.removeessayt, name='removeessayt'),
+    path('uploadomr/<int:id>', views.uploadomr, name='uploadomr'),
+    path('viewomr', views.viewomr, name='viewomr'),
+    path('removeomr/<int:id>', views.removeomr, name='removeomr'),
+    path('viewomrt', views.viewomrt, name='viewomrt'),
+    path('removeomrt/<int:id>', views.removeomrt, name='removeomrt'),
+    path('uploadassignment/<int:id>', views.uploadassignment, name='uploadassignment'),
+    path('viewassignment', views.viewassignment, name='viewassignment'),
+    path('removeassignment/<int:id>', views.removeassignment, name='removeassignment'),
+    path('viewassignmentt', views.viewassignmentt, name='viewassignmentt'),
+    path('removeassignmentt/<int:id>', views.removeassignmentt, name='removeassignmentt'),
+
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

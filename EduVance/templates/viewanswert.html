@@ -333,11 +333,12 @@
         <table align="center" >
             <thead>
                 <tr>
-                    <th>ADMINO</th>
+                    <th>ADMIN NO</th>
                     <th>NAME </th>
                     <th>DEPARTMENT</th>
                     <th>SEMESTER</th>
-                    <th>ESSAY UPLOAD</th>
+                    <th>UPLOADED ANSWER SHEET</th>
+                    <th>REMOVE</th>
 
                 </tr>
             </thead>
@@ -345,12 +346,14 @@
                 {% for item in view_ans %}
                 <tr>
                     
-                    <td>{{ item.login_id.student_as_loginid.name }}</td>
                     <td>{{ item.login_id.student_as_loginid.admno }}</td>
+                    <td>{{ item.login_id.student_as_loginid.name }}</td>
                     <td>{{ item.login_id.student_as_loginid.department }}</td>
                     <td>{{ item.login_id.student_as_loginid.semester }}</td>
                     <td>
                       <a href="{{item.answer.answer.url}}" target="_blank" download> Download</a>
+                      <td><a href="{% url 'removeanswert' item.id %}">Remove</a></td>
+
                     </td>
                 </tr>
                 {% endfor %}

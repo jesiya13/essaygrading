@@ -385,9 +385,13 @@
 					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
 						<div class="register">
 							<h4 class="login_register_title">Create a new account:</h4>
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
 								{% csrf_token %}
                                <table align="center"> 
+								<tr>
+									<td> PHOTO</td>
+									<td> {{form.photo}}</td>
+								</tr>
 								<tr>
 									<td> ADMIN NO</td>
 									<td> {{form.admno}}</td>

@@ -40,6 +40,16 @@ class Answer(models.Model):
     login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
     t_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
 
+class Omr(models.Model):
+    omr=models.FileField(upload_to='uploads/')
+    current_date=models.DateTimeField(auto_now_add=True)
+    login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
+    tc_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
+class Assignment(models.Model):
+    assignment=models.FileField(upload_to='uploads/')
+    current_date=models.DateTimeField(auto_now_add=True)
+    login_id=models.ForeignKey('Studentreg', on_delete=models.CASCADE)
+    ta_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
 
 
     

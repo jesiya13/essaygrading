@@ -96,7 +96,7 @@ def sprofile(request):
     login_details=get_object_or_404(Login,id=stud_id)
     stud=get_object_or_404(Studentreg,login_id=stud_id)
     if request.method=='POST':
-        form=studentform(request.POST,instance=stud)
+        form=studentform(request.POST,request.FILES,instance=stud)
         form2=loginform(request.POST, instance=login_details)
         if form.is_valid() and form2.is_valid():
             form.save()
@@ -113,7 +113,7 @@ def tprofile(request):
     login_details=get_object_or_404(Login,id=t_id)
     teacher=get_object_or_404(teacherreg,login_id=t_id)
     if request.method=='POST':
-        form=teacherform(request.POST,instance=teacher)
+        form=teacherform(request.POST,request.FILES,instance=teacher)
         form2=loginform(request.POST, instance=login_details)
         if form.is_valid() and form2.is_valid():
             form.save()
@@ -188,13 +188,17 @@ def removeessay(request,id):
     return redirect('viewessay')
 
 def viewessayt(request):
-    stud_id=request.session.get('stud_id')
-    login_details=get_object_or_404(Login,id=stud_id)
-    view_id=Essay.objects.all()
-    essays_with_student_info = []
+   tea_id=request.session.get('t_id')
+   login_details=get_object_or_404(teacherreg,login_id=tea_id)
+   view_id=Essay.objects.filter(tea_id = login_details).select_related('login_id__student_as_loginid')
+   return render(request, 'viewessayt.html', {'view_essay': view_id})
+
+def removeessayt(request,id):
+    b=get_object_or_404(Essay,id=id)
+    b.delete()
+    return redirect('viewessayt')
 
 
-    return render(request, 'viewessayt.html', {'essays_with_student_info': essays_with_student_info})
 
 def uploadanswer(request,id):
     stud_id=request.session.get('stud_id')   
@@ -226,3 +230,95 @@ def viewanswert(request):
     view_id=Answer.objects.filter(t_id = login_details).select_related('login_id__student_as_loginid')
    
     return render(request, 'viewanswert.html', {'view_ans': view_id})
+
+def removeanswert(request,id):
+    b=get_object_or_404(Answer,id=id)
+    b.delete()
+    return redirect('viewanswert')
+
+def uploadomr(request,id):
+    stud_id=request.session.get('stud_id')   
+    login_details=get_object_or_404(Login,id=stud_id)
+    tc_id=get_object_or_404(teacherreg,id=id)
+    if request.method=='POST':
+        form=omr(request.POST,request.FILES)
+        if form.is_valid():
+            a=form.save(commit=False)
+            a.login_id=login_details
+            a.tc_id=tc_id
+            a.save()
+            return redirect('user')
+    else:
+        form=omr()
+    return render(request, 'uploadomr.html',{'form':form})
+
+def viewomr(request):
+    stud_id=request.session.get('stud_id')
+    login_details=get_object_or_404(Login,id=stud_id)
+    view_id=Omr.objects.filter(login_id=login_details)
+    return render(request,'viewomr.html',{'data':view_id})
+
+def removeomr(request,id):
+    a=get_object_or_404(Omr,id=id)
+    a.delete()
+    return redirect('viewomr')
+
+def viewomrt(request):
+    tea_id=request.session.get('t_id')
+    login_details=get_object_or_404(teacherreg,login_id=tea_id)
+    view_id=Answer.objects.filter(t_id = login_details).select_related('login_id__student_as_loginid')
+   
+    return render(request, 'viewomrt.html', {'view_omr': view_id})
+
+def removeomrt(request,id):
+    b=get_object_or_404(Omr,id=id)
+    b.delete()
+    return redirect('viewomrt')
+
+def uploadassignment(request,id):
+    stud_id=request.session.get('stud_id')   
+    login_details=get_object_or_404(Studentreg,login_id=stud_id)
+    tc_id=get_object_or_404(teacherreg,id=id)
+    if request.method=='POST':
+        form=assignment(request.POST,request.FILES)
+        if form.is_valid():
+            a=form.save(commit=False)
+            a.login_id=login_details
+            a.ta_id=tc_id
+            a.save()
+            return redirect('user')
+    else:
+        form=assignment()
+    return render(request, 'uploadassignment.html',{'form':form})
+
+def viewassignment(request):
+    stud_id=request.session.get('stud_id')
+    login_details=get_object_or_404(Studentreg,login_id=stud_id)
+    view_id=Assignment.objects.filter(login_id=login_details)
+
+    return render(request,'viewassignment.html',{'data':view_id})
+
+def removeassignment(request):
+    stud_id=request.session.get('stud_id')
+    login_details=get_object_or_404(Login,id=stud_id)
+    view_id=Assignment.objects.filter(login_id=login_details)
+    return render(request,'viewassignment.html',{'data':view_id})
+
+def viewassignmentt(request):
+    tea_id = request.session.get('t_id')
+    login_details = get_object_or_404(teacherreg, login_id=tea_id)
+    view_id = Assignment.objects.filter(ta_id=login_details).select_related('login_id') 
+    results = view_id 
+    query = request.GET.get('q', '') 
+    if query:
+        results = view_id.filter(
+           Q(login_id__admno__icontains=query) |
+           Q(login_id__name__icontains=query) |
+           Q(login_id__department__icontains=query)
+        )
+    return render(request, 'viewassignmentt.html', {'view_assignment': results, 'query':query})
+
+def removeassignmentt(request,id):
+    b=get_object_or_404(Assignment,id=id)
+    b.delete()
+    return redirect('viewassignmentt')

@@ -89,3 +89,13 @@ class answersheet(forms.ModelForm):
     class Meta:
         model=Answer
         fields=['answer']
+
+class omr(forms.ModelForm):
+    class Meta:
+        model=Omr
+        fields=['omr']
+
+class assignment(forms.ModelForm):
+    class Meta:
+        model=Assignment
+        fields=['assignment']

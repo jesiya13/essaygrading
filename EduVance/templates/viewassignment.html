@@ -328,49 +328,29 @@
             </div>			
         </div>			
     </header>
-    <center>
-    <h4>Search for teachers...</h4>
-    <form method="GET" action="{% url 'search_teacher' %}">
-        <input type="text" name="q" placeholder="Search anything (department, name)" value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
-    
-    {% if data %}
-        <h2>Search Results:</h2>
-        <table>
+   
+    <form method="GET">
+        <table align="center" >
             <thead>
                 <tr>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Email</th>
-                    <th>Essay</th>
-                    <th>Answer Sheet</th>
-                    <th>OMR</th>
-                    <th>Assignment</th>
-
+                    <th>Assignments uploaded</th>
+                    <th>Remove your assignment </th>
                 </tr>
-            </thead>     
+            </thead>
             <tbody>
                 {% for a in data %}
                     <tr>
-                        <td><img src="{{ a.tphoto.url }}" width="100px" height="100px"></td>
-
-                        <td>{{ a.tname }}</td>
-                        <td>{{ a.tdepartment }}</td>
-                        <td>{{ a.login_id.email }}</td>
-                        <td><button><a href=" uploadessay/{{a.id}} ">UPLOAD</a></button></td>
-                        <td><button><a href="uploadanswer/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadomr/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadassignment/{{a.id}}">UPLOAD</a></button></td>
-
+                        <td><a href="{{ a.assignment.url }}" target="_blank" download>download</td>
+                        <td><a href="{% url 'removeassignment' a.id %}">Remove</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>No results found.</p>
-    {% endif %}
+    </form>
+    
+    
+
+    
             <br>
             <section class="footer fstyle-2">
                 <div class="container">

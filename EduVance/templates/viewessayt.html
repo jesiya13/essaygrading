@@ -333,24 +333,26 @@
         <table align="center" >
             <thead>
                 <tr>
-                    <th>ADMINO</th>
+                    <th>ADMIN NO</th>
                     <th>NAME </th>
                     <th>DEPARTMENT</th>
                     <th>SEMESTER</th>
                     <th>ESSAY UPLOAD</th>
+                    <th>REMOVE</th>
 
                 </tr>
             </thead>
             <tbody>
-                {% for item in essays_with_student_info %}
+                {% for item in view_essay %}
                 <tr>
                     
-                    <td>{{ item.student_name }}</td>
-                    <td>{{ item.student_admno }}</td>
-                    <td>{{ item.student_department }}</td>
-                    <td>{{ item.student_semester }}</td>
+                    <td>{{ item.login_id.student_as_loginid.admno }}</td>
+                    <td>{{ item.login_id.student_as_loginid.name }}</td>
+                    <td>{{ item.login_id.student_as_loginid.department }}</td>
+                    <td>{{ item.login_id.student_as_loginid.semester }}</td>
                     <td>
                       <a href="{{item.essay.essay.url}}" target="_blank" download> Download</a>
+                      <td><a href="{% url 'removeessayt' item.id %}">Remove</a></td>
                     </td>
                 </tr>
                 {% endfor %}

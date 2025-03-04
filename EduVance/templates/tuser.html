@@ -95,17 +95,15 @@
 						<nav id="main-menu">
 							<ul>
 								<li class="menu-item-has-children">
-									<a href="{% url 'viewessayt' %}">ESSAY</a>
+									<a href="index.html">Uploads</a>
 									<ul class="sub-menu">
-									    <li><a href="#">Essay</a></li>
-										<li><a href="index-2.html">Home Two</a></li> 
-									</ul>
-								</li>	
+									    <li><a href="{% url 'viewessayt' %}">View Essay</a></li>
+										<li><a href="{% url 'viewanswert' %}">View Answer sheet</a></li> 
+										<li><a href="{% url 'viewomrt' %}">View OMR sheet</a></li> 
+										<li><a href="{% url 'viewassignmentt' %}">View Assignment</a></li> 
 
-								<li>
-									<a href="{% url 'viewanswert' %}">Answer</a>
+									</ul>
 								</li>					
-								
 								<li class="menu-item-has-children">
 									<a href="#">Pages</a>
 									<ul class="sub-menu">

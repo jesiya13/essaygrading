@@ -328,49 +328,41 @@
             </div>			
         </div>			
     </header>
-    <center>
-    <h4>Search for teachers...</h4>
-    <form method="GET" action="{% url 'search_teacher' %}">
-        <input type="text" name="q" placeholder="Search anything (department, name)" value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
-    
-    {% if data %}
-        <h2>Search Results:</h2>
-        <table>
+   
+    <form method="GET">
+        <table align="center" >
             <thead>
                 <tr>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Email</th>
-                    <th>Essay</th>
-                    <th>Answer Sheet</th>
-                    <th>OMR</th>
-                    <th>Assignment</th>
+                    <th>ADMIN NO</th>
+                    <th>NAME </th>
+                    <th>DEPARTMENT</th>
+                    <th>SEMESTER</th>
+                    <th>UPLOADED OMR</th>
+                    <th>REMOVE</th>
 
                 </tr>
-            </thead>     
+            </thead>
             <tbody>
-                {% for a in data %}
-                    <tr>
-                        <td><img src="{{ a.tphoto.url }}" width="100px" height="100px"></td>
-
-                        <td>{{ a.tname }}</td>
-                        <td>{{ a.tdepartment }}</td>
-                        <td>{{ a.login_id.email }}</td>
-                        <td><button><a href=" uploadessay/{{a.id}} ">UPLOAD</a></button></td>
-                        <td><button><a href="uploadanswer/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadomr/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadassignment/{{a.id}}">UPLOAD</a></button></td>
-
-                    </tr>
+                {% for item in view_omr %}
+                <tr>
+                    
+                    <td>{{ item.login_id.student_as_loginid.admno }}</td>
+                    <td>{{ item.login_id.student_as_loginid.name }}</td>
+                    <td>{{ item.login_id.student_as_loginid.department }}</td>
+                    <td>{{ item.login_id.student_as_loginid.semester }}</td>
+                    <td>
+                      <a href="{{item.omr.omr.url}}" target="_blank" download> Download</a>
+                      <td><a href="{% url 'removeomrt' item.id %}">Remove</a></td>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>No results found.</p>
-    {% endif %}
+    </form>
+    
+    
+
+    
             <br>
             <section class="footer fstyle-2">
                 <div class="container">
@@ -488,3 +480,4 @@
             </section>
 </body>
 </html>
+
