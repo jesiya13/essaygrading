@@ -20,6 +20,17 @@ class studentform(forms.ModelForm):
 
     )
     department = forms.ChoiceField(choices=dept_choices, widget=forms.Select(attrs={'class': 'form-control'}))
+    sem_choices = (
+        ('1', 'Semester 1'),
+        ('2', 'Semester 2'),
+        ('3', 'Semester 3'),
+        ('4', 'Semester 4'),
+        ('5', 'Semester 5'),
+        ('6', 'Semester 6'),
+        ('7', 'Semester 7'),
+        ('8', 'Semester 8'),
+    )
+    semester = forms.ChoiceField(choices=sem_choices, widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Studentreg
@@ -30,7 +41,7 @@ class studentform(forms.ModelForm):
             'address': forms.Textarea(attrs={'class': 'form-control'}),
             'gender': forms.RadioSelect(),  # Radio buttons
             'department': forms.Select(attrs={'class': 'form-control'}),  # Select dropdown
-            'semester': forms.TextInput(attrs={'class': 'form-control'}),
+            'semester': forms.Select(attrs={'class': 'form-control'}),   # Select dropdown
             'dob': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'contactno': forms.TextInput(attrs={'class': 'form-control'}),
             'photo':forms.FileInput(attrs={'class':'form-control'}),
@@ -99,3 +110,9 @@ class assignment(forms.ModelForm):
     class Meta:
         model=Assignment
         fields=['assignment']
+
+class attendance(forms.Form):
+    departments=Studentreg.objects.values_list('department','department').distinct()
+    semesters=Studentreg.objects.values_list('semester','semester').distinct()
+    department=forms.ChoiceField(choices=departments,label='Select department')
+    semester=forms.ChoiceField(choices=semesters,label='Select semesters')

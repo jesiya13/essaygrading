@@ -40,8 +40,9 @@ urlpatterns=[
     path('viewassignment', views.viewassignment, name='viewassignment'),
     path('removeassignment/<int:id>', views.removeassignment, name='removeassignment'),
     path('viewassignmentt', views.viewassignmentt, name='viewassignmentt'),
-    path('removeassignmentt/<int:id>', views.removeassignmentt, name='removeassignmentt'),
-
+    path('present/<int:id>', views.present, name='present'),
+    path('absent/<int:id>', views.absent, name='absent'),
+    path('viewattendance', views.viewattendance, name='viewattendance'),
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

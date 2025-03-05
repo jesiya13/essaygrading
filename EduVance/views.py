@@ -3,6 +3,7 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 from django.db.models import Q
+from datetime import date
 
 def main(request):
     return render(request, 'main.html')
@@ -322,3 +323,29 @@ def removeassignmentt(request,id):
     b=get_object_or_404(Assignment,id=id)
     b.delete()
     return redirect('viewassignmentt')
+
+def viewattendance(request):
+    form=attendance()
+    dept = request.GET.get('department') 
+    sem = request.GET.get('semester') 
+    results = Studentreg.objects.filter(department=dept,semester=sem) 
+    if results:
+        return render(request, 'attendancetable.html',{'results':results})
+    print(results)
+    return render(request, 'attendance.html',{'form':form})
+
+def present(request,id):
+    a=get_object_or_404(Studentreg,id=id)
+    tea_id = request.session.get('t_id')
+    login_details = get_object_or_404(teacherreg, login_id=tea_id)
+    if Attendance.objects.filter(t_id= login_details,login_id=a,present=1,current_date=date.today()).exists():
+        messages.warning(request,'Already marked!')
+    else:
+        Attendance.objects.create(t_id= login_details,login_id=a,present=1)
+    return redirect('viewattendance')
+
+def absent(request,id):
+    a=get_object_or_404(Attendance,id=id)
+    a.status=2
+    a.save()
+    return redirect('attendancetable.html')

@@ -51,5 +51,17 @@ class Assignment(models.Model):
     login_id=models.ForeignKey('Studentreg', on_delete=models.CASCADE)
     ta_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
 
+class Attendance(models.Model):
+    login_id=models.ForeignKey('Studentreg', on_delete=models.CASCADE)
+    t_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
+    current_date=models.DateTimeField(auto_now_add=True)
+    present=models.IntegerField(default=0)
+    absent=models.IntegerField(default=0)
+
+
+
+
+
+
 
     
