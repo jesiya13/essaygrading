@@ -41,7 +41,12 @@
 		<!-- Style CSS -->
 		<link rel="stylesheet" href="{% static 'mainpage/assets/css/style.css' %}">
 		<!-- Responsive CSS -->		
-		<link rel="stylesheet" href="{%static 'mainpage/assets/css/responsive.css' %}">		
+		<link rel="stylesheet" href="{%static 'mainpage/assets/css/responsive.css' %}">	
+        <!-- Include Bootstrap JS (Ensure this is included at the end of your body tag) -->
+<!-- Include jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
 
 	</head>	
     <!-- <meta charset="UTF-8">
@@ -331,6 +336,11 @@
     <center>
     {% comment %} <h4>Search for students...</h4> {% endcomment %}
     <form method="GET">
+        {% if messages %}
+        {% for a in messages %}
+        {{ a }}
+        {% endfor %}
+        {% endif %}
         {% comment %} <input type="text" name="q" placeholder="Search anything (description, amount, date)" value="{{ query }}">
         <button type="submit">Search</button>
     
@@ -356,11 +366,30 @@
                         <td>{{ a.name }}</td>
                         <td>{{ a.department }}</td>
                         <td>{{ a.semester }}</td>
-                        <td><a href="{% url 'present' a.id %}">Present</a></td>
+                        <td><a href="#" class="present-btn" data-id="{{ a.id }}">Present</a></td>
+                        <td><a href="{% url 'absent' a.id %}">Absent</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>   
+        <div class="modal" tabindex="-1" role="dialog" id="alreadyMarkedModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attendance</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-message">Already marked!!!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
      </form>
 
     {% comment %} {% else %}
@@ -484,5 +513,35 @@
                     <p>Copyright © 2024 <a href="#">Edumon</a>. All rights reserved.</p>
                 </div>
             </section>
-</body>
+            <script>
+                // Attach event listener to each "Present" button
+                document.querySelectorAll('.present-btn').forEach(button => {
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();  // Prevent the default link behavior
+                        const studentId = this.getAttribute('data-id');  // Get the student ID from data-id attribute
+                        
+                        // Send a fetch request to the backend
+                        fetch(`/present/${studentId}/`, {
+                            method: 'GET',  // Use GET method to check attendance
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())  // Parse the JSON response
+                        .then(data => {
+                            if (data.status === 'error') {
+                                // If the response is 'error', display the modal with the error message
+                                document.getElementById('modal-message').textContent = data.message;
+                                $('#alreadyMarkedModal').modal('show');
+                            } else if (data.status === 'success') {
+                                // Handle success, you can show another message or refresh the page
+                                alert(data.message);  // For example, show an alert
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    });
+                });
+            </script></body>
 </html>

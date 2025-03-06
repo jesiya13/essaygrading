@@ -4,6 +4,8 @@ from .models import *
 from django.contrib import messages
 from django.db.models import Q
 from datetime import date
+from django.http import JsonResponse
+
 
 def main(request):
     return render(request, 'main.html')
@@ -339,13 +341,25 @@ def present(request,id):
     tea_id = request.session.get('t_id')
     login_details = get_object_or_404(teacherreg, login_id=tea_id)
     if Attendance.objects.filter(t_id= login_details,login_id=a,present=1,current_date=date.today()).exists():
-        messages.warning(request,'Already marked!')
+        return JsonResponse({'status': 'error', 'message': 'Already marked!'})
+        # return redirect('viewattendance')
     else:
         Attendance.objects.create(t_id= login_details,login_id=a,present=1)
-    return redirect('viewattendance')
+        return JsonResponse({'status': 'success', 'message': 'Attendance marked!'})
+
 
 def absent(request,id):
-    a=get_object_or_404(Attendance,id=id)
-    a.status=2
-    a.save()
-    return redirect('attendancetable.html')
+    a=get_object_or_404(Studentreg,id=id)
+    tea_id = request.session.get('t_id')
+    login_details = get_object_or_404(teacherreg, login_id=tea_id)
+    if Attendance.objects.filter(t_id= login_details,login_id=a,absent=2,current_date=date.today()).exists():
+        messages.warning(request,'Already marked!')
+    else:
+        Attendance.objects.create(t_id= login_details,login_id=a,absent=2)
+    return redirect('viewattendance')
+
+def attendanceviewt(request):
+    form=attendanceview()
+    date = request.GET.get('date') 
+    results = Attendance.objects.filter(current_date=date)    
+    return render(request,'checkattendance.html',{'results':results,'form':form})

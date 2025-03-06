@@ -43,6 +43,7 @@ urlpatterns=[
     path('present/<int:id>', views.present, name='present'),
     path('absent/<int:id>', views.absent, name='absent'),
     path('viewattendance', views.viewattendance, name='viewattendance'),
+    path('attendanceviewt', views.attendanceviewt, name='attendanceviewt'),
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

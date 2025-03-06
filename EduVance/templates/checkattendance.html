@@ -384,30 +384,22 @@
 				<div class="row">				
 					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
 						<div class="register">
-							<h4 class="login_register_title">Select the details:</h4>
+							<h4 class="login_register_title">Select the date to get attendance:</h4>
                             <form method="get">
-								{% if messages %}
-        {% for a in messages %}
-        {{ a }}
-        {% endfor %}
-        {% endif %}
+								
 								{% csrf_token %}
                                <table align="center"> 
 								<tr>
-									<td> DEPARTMENT</td>
-									<td> {{form.department}}</td>
+									<td> Choose the date:</td>
+									<td> {{form.date}}</td>
 								</tr>
-								<tr>
-									<td>SEMESTER</td>
-									<td> {{form.semester}}</td>
-								</tr>
-							    </form>
 
 							   </table>
                                 <div class="form-group col-lg-12">
                                     <button class="bg_btn bt" type="submit" name="submit">Next</button>
                                 
-                           
+                                </form>
+
 					</div><!--- END COL -->
 				</div><!--- END ROW -->
 			</div><!--- END CONTAINER -->

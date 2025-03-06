@@ -116,3 +116,6 @@ class attendance(forms.Form):
     semesters=Studentreg.objects.values_list('semester','semester').distinct()
     department=forms.ChoiceField(choices=departments,label='Select department')
     semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+
+class attendanceview(forms.Form):
+    date=forms.CharField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
