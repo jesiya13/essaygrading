@@ -361,5 +361,22 @@ def absent(request,id):
 def attendanceviewt(request):
     form=attendanceview()
     date = request.GET.get('date') 
-    results = Attendance.objects.filter(current_date=date)    
-    return render(request,'checkattendance.html',{'results':results,'form':form})
+    results = Attendance.objects.filter(current_date=date,present=1) 
+    if results:
+        return render(request, 'attendancet.html',{'results':results})
+    print(results)
+    return render(request,'checkattendance.html',{'form':form})
+
+def markupload(request):
+    form=attendance()
+    dept = request.GET.get('department') 
+    sem = request.GET.get('semester') 
+    results = Studentreg.objects.filter(department=dept,semester=sem) 
+    if results:
+        return render(request, 'attendancetable.html',{'results':results})
+    print(results)
+    return render(request, 'attendance.html',{'form':form})
+
+def adminsubjects(request):
+    form=subjects()
+    return render(request, 'subjects.html',{'form':form})

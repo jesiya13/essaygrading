@@ -58,8 +58,16 @@ class Attendance(models.Model):
     present=models.IntegerField(default=0)
     absent=models.IntegerField(default=0)
 
-
-
+class Subjects(models.Model):
+    dept=models.CharField(max_length=40)
+    sem=models.CharField(max_length=40)
+    course1=models.CharField(max_length=40)
+    course2=models.CharField(max_length=40)
+    course3=models.CharField(max_length=40)
+    course4=models.CharField(max_length=40)
+    ecourse1=models.CharField(max_length=40)
+    ecourse2=models.CharField(max_length=40)
+    ecourse3=models.CharField(max_length=40)
 
 
 
