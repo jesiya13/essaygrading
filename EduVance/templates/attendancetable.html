@@ -372,7 +372,7 @@
                 {% endfor %}
             </tbody>
         </table>   
-        <div class="modal" tabindex="-1" role="dialog" id="alreadyMarkedModal">
+        <div class="modal fade" tabindex="-1" role="dialog" id="attendanceModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -382,14 +382,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p id="modal-message">Already marked!!!</p>
+                        <p id="modal-message"></p> <!-- Message will be updated dynamically -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
      </form>
 
     {% comment %} {% else %}
@@ -514,34 +514,24 @@
                 </div>
             </section>
             <script>
-                // Attach event listener to each "Present" button
                 document.querySelectorAll('.present-btn').forEach(button => {
                     button.addEventListener('click', function (e) {
-                        e.preventDefault();  // Prevent the default link behavior
-                        const studentId = this.getAttribute('data-id');  // Get the student ID from data-id attribute
-                        
-                        // Send a fetch request to the backend
+                        e.preventDefault();  
+                        const studentId = this.getAttribute('data-id');  
+                
                         fetch(`/present/${studentId}/`, {
-                            method: 'GET',  // Use GET method to check attendance
-                            headers: {
-                                'Content-Type': 'application/json',
-                            }
+                            method: 'GET',  
+                            headers: { 'Content-Type': 'application/json' }
                         })
-                        .then(response => response.json())  // Parse the JSON response
+                        .then(response => response.json())  
                         .then(data => {
-                            if (data.status === 'error') {
-                                // If the response is 'error', display the modal with the error message
-                                document.getElementById('modal-message').textContent = data.message;
-                                $('#alreadyMarkedModal').modal('show');
-                            } else if (data.status === 'success') {
-                                // Handle success, you can show another message or refresh the page
-                                alert(data.message);  // For example, show an alert
-                            }
+                            document.getElementById('modal-message').textContent = data.message; // Set message
+                            $('#attendanceModal').modal('show');  // Show the modal
                         })
                         .catch(error => {
                             console.error('Error:', error);
                         });
                     });
                 });
-            </script></body>
+                </script></body>
 </html>

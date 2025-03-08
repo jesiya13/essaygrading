@@ -46,6 +46,7 @@ urlpatterns=[
     path('viewattendance', views.viewattendance, name='viewattendance'),
     path('attendanceviewt', views.attendanceviewt, name='attendanceviewt'),
     path('adminsubjects', views.adminsubjects, name='adminsubjects'),
+    path('subchoice', views.subchoice, name='subchoice'),
 
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

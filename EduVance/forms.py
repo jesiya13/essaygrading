@@ -122,6 +122,7 @@ class attendanceview(forms.Form):
 
 class subjects(forms.ModelForm):
     dept_choices = (
+        ('choose department', 'Choose department'),
         ('bca', 'BCA'),
         ('bcom', 'B.Com.Computer Application'),
         ('bba', 'BBA'),
@@ -131,6 +132,7 @@ class subjects(forms.ModelForm):
     )
     dept = forms.ChoiceField(choices=dept_choices, widget=forms.Select(attrs={'class': 'form-control'}))
     sem_choices = (
+        ('choose semester', 'Choose semester'),
         ('1', 'Semester 1'),
         ('2', 'Semester 2'),
         ('3', 'Semester 3'),
@@ -156,4 +158,11 @@ class subjects(forms.ModelForm):
             'ecourse2': forms.TextInput(attrs={'class': 'form-control'}),
             'ecourse3':forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class ElectiveForm(forms.Form):
+    elective = forms.ChoiceField(choices=[])
     
+    def set_elective_choices(self, elective_courses):
+        # Dynamically set the choices for the elective dropdown
+        choices = [(course, course) for course in elective_courses if course]
+        self.fields['elective'].choices = choices

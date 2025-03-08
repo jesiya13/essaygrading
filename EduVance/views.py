@@ -341,11 +341,10 @@ def present(request,id):
     tea_id = request.session.get('t_id')
     login_details = get_object_or_404(teacherreg, login_id=tea_id)
     if Attendance.objects.filter(t_id= login_details,login_id=a,present=1,current_date=date.today()).exists():
-        return JsonResponse({'status': 'error', 'message': 'Already marked!'})
-        # return redirect('viewattendance')
+        return JsonResponse({'status': 'error', 'message': ' Attendance Already marked for today!'})
     else:
         Attendance.objects.create(t_id= login_details,login_id=a,present=1)
-        return JsonResponse({'status': 'success', 'message': 'Attendance marked!'})
+        return JsonResponse({'status': 'success', 'message': 'Attendance marked Now!'})
 
 
 def absent(request,id):
@@ -378,5 +377,47 @@ def markupload(request):
     return render(request, 'attendance.html',{'form':form})
 
 def adminsubjects(request):
-    form=subjects()
+    if request.method == 'POST':
+        form=subjects(request.POST)
+        print(form)
+        if form.is_valid():
+            b=form.save(commit=False)
+            b.save()
+            messages.success(request,"Form successfully submitted")
+        return redirect('admin')
+    else:
+        form=subjects()
     return render(request, 'subjects.html',{'form':form})
+
+# def subchoice(request):
+#     stud_id = request.session.get('stud_id')
+#     login_details = get_object_or_404(Studentreg, login_id=stud_id)
+#     semester=login_details.semester
+#     print(semester)
+#     return render(request, 'subchoicestud.html')
+
+
+
+
+def subchoice(request):
+    elective = request.GET.get('elective_course') 
+    stud_id = request.session.get('stud_id')
+    login_details = get_object_or_404(Studentreg, login_id=stud_id)
+    semester = login_details.semester
+    department = login_details.department
+    print(semester)
+    print(department)
+    subjects = Subjects.objects.filter(dept=department, sem=semester).first()
+    print(subjects)
+    elective_courses = []
+    if subjects:
+        elective_courses = [subjects.ecourse1, subjects.ecourse2, subjects.ecourse3]
+        print(elective_courses)
+
+    # Create a form and set its elective choices dynamically
+    form = ElectiveForm()
+    form.set_elective_choices(elective_courses)
+    SubjectView.objects.create(stud_id= stud_id,elective=elective_course)
+
+
+    return render(request, 'subchoicestud.html', {'form': form})

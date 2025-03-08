@@ -68,7 +68,10 @@ class Subjects(models.Model):
     ecourse1=models.CharField(max_length=40)
     ecourse2=models.CharField(max_length=40)
     ecourse3=models.CharField(max_length=40)
-
+class SubjectView(models.Model):
+    elective_course=models.CharField(max_length=40)
+    current_date=models.DateTimeField(auto_now_add=True)
+    stud_id=models.ForeignKey('studentreg', on_delete=models.CASCADE)
 
 
 
