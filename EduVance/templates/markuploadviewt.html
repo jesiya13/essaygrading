@@ -354,8 +354,7 @@
                     <th>Name</th>
                     <th>Department</th>
                     <th>Semester</th>
-                    <th>Present</th>
-                    <th>Absent</th>
+                    <th>Upload Mark</th>
                 </tr>
             </thead>
             <tbody>
@@ -366,31 +365,12 @@
                         <td>{{ a.name }}</td>
                         <td>{{ a.department }}</td>
                         <td>{{ a.semester }}</td>
-                        <td><a href="#" class="present-btn" data-id="{{ a.id }}">Present</a></td>
-                        <td><a href="#" class="present-btn" data-id="{{ a.id }}">Absent</a></td>
+                        <td><a href="{%  url 'viewsubjectt' a.id %}" class="btn btn-primary">upload</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>   
-        <div class="modal fade" tabindex="-1" role="dialog" id="attendanceModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Attendance</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="modal-message"></p> <!-- Message will be updated dynamically -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-     </form>
+        
 
     {% comment %} {% else %}
         <p>No results found.</p>
@@ -513,25 +493,5 @@
                     <p>Copyright © 2024 <a href="#">Edumon</a>. All rights reserved.</p>
                 </div>
             </section>
-            <script>
-                document.querySelectorAll('.present-btn').forEach(button => {
-                    button.addEventListener('click', function (e) {
-                        e.preventDefault();  
-                        const studentId = this.getAttribute('data-id');  
-                
-                        fetch(`/present/${studentId}/`, {
-                            method: 'GET',  
-                            headers: { 'Content-Type': 'application/json' }
-                        })
-                        .then(response => response.json())  
-                        .then(data => {
-                            document.getElementById('modal-message').textContent = data.message; // Set message
-                            $('#attendanceModal').modal('show');  // Show the modal
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                    });
-                });
-                </script></body>
+            </body>
 </html>

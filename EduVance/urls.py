@@ -41,12 +41,16 @@ urlpatterns=[
     path('removeassignment/<int:id>', views.removeassignment, name='removeassignment'),
     path('removeassignmentt/<int:id>', views.removeassignmentt, name='removeassignmentt'),
     path('viewassignmentt', views.viewassignmentt, name='viewassignmentt'),
-    path('present/<int:id>', views.present, name='present'),
-    path('absent/<int:id>', views.absent, name='absent'),
+    path('present/<int:id>/', views.present, name='present'),
+    path('absent/<int:id>/', views.absent, name='absent'),
     path('viewattendance', views.viewattendance, name='viewattendance'),
     path('attendanceviewt', views.attendanceviewt, name='attendanceviewt'),
     path('adminsubjects', views.adminsubjects, name='adminsubjects'),
     path('subchoice', views.subchoice, name='subchoice'),
+    path('viewsubject', views.viewsubject, name='viewsubject'),
+    path('viewsubjectt/<int:id>', views.viewsubjectt, name='viewsubjectt'),
+    path('uploadmarks', views.uploadmarks, name='uploadmarks'),
+    path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
 
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

@@ -97,7 +97,7 @@
 								<li class="menu-item-has-children">
 									<a href="{% url 'subchoice' %}">Choose Subjects</a>
 									<ul class="sub-menu">
-										<li><a href="index-2.html">Home Two</a></li>
+										<li><a href="{% url 'viewsubject' %}">View Subjects</a></li>
 									</ul>
 								</li>	
 
@@ -140,7 +140,7 @@
 								<span>3</span>
 							</div>
 						</div>					
-						<a href="#" class="bg_btn bt">Sign In</a>
+						<a href="{% url 'login' %}" class="bg_btn bt">Sign In</a>
 					</div><!-- End Col -->
 				</div>
 			</div>

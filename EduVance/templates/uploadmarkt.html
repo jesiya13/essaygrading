@@ -384,22 +384,46 @@
 				<div class="row">				
 					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
 						<div class="register">
-							<h2>Select Your Elective Course</h2>
+							<h4 class="login_register_title">Upload Internal Marks</h4>
 
-							{% if error %}
-								<p style="color: red;">{{ error }}</p>
-							{% endif %}
-							
-							<form method="post">
-								{% csrf_token %}
-								<label for="id_elective_course">Elective Course:</label>
-								{{ form.elective_course }}
-								<div class="form-group col-lg-12">
-                                    <button class="bg_btn bt" type="submit" name="submit">Edit</button>
-                                </div>
-							</form>
+<form method="post">
+    {% csrf_token %}
+    <table align="center">
+        <tr>
+            <td>Student Name:</td>
+            <td>{{ student.name }}</td>
+        </tr>
+        <tr>
+            <td>Department:</td>
+            <td>{{ student.department }}</td>
+        </tr>
+        <tr>
+            <td>Semester:</td>
+            <td>{{ student.semester }}</td>
+        </tr>
+        <tr>
+            <td>Subject:</td>
+            <td>{{ course.subject }}</td>
+        </tr>
+        <tr>
+            <td>Internal Marks:</td>
+            <td>
+                <input type="text" name="marks" value="{{ internal_marks.marks|default:'' }}" required>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>
 
+							    </form>
 
+							   </table>
+                                <div class="form-group col-lg-12">
+                                    <button class="bg_btn bt" type="submit" name="submit">Next</button>
                                 
                            
 					</div><!--- END COL -->

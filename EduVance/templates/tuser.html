@@ -114,7 +114,7 @@
 								<li class="menu-item-has-children">
 									<a href="#">Internal Exam</a>
 									<ul class="sub-menu">
-										<li><a href="{% url 'viewattendance' %}">Upload marks</a></li>
+										<li><a href="{% url 'uploadmarks' %}">Upload marks</a></li>
 										{% comment %} <li><a href="{% url 'attendanceviewt' %}">Check attendance</a></li> {% endcomment %}
 									</ul>
 								</li>		
@@ -136,7 +136,7 @@
 								<span>3</span>
 							</div>							
 						</div>					
-						<a href="#" class="bg_btn bt">Sign In</a>
+						<a href="{% url 'login' %}" class="bg_btn bt">Sign In</a>
 					</div><!-- End Col -->
 				</div>
 			</div>

@@ -352,10 +352,10 @@ def absent(request,id):
     tea_id = request.session.get('t_id')
     login_details = get_object_or_404(teacherreg, login_id=tea_id)
     if Attendance.objects.filter(t_id= login_details,login_id=a,absent=2,current_date=date.today()).exists():
-        messages.warning(request,'Already marked!')
+        return JsonResponse({'status': 'error', 'message': ' Attendance Already marked for today!'})
     else:
         Attendance.objects.create(t_id= login_details,login_id=a,absent=2)
-    return redirect('viewattendance')
+        return JsonResponse({'status': 'success', 'message': 'Attendance marked Now!'})
 
 def attendanceviewt(request):
     form=attendanceview()
@@ -388,6 +388,36 @@ def adminsubjects(request):
     else:
         form=subjects()
     return render(request, 'subjects.html',{'form':form})
+def adminsubjects(request):
+    if request.method == 'POST':
+        dept = request.POST.get('dept')
+        sem = request.POST.get('sem')
+        courses = request.POST.getlist('courses[]')  # Get all courses
+        elective_courses = request.POST.getlist('elective_courses[]')  # Get electives
+
+        if len(elective_courses) != 3:  # Ensure exactly 3 elective courses
+            messages.error(request, "You must enter exactly 3 elective courses.")
+            return redirect('admin')
+
+        # Create Subject (semester)
+        subject = Subject.objects.create(dept=dept, sem=sem)
+
+        # Save each regular course
+        for course_name in courses:
+            if course_name.strip():
+                Course.objects.create(subject=subject, name=course_name)
+
+        # Save exactly 3 elective courses
+        for elective_name in elective_courses:
+            if elective_name.strip():
+                ElectiveCourse.objects.create(subject=subject, name=elective_name)
+
+        messages.success(request, "Subject and courses added successfully.")
+        return redirect('admin')
+
+    else:
+        form = SubjectForm()  
+    return render(request, 'subjects.html', {'form': form})
 
 # def subchoice(request):
 #     stud_id = request.session.get('stud_id')
@@ -397,27 +427,137 @@ def adminsubjects(request):
 #     return render(request, 'subchoicestud.html')
 
 
-
-
 def subchoice(request):
-    elective = request.GET.get('elective_course') 
-    stud_id = request.session.get('stud_id')
-    login_details = get_object_or_404(Studentreg, login_id=stud_id)
-    semester = login_details.semester
-    department = login_details.department
-    print(semester)
-    print(department)
-    subjects = Subjects.objects.filter(dept=department, sem=semester).first()
-    print(subjects)
-    elective_courses = []
-    if subjects:
-        elective_courses = [subjects.ecourse1, subjects.ecourse2, subjects.ecourse3]
-        print(elective_courses)
+    stud_id = request.session.get('stud_id')  # Get student ID from session
+    student = get_object_or_404(Studentreg, login_id=stud_id)  # Fetch student
 
-    # Create a form and set its elective choices dynamically
-    form = ElectiveForm()
-    form.set_elective_choices(elective_courses)
-    SubjectView.objects.create(stud_id= stud_id,elective=elective_course)
+    if request.method == 'POST':
+        form = ElectiveForm(request.POST, student=student)
+        if form.is_valid():
+            # Ensure student hasn't already selected an elective for the semester
+            if SubjectView.objects.filter(stud_id=student, semester=student.semester).exists():
+                return render(request, 'subchoicestud.html', {
+                    'form': form, 
+                    'error': 'You have already selected an elective for this semester!'
+                })
 
+            # Save elective choice
+            subject_view = form.save(commit=False)
+            subject_view.stud_id = student
+            subject_view.semester = student.semester
+            subject_view.save()
+            return redirect('user')  # Redirect to success page after submission
+
+    else:
+        form = ElectiveForm(student=student)
 
     return render(request, 'subchoicestud.html', {'form': form})
+
+def uploadmarks(request):
+    form=uploadmark()
+    dept = request.GET.get('department') 
+    sem = request.GET.get('semester') 
+    results = Studentreg.objects.filter(department=dept,semester=sem) 
+    if results:
+        return render(request, 'markuploadviewt.html',{'results':results})
+    print(results)
+    return render(request, 'uploadmarkt.html',{'form':form})
+
+def viewsubjectt(request, id):
+    # Get student details
+    student = get_object_or_404(Studentreg, id=id)
+
+    # Get the subject (based on department & semester)
+    subject = get_object_or_404(Subject, dept=student.department, sem=student.semester)
+
+    # Fetch core subjects
+    core_subjects = Course.objects.filter(subject=subject)
+
+    # Fetch electives chosen by student
+    selected_electives = SubjectView.objects.filter(stud_id=student)
+
+    return render(request, 'viewsubjectt.html', {
+        'core_subjects': core_subjects,
+        'view_sub': selected_electives,
+        'studentid': student.id
+    })
+
+def upload_internal_marks(request, course_id, student_id):
+    # Fetch the course, student, and subject
+    course = get_object_or_404(Course, id=course_id)
+    student = get_object_or_404(Studentreg, id=student_id)
+    subject = course.subject  # Access the related subject through the course
+    logid = request.session.get('t_id')
+    teacher_id = get_object_or_404(teacherreg, login_id = logid)
+
+    # Check if internal marks exist for the student and subject
+    internal_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).first()
+
+    if request.method == 'POST':
+        marks = request.POST.get('marks')  # Get the marks from the form input
+
+        # Validate marks (ensure it's a numeric value)
+        if not marks.isdigit():
+            messages.error(request, "Marks must be a numeric value.")
+            return redirect('internals', course_id=course_id, student_id=student_id)
+
+        marks = int(marks)  # Convert marks to integer
+
+        if internal_marks:
+            # If marks already exist, update them
+            internal_marks.marks = marks
+            internal_marks.save()
+            messages.success(request, 'Marks updated successfully!')
+        else:
+            # If marks don't exist, create a new entry
+            InternalMarks.objects.create(subject=subject, stud_id=student, marks=marks, login_id=teacher_id)
+            messages.success(request, 'Marks uploaded successfully!')
+
+        return redirect('viewsubjectt',student.id)  # Redirect to the list page or another page after saving
+    else:
+        # If GET request, render the form
+        return render(request, 'uploadmarkt.html', {'course': course, 'student': student, 'internal_marks': internal_marks})
+
+
+
+
+def viewsubject(request):
+    # Get the student ID from the session (assuming the user is linked to the Studentreg model)
+    student_id = request.session.get('stud_id')
+    st = get_object_or_404(Studentreg, login_id=student_id)
+
+    # Get all subjects for the student based on their department and semester
+    subjects = Subject.objects.filter(dept=st.department, sem=st.semester)
+
+    # Get all the courses (core subjects) for the student's semester
+    courses = Course.objects.filter(subject__in=subjects)
+
+    # Get the electives selected by the student for the current semester from the SubjectView model
+    selected_electives = SubjectView.objects.filter(stud_id=st, semester=st.semester)
+    electives = ElectiveCourse.objects.filter(name__in=[selection.elective_course for selection in selected_electives])
+
+    # Get the student's marks for the courses and electives from the InternalMarks model
+    course_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[course.id for course in courses])
+    elective_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[elective.id for elective in electives])
+
+    # Attach marks to courses and electives
+    for course in courses:
+        course.marks = None  # Default to None if no marks found
+        for mark in course_marks:
+            if mark.subject == course.name:
+                course.marks = mark.marks
+                break
+
+    for elective in electives:
+        elective.marks = None  # Default to None if no marks found
+        for mark in elective_marks:
+
+            if mark.subject == elective.name:
+                elective.marks = mark.marks
+                break
+
+    # Pass the data to the template
+    return render(request, 'viewsubject.html', {
+        'courses': courses,
+        'electives': electives,
+    })

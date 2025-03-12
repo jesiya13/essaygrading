@@ -58,20 +58,57 @@ class Attendance(models.Model):
     present=models.IntegerField(default=0)
     absent=models.IntegerField(default=0)
 
-class Subjects(models.Model):
-    dept=models.CharField(max_length=40)
-    sem=models.CharField(max_length=40)
-    course1=models.CharField(max_length=40)
-    course2=models.CharField(max_length=40)
-    course3=models.CharField(max_length=40)
-    course4=models.CharField(max_length=40)
-    ecourse1=models.CharField(max_length=40)
-    ecourse2=models.CharField(max_length=40)
-    ecourse3=models.CharField(max_length=40)
 class SubjectView(models.Model):
-    elective_course=models.CharField(max_length=40)
-    current_date=models.DateTimeField(auto_now_add=True)
-    stud_id=models.ForeignKey('studentreg', on_delete=models.CASCADE)
+    stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)
+    elective_course = models.CharField(max_length=40)
+    semester = models.CharField(max_length=20)  # Store semester info
+    current_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('stud_id', 'semester')  # Prevent multiple elective selections per semester
+
+    def __str__(self):
+        return f"{self.stud_id} - {self.elective_course} ({self.semester})"
+
+
+class Subject(models.Model):
+    dept = models.CharField(max_length=40)
+    sem = models.CharField(max_length=40)
+
+    def __str__(self):
+        return f"{self.dept} - {self.sem}"
+
+
+class Course(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='courses')
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class ElectiveCourse(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='electives')
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class InternalMarks(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)  # Connect marks to the subject
+    marks = models.IntegerField(null=True, blank=True)  # Marks are now integers, allowing null/blank
+    stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)  # Relating marks to student
+    login_id = models.ForeignKey('teacherreg', on_delete=models.CASCADE)  # Teacher who entered the marks
+
+    class Meta:
+        unique_together = ('stud_id', 'subject')  # Prevent multiple marks entries for the same student-subject
+
+    def __str__(self):
+        return f"{self.stud_id} - {self.subject} - Marks: {self.marks}"
+
+
+
 
 
 

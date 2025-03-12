@@ -120,7 +120,88 @@ class attendance(forms.Form):
 class attendanceview(forms.Form):
     date=forms.CharField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
 
-class subjects(forms.ModelForm):
+# class subjects(forms.ModelForm):
+#     dept_choices = (
+#         ('choose department', 'Choose department'),
+#         ('bca', 'BCA'),
+#         ('bcom', 'B.Com.Computer Application'),
+#         ('bba', 'BBA'),
+#         ('b.a.english', 'B.A. English'),
+#         ('b.sc.psychology', 'B.Sc.Psychology'),
+#         ('b.com.taxation', 'B.Com.Taxation'),
+#     )
+#     dept = forms.ChoiceField(choices=dept_choices, widget=forms.Select(attrs={'class': 'form-control'}))
+#     sem_choices = (
+#         ('choose semester', 'Choose semester'),
+#         ('1', 'Semester 1'),
+#         ('2', 'Semester 2'),
+#         ('3', 'Semester 3'),
+#         ('4', 'Semester 4'),
+#         ('5', 'Semester 5'),
+#         ('6', 'Semester 6'),
+#         ('7', 'Semester 7'),
+#         ('8', 'Semester 8'),
+#     )
+#     sem = forms.ChoiceField(choices=sem_choices, widget=forms.Select(attrs={'class': 'form-control'}))
+
+#     class Meta:
+#         model = Subjects
+#         fields = ['dept', 'sem', 'course1', 'course2', 'course3', 'course4', 'ecourse1', 'ecourse2','ecourse3']
+#         widgets = {
+#             'dept': forms.Select(attrs={'class': 'form-control'}),
+#             'sem': forms.Select(attrs={'class': 'form-control'}),
+#             'course1': forms.TextInput(attrs={'class': 'form-control'}),
+#             'course2': forms.TextInput(attrs={'class': 'form-control'}),
+#             'course3': forms.TextInput(attrs={'class': 'form-control'}),
+#             'course4': forms.TextInput(attrs={'class': 'form-control'}),
+#             'ecourse1': forms.TextInput(attrs={'class': 'form-control'}),
+#             'ecourse2': forms.TextInput(attrs={'class': 'form-control'}),
+#             'ecourse3':forms.TextInput(attrs={'class': 'form-control'}),
+#         }
+
+from django import forms
+from .models import ElectiveCourse, SubjectView
+
+class ElectiveForm(forms.ModelForm):
+    elective_course = forms.ModelChoiceField(
+        queryset=ElectiveCourse.objects.none(),  # Set dynamically in __init__
+        empty_label="Select an elective",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = SubjectView
+        fields = ['elective_course']
+
+    def __init__(self, *args, **kwargs):
+        student = kwargs.pop('student', None)  # Get logged-in student
+        super().__init__(*args, **kwargs)
+
+        if student:
+            # Filter electives based on student's department & semester
+            self.fields['elective_course'].queryset = ElectiveCourse.objects.filter(
+                subject__dept=student.department,
+                subject__sem=student.semester
+            )
+
+
+
+class uploadmark(forms.Form):
+    departments=Studentreg.objects.values_list('department','department').distinct()
+    semesters=Studentreg.objects.values_list('semester','semester').distinct()
+    department=forms.ChoiceField(choices=departments,label='Select department')
+    semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+
+class internal(forms.ModelForm):
+    class Meta:
+        model=InternalMarks
+        fields=['marks']
+        widgets={
+             'marks': forms.TextInput(attrs={'class': 'form-control'}),
+
+         }  
+        
+class SubjectForm(forms.ModelForm):
     dept_choices = (
         ('choose department', 'Choose department'),
         ('bca', 'BCA'),
@@ -145,24 +226,24 @@ class subjects(forms.ModelForm):
     sem = forms.ChoiceField(choices=sem_choices, widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = Subjects
-        fields = ['dept', 'sem', 'course1', 'course2', 'course3', 'course4', 'ecourse1', 'ecourse2','ecourse3']
+        model = Subject
+        fields = ['dept', 'sem']
         widgets = {
-            'dept': forms.Select(attrs={'class': 'form-control'}),
+            'dept': forms.Select(attrs={'class': 'form-control mb-2'}),
             'sem': forms.Select(attrs={'class': 'form-control'}),
-            'course1': forms.TextInput(attrs={'class': 'form-control'}),
-            'course2': forms.TextInput(attrs={'class': 'form-control'}),
-            'course3': forms.TextInput(attrs={'class': 'form-control'}),
-            'course4': forms.TextInput(attrs={'class': 'form-control'}),
-            'ecourse1': forms.TextInput(attrs={'class': 'form-control'}),
-            'ecourse2': forms.TextInput(attrs={'class': 'form-control'}),
-            'ecourse3':forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-class ElectiveForm(forms.Form):
-    elective = forms.ChoiceField(choices=[])
-    
-    def set_elective_choices(self, elective_courses):
-        # Dynamically set the choices for the elective dropdown
-        choices = [(course, course) for course in elective_courses if course]
-        self.fields['elective'].choices = choices
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['name']
+
+class ElectiveCourseForm(forms.ModelForm):
+    class Meta:
+        model = ElectiveCourse
+        fields = ['name']
+
+class InternalMarksForm(forms.ModelForm):
+    class Meta:
+        model = InternalMarks
+        fields = ['marks']

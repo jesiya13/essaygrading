@@ -1012,55 +1012,56 @@
 				</div>
 				<!--end breadcrumb-->
 				
-						<form method="post">
-							{% csrf_token %}
-						<h6 class="mb-0 text-uppercase">Subject adding</h6>
-						<div class="card">
-							    <div class="card-body">
-								    Department
-									<td> {{form.dept}}</td>
-								</div>
-								<div class="card-body">
-									Semester
-									<td> {{form.sem}}</td>
-								</div>
-								<div class="card-body">
-									Course 1
-									<input type="text" class="form-control" name="course1" placeholder="Course 1" aria-label="Course 1" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Course 2
-									<input type="text" class="form-control" name="course2"placeholder="Course 2" aria-label="Course 2" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Course 3
-									<input type="text" class="form-control" name="course3" placeholder="Course 3" aria-label="Course 3" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Course 4
-									<input type="text" class="form-control" name="course4" placeholder="Course 4" aria-label="Course 4" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Elective Course 1
-									<input type="text" class="form-control" name="ecourse1" placeholder="Elective Course 1" aria-label="Elective Course 1" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Elective Course 2
-									<input type="text" class="form-control" name="ecourse2"placeholder="Elective Course 2" aria-label="Elective Course 2" aria-describedby="addon-wrapping">
-								</div>
-								<div class="card-body">
-									Elective Course 3
-									<input type="text" class="form-control" name="ecourse3" placeholder="Elective Course 3" aria-label="Elective Course 3" aria-describedby="addon-wrapping">
-								</div>
-								<center>
-								<div class="form-group col-xl-12">
-								<button class="btn btn-dark" type="submit">Submit</button>
-								</div>
-							</center>
-							</div>
+				<form method="post">
+					{% csrf_token %}
+					<h6 class="mb-0 text-uppercase">Subject Adding</h6>
+					<div class="card">
+						<div class="card-body">
+							<label>Department</label>
+							<td>{{ form.dept }}</td>
 						</div>
-					</form>
+						<div class="card-body">
+							<label>Semester</label>
+							<td>{{ form.sem }}</td>
+						</div>
 						
+						<!-- Regular Courses -->
+						<div class="card-body">
+							<label>Regular Courses</label>
+							<div id="courses-container">
+								<input type="text" class="form-control mb-2" name="courses[]" placeholder="Enter Course">
+							</div>
+							<button type="button" class="btn btn-secondary" onclick="addCourse()">Add More Courses</button>
+						</div>
+				
+						<!-- Elective Courses -->
+						<div class="card-body">
+							<label>Elective Courses (Exactly 3 Required)</label>
+							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 1" required>
+							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 2" required>
+							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 3" required>
+						</div>
+				
+						<center>
+							<div class="form-group col-xl-12">
+								<button class="btn btn-dark" type="submit">Submit</button>
+							</div>
+						</center>
+					</div>
+				</form>
+				
+				<script>
+					function addCourse() {
+						var container = document.getElementById("courses-container");
+						var input = document.createElement("input");
+						input.type = "text";
+						input.name = "courses[]";
+						input.className = "form-control mb-2";
+						input.placeholder = "Enter Course";
+						container.appendChild(input);
+					}
+				</script>
+				
 							</div>
 						</div>
 					</div>

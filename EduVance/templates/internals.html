@@ -145,7 +145,7 @@
 								</li>		
 
 								<li>
-									<a href="standard-blog.html">Blog</a>
+									{% comment %} <a href="{% url 'uploadessay' %}">Upload Essay</a> {% endcomment %}
 								</li>
 
 								<li>
@@ -359,9 +359,9 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xl-12 text-center">
-						<h2>Attendance</h2>
+						<h2>Upload Marks</h2>
 						<p>
-							<a href="#">Home</a> <i class='bx bx-chevrons-right'></i> Attendance
+							<!-- <a href="#">Home</a> <i class='bx bx-chevrons-right'></i> Upload Essay -->
 						</p>
 					</div>
 				</div>				
@@ -379,33 +379,30 @@
 		<!-- End Main Banner -->
 
 		<!-- START LOGIN AND REGISTER -->
-		<section class="login_register section-padding">
-			<div class="container">
-				<div class="row">				
-					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
-						<div class="register">
-							<h2>Select Your Elective Course</h2>
+		<h1>Upload Marks for {{ student }} - {{ course.name }}</h1>
 
-							{% if error %}
-								<p style="color: red;">{{ error }}</p>
-							{% endif %}
-							
-							<form method="post">
-								{% csrf_token %}
-								<label for="id_elective_course">Elective Course:</label>
-								{{ form.elective_course }}
-								<div class="form-group col-lg-12">
-                                    <button class="bg_btn bt" type="submit" name="submit">Edit</button>
-                                </div>
-							</form>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div>
+            <label for="marks">Marks:</label>
+            <input type="text" name="marks" id="marks" value="{{ internal_marks.marks if internal_marks else '' }}" required>
+        </div>
 
+        <button type="submit">Submit</button>
+    </form>
 
-                                
-                           
-					</div><!--- END COL -->
-				</div><!--- END ROW -->
-			</div><!--- END CONTAINER -->
-		</section>
+    <a href="{% url 'internal_marks_list' %}">Back to Marks List</a>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+        
 		<!-- END LOGIN AND REGISTER -->
 
 		<!-- Start Footer -->
