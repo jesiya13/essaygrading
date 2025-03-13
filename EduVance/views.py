@@ -376,18 +376,7 @@ def markupload(request):
     print(results)
     return render(request, 'attendance.html',{'form':form})
 
-def adminsubjects(request):
-    if request.method == 'POST':
-        form=subjects(request.POST)
-        print(form)
-        if form.is_valid():
-            b=form.save(commit=False)
-            b.save()
-            messages.success(request,"Form successfully submitted")
-        return redirect('admin')
-    else:
-        form=subjects()
-    return render(request, 'subjects.html',{'form':form})
+
 def adminsubjects(request):
     if request.method == 'POST':
         dept = request.POST.get('dept')
@@ -637,3 +626,24 @@ def viewsubjectt(request,id):
 #         'internal_marks': internal_marks,
 #         'studentid': id  # Use id, not undefined student_id
 #     })
+
+def promote(request,id):
+    student = get_object_or_404(Studentreg, id=id)
+    sem=student.semester
+    student.semester=sem+1
+    student.save()
+    
+    return redirect('adminstudview')
+
+def demote(request,id):
+    student = get_object_or_404(Studentreg, id=id)
+    sem=student.semester
+    student.semester=sem-1
+    student.save()
+    
+    return redirect('adminstudview')
+
+
+
+
+

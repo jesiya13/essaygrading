@@ -50,6 +50,10 @@ urlpatterns=[
     path('viewsubject', views.viewsubject, name='viewsubject'),
     path('viewsubjectt/<int:id>', views.viewsubjectt, name='viewsubjectt'),
     path('uploadmarks', views.uploadmarks, name='uploadmarks'),
+    path('promote/<int:id>', views.promote, name='promote'),
+    path('demote/<int:id>', views.demote, name='demote'),
+
+
     path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
     path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
 
