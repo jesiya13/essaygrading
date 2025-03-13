@@ -342,7 +342,7 @@
                     <td>{{ course.name }}</td>
                     <td>
                         {% if course.marks %}
-                            {% if course.marks == "Not Uploaded" %}
+                            {% if course.marks == null %}
                                 <span class="not-uploaded">Marks Not Yet Uploaded</span>
                             {% else %}
                                 {{ course.marks }}

@@ -403,30 +403,20 @@
         </tr>
         <tr>
             <td>Subject:</td>
-            <td>{{ course.subject }}</td>
+            <td>{{ course.name }}</td>
         </tr>
         <tr>
             <td>Internal Marks:</td>
             <td>
-                <input type="text" name="marks" value="{{ internal_marks.marks|default:'' }}" required>
+                <input type="text" name="marks"  required>
             </td>
         </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <button type="submit">Submit</button>
-            </td>
-        </tr>
-    </table>
-</form>
-
-							    </form>
-
-							   </table>
-                                <div class="form-group col-lg-12">
-                                    <button class="bg_btn bt" type="submit" name="submit">Next</button>
-                                
-                           
+</table>
+<br><br>
+<div class="form-group col-lg-12">
+<button class="bg_btn bt" type="submit" name="submit">Next</button>     
 					</div><!--- END COL -->
+					</form>
 				</div><!--- END ROW -->
 			</div><!--- END CONTAINER -->
 		</section>

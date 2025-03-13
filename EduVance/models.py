@@ -96,7 +96,7 @@ class ElectiveCourse(models.Model):
 
 
 class InternalMarks(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)  # Connect marks to the subject
+    subject = models.ForeignKey('Course', on_delete=models.CASCADE)  # Connect marks to the subject
     marks = models.IntegerField(null=True, blank=True)  # Marks are now integers, allowing null/blank
     stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)  # Relating marks to student
     login_id = models.ForeignKey('teacherreg', on_delete=models.CASCADE)  # Teacher who entered the marks

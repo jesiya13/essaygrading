@@ -7,7 +7,7 @@ urlpatterns=[
     path('', views.main, name='main'),
     path('login', views.login, name='login'),
     path('admin', views.admin, name='admin'),
-    path('user', views.user, name='user'),
+    path('user', views.user, name='user'), 
     path('tuser', views.tuser, name='tuser'),
     path('studentreg', views.studentreg, name='studentreg'),
     path('teacherreg', views.teacherregister, name='teacherreg'),
@@ -51,6 +51,7 @@ urlpatterns=[
     path('viewsubjectt/<int:id>', views.viewsubjectt, name='viewsubjectt'),
     path('uploadmarks', views.uploadmarks, name='uploadmarks'),
     path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
+    path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
 
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

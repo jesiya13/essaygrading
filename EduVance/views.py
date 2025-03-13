@@ -3,7 +3,7 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 from django.db.models import Q
-from datetime import date
+from datetime import date 
 from django.http import JsonResponse
 
 
@@ -461,37 +461,20 @@ def uploadmarks(request):
     if results:
         return render(request, 'markuploadviewt.html',{'results':results})
     print(results)
-    return render(request, 'uploadmarkt.html',{'form':form})
+    return render(request, 'markupload.html',{'form':form})
 
-def viewsubjectt(request, id):
-    # Get student details
-    student = get_object_or_404(Studentreg, id=id)
 
-    # Get the subject (based on department & semester)
-    subject = get_object_or_404(Subject, dept=student.department, sem=student.semester)
-
-    # Fetch core subjects
-    core_subjects = Course.objects.filter(subject=subject)
-
-    # Fetch electives chosen by student
-    selected_electives = SubjectView.objects.filter(stud_id=student)
-
-    return render(request, 'viewsubjectt.html', {
-        'core_subjects': core_subjects,
-        'view_sub': selected_electives,
-        'studentid': student.id
-    })
 
 def upload_internal_marks(request, course_id, student_id):
     # Fetch the course, student, and subject
     course = get_object_or_404(Course, id=course_id)
     student = get_object_or_404(Studentreg, id=student_id)
-    subject = course.subject  # Access the related subject through the course
+    subject = course.id  # Fetch the correct subject from the course
     logid = request.session.get('t_id')
-    teacher_id = get_object_or_404(teacherreg, login_id = logid)
+    teacher_id = get_object_or_404(teacherreg, login_id=logid)
 
-    # Check if internal marks exist for the student and subject
-    internal_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).first()
+    # Check if marks already exist for this student and subject
+    existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
 
     if request.method == 'POST':
         marks = request.POST.get('marks')  # Get the marks from the form input
@@ -503,22 +486,52 @@ def upload_internal_marks(request, course_id, student_id):
 
         marks = int(marks)  # Convert marks to integer
 
-        if internal_marks:
-            # If marks already exist, update them
-            internal_marks.marks = marks
-            internal_marks.save()
-            messages.success(request, 'Marks updated successfully!')
+        if existing_marks:
+            # If marks already exist for the student and subject, prevent duplicate entry
+            messages.error(request, 'Marks for this student in this subject already exist.')
         else:
-            # If marks don't exist, create a new entry
-            InternalMarks.objects.create(subject=subject, stud_id=student, marks=marks, login_id=teacher_id)
+            # Create a new entry
+            InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
             messages.success(request, 'Marks uploaded successfully!')
 
-        return redirect('viewsubjectt',student.id)  # Redirect to the list page or another page after saving
-    else:
-        # If GET request, render the form
-        return render(request, 'uploadmarkt.html', {'course': course, 'student': student, 'internal_marks': internal_marks})
+        return redirect('viewsubjectt', student.id)  # Redirect after saving
 
+    # If GET request, render the form
+    return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
 
+def upload_internal_marks_elective(request, course_id, student_id):
+    # Fetch the course, student, and subject
+    course = get_object_or_404(ElectiveCourse, id=course_id)
+    student = get_object_or_404(Studentreg, id=student_id)
+    subject = course.id  # Fetch the correct subject from the course
+    logid = request.session.get('t_id')
+    teacher_id = get_object_or_404(teacherreg, login_id=logid)
+
+    # Check if marks already exist for this student and subject
+    existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
+
+    if request.method == 'POST':
+        marks = request.POST.get('marks')  # Get the marks from the form input
+
+        # Validate marks (ensure it's a numeric value)
+        if not marks.isdigit():
+            messages.error(request, "Marks must be a numeric value.")
+            return redirect('internals', course_id=course_id, student_id=student_id)
+
+        marks = int(marks)  # Convert marks to integer
+
+        if existing_marks:
+            # If marks already exist for the student and subject, prevent duplicate entry
+            messages.error(request, 'Marks for this student in this subject already exist.')
+        else:
+            # Create a new entry
+            InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
+            messages.success(request, 'Marks uploaded successfully!')
+
+        return redirect('viewsubjectt', student.id)  # Redirect after saving
+
+    # If GET request, render the form
+    return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
 
 
 def viewsubject(request):
@@ -544,20 +557,83 @@ def viewsubject(request):
     for course in courses:
         course.marks = None  # Default to None if no marks found
         for mark in course_marks:
-            if mark.subject == course.name:
+            if mark.subject == course:
                 course.marks = mark.marks
                 break
 
     for elective in electives:
         elective.marks = None  # Default to None if no marks found
         for mark in elective_marks:
-
-            if mark.subject == elective.name:
+            if mark.subject == elective:
                 elective.marks = mark.marks
                 break
 
     # Pass the data to the template
     return render(request, 'viewsubject.html', {
+        'student': st,  # Pass the student details
         'courses': courses,
         'electives': electives,
     })
+
+# def viewsubjectt(request, id):
+#     student = get_object_or_404(Studentreg, id=id)
+
+#     # Check if data is being returned
+#     core_subjects = Course.objects.filter(subject__dept=student.department, subject__sem=student.semester)
+#     print("Core Subjects:", core_subjects)  # Debugging line
+
+#     electives = SubjectView.objects.filter(stud_id=student, semester=student.semester)
+#     print("Electives:", electives)  # Debugging line
+
+#     view_sub = ElectiveCourse.objects.filter(name__in=[elective.elective_course for elective in electives])
+#     print("View Sub:", view_sub)  # Debugging line
+
+#     internal_marks = InternalMarks.objects.filter(stud_id=student)
+#     print("Internal Marks:", internal_marks)  # Debugging line
+
+#     return render(request, 'viewsubjectt.html', {
+#         'studentid': student.id,
+#         'core_subjects': core_subjects,
+#         'view_sub': view_sub,
+#         'internal_marks': internal_marks,
+#     })
+
+def viewsubjectt(request,id):
+
+    student = get_object_or_404(Studentreg, id=id)
+
+    core_subjects = Course.objects.filter(subject__dept=student.department, subject__sem=student.semester)
+    electives = SubjectView.objects.filter(stud_id=student, semester=student.semester)
+    view_sub = ElectiveCourse.objects.filter(name__in=[elective.elective_course for elective in electives])
+
+    internal_marks = InternalMarks.objects.filter(stud_id=student)
+    # print(internal_marks)
+    return render(request, 'viewsubjectt.html', {
+        'studentid': student.id,
+        'core_subjects': core_subjects,
+        'view_sub': view_sub,
+        'internal_marks': internal_marks,
+    })
+
+# def viewsubjectt(request, id):
+#     # Get student details
+#     student = get_object_or_404(Studentreg, id=id)
+
+#     # Get the subject (based on department & semester)
+#     subject = get_object_or_404(Subject, dept=student.department, sem=student.semester)
+
+#     # Fetch core subjects
+#     core_subjects = Course.objects.filter(subject=subject)
+
+#     # Fetch electives chosen by student
+#     selected_electives = SubjectView.objects.filter(stud_id=student)
+
+#     # Fetch internal marks for the student
+#     internal_marks = InternalMarks.objects.filter(stud_id=student)
+
+#     return render(request, 'viewsubjectt.html', {
+#         'core_subjects': core_subjects,
+#         'view_sub': selected_electives,  # Corrected this line
+#         'internal_marks': internal_marks,
+#         'studentid': id  # Use id, not undefined student_id
+#     })
