@@ -1021,16 +1021,14 @@
 										<th>ADMIN NO</th>
 										<th>FULL NAME</th>
 										<th>ADDRESS</th>
-										<th>GENDER</th>
-										<th> DATE OF BIRTH</th>
-										<th> DEPARTMENT</th>
+										<th>DEPARTMENT</th>
 										<th>SEMESTER</th>
-										<th> CONTACT NO</th>
-										<th>EMAIL ADDRESS</th>
-										<th>REJECT</th>
-										<th>SEMESTER PROMOTE</TH>
-										<th>SEMESTER DEMOTE</TH>
-										<th>COURSES </TH>
+                                        <th>EMAIL</th>
+                                        <th>complaint</th>
+                                        <th>Replay</th>
+                                        <th>View Replay</th>
+
+
 
 									</tr>
 									{% for a in data %}
@@ -1038,24 +1036,19 @@
 								</thead>
 								 <tbody>
 									<tr>
-										<td>{{a.admno}}</td>
-										<td>{{a.name}}</td>
-										<td>{{a.address}}</td>
-										<td>{{a.gender}}</td>
-										<td>{{a.dob}}</td>
-										<td>{{a.department}}</td>
-										<td>{{a.semester}}</td>
-										<td>{{a.contactno}}</td>
-										<td>{{a.login_id.email}}</td>
-										<td><a href="{% url 'rejects' a.id %}">REJECTED</a></td>
-										<td><a href="{% url 'promote' a.id %}" class="btn btn-primary">PROMOTE</a></td>
-										<td><a href="{% url 'demote' a.id %}" class="btn btn-primary">DEMOTE</a></td>
-										<td><a href="{% url 'asubjectviews' a.id %}" class="btn btn-primary">COURSES</a></td>
+										<td>{{a.stud_id.admno}}</td>
+										<td>{{a.stud_id.name}}</td>
+										<td>{{a.stud_id.address}}</td>
+										<td>{{a.stud_id.department}}</td>
+										<td>{{a.stud_id.semester}}</td>
+										<td>{{a.stud_id.login_id.email}}</td>
+                                        <td>{{a.complaint}}</td>
+                                        <td><a href="{% url 'adminreplay' a.id %}" class="btn btn-primary">replay</a></td> 
+                                        <td>{{a.replay}}</td>
 
 
 
-
-
+                                        
 									</tr>
 									{%endfor%}
 									{% comment %} <tr>

@@ -111,11 +111,26 @@ class assignment(forms.ModelForm):
         model=Assignment
         fields=['assignment']
 
+# class attendance(forms.Form):
+#     departments=Studentreg.objects.values_list('department','department').distinct()
+#     semesters=Studentreg.objects.values_list('semester','semester').distinct()
+#     department=forms.ChoiceField(choices=departments,label='Select department')
+#     semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+
 class attendance(forms.Form):
-    departments=Studentreg.objects.values_list('department','department').distinct()
-    semesters=Studentreg.objects.values_list('semester','semester').distinct()
-    department=forms.ChoiceField(choices=departments,label='Select department')
-    semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+    department = forms.ChoiceField(label='Select Department')
+    semester = forms.ChoiceField(label='Select Semester')
+
+    def __init__(self, *args, **kwargs):
+        super(attendance, self).__init__(*args, **kwargs)
+        
+        # Get the latest distinct departments and semesters from the database
+        departments = Studentreg.objects.values_list('department', 'department').distinct()
+        semesters = Studentreg.objects.values_list('semester', 'semester').distinct()
+
+        # Dynamically set the choices
+        self.fields['department'].choices = departments
+        self.fields['semester'].choices = semesters
 
 class attendanceview(forms.Form):
     date=forms.CharField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
@@ -186,11 +201,26 @@ class ElectiveForm(forms.ModelForm):
 
 
 
+# class uploadmark(forms.Form):
+#     departments=Studentreg.objects.values_list('department','department').distinct()
+#     semesters=Studentreg.objects.values_list('semester','semester').distinct()
+#     department=forms.ChoiceField(choices=departments,label='Select department')
+#     semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+
 class uploadmark(forms.Form):
-    departments=Studentreg.objects.values_list('department','department').distinct()
-    semesters=Studentreg.objects.values_list('semester','semester').distinct()
-    department=forms.ChoiceField(choices=departments,label='Select department')
-    semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+    department = forms.ChoiceField(label='Select Department')
+    semester = forms.ChoiceField(label='Select Semester')
+
+    def __init__(self, *args, **kwargs):
+        super(uploadmark, self).__init__(*args, **kwargs)
+        
+        # Get the latest distinct departments and semesters from the database
+        departments = Studentreg.objects.values_list('department', 'department').distinct()
+        semesters = Studentreg.objects.values_list('semester', 'semester').distinct()
+
+        # Dynamically set the choices
+        self.fields['department'].choices = departments
+        self.fields['semester'].choices = semesters
 
 class internal(forms.ModelForm):
     class Meta:
@@ -247,3 +277,20 @@ class InternalMarksForm(forms.ModelForm):
     class Meta:
         model = InternalMarks
         fields = ['marks']
+
+class ComplaintForm(forms.ModelForm): 
+
+    class Meta:
+        model = complaints
+        fields = ['complaint']
+        widgets = {
+            'complaint': forms.TextInput(attrs={'class': 'form-control'}),
+              }
+class ReplayForm(forms.ModelForm): 
+
+    class Meta:
+        model = complaints
+        fields = ['replay']
+        widgets = {
+            'replay': forms.TextInput(attrs={'class': 'form-control'}),
+              }

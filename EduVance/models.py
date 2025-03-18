@@ -107,9 +107,9 @@ class InternalMarks(models.Model):
     def __str__(self):
         return f"{self.stud_id} - {self.subject} - Marks: {self.marks}"
 
-
-
-
-
-
+class complaints(models.Model):
+     current_date = models.DateTimeField(auto_now_add=True)
+     stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)
+     complaint=models.CharField(max_length=100)
+     replay=models.CharField(max_length=100)
     

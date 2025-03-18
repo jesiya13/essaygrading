@@ -52,6 +52,27 @@ urlpatterns=[
     path('uploadmarks', views.uploadmarks, name='uploadmarks'),
     path('promote/<int:id>', views.promote, name='promote'),
     path('demote/<int:id>', views.demote, name='demote'),
+    path('studattendance', views.studattendance, name='studattendance'),
+    path('complaint', views.complaint, name='complaint'),
+    path('complaintview', views.complaintview, name='complaintview'),
+    path('complaintdelete/<int:id>', views.complaintdelete, name='complaintdelete'),
+    path('complaintedit/<int:id>', views.complaintedit, name='complaintedit'),
+    path('admincompliaintview', views.admincompliaintview, name='admincompliaintview'),
+    path('adminreplay/<int:id>', views.adminreplay, name='adminreplay'),
+    path('subjectview', views.subjects_by_semester, name='subjectview'),
+    path('asubedit', views.asubedit, name='asubedit'),
+    path('adminsubject/<int:id>', views.asubdel, name='asubdel'),
+    path('asubjectviews/<int:id>', views.asubjectviews, name='asubjectviews'),
+
+
+
+
+
+
+
+
+
+
 
 
     path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),

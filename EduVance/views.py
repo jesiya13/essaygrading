@@ -446,6 +446,8 @@ def uploadmarks(request):
     form=uploadmark()
     dept = request.GET.get('department') 
     sem = request.GET.get('semester') 
+    print(dept)
+    
     results = Studentreg.objects.filter(department=dept,semester=sem) 
     if results:
         return render(request, 'markuploadviewt.html',{'results':results})
@@ -640,10 +642,128 @@ def demote(request,id):
     sem=student.semester
     student.semester=sem-1
     student.save()
-    
     return redirect('adminstudview')
 
+def studattendance(request):
+    stud_id = request.session.get('stud_id')
+    print(stud_id)
+    student = get_object_or_404(Studentreg, login_id=stud_id) 
+    print(student)
+    attendance = Attendance.objects.filter(login_id=student)
+    perc=attendance.count()
+    percentage=(perc/90)*100
+    percentage=int(percentage)
+    print(attendance)
+    return render(request,'studattendance.html',{'data':attendance,'percentage':percentage})
 
+def complaint(request):
+    stud_id = request.session.get('stud_id')
+    login_id = get_object_or_404(Studentreg, login_id=stud_id) 
+    print(login_id)
 
+    if request.method == 'POST':
+        form=ComplaintForm(request.POST)
+        a=form.save(commit=False)
+        a.stud_id=login_id
+        a.save()
+        return redirect('user')
+    else:
+        form=ComplaintForm()
+    return render(request,'complaint.html',{'form':form})
+    
+def complaintview(request):
+    stud_id = request.session.get('stud_id')
+    login_id = get_object_or_404(Studentreg, id=stud_id) 
 
+    results =complaints.objects.filter(stud_id=login_id)
+    return render(request,'complaintview.html',{'data':results})
 
+def complaintdelete(request,id):
+    b=get_object_or_404(complaints,id=id)
+    b.delete()
+    return redirect('complaintview')
+def complaintedit(request,id):
+    stud_id = request.session.get('stud_id')
+    login_id = get_object_or_404(Studentreg, login_id=stud_id) 
+    edit = get_object_or_404(complaints,id=id)
+    if request.method == 'POST':
+        form=ComplaintForm(request.POST,instance=edit)
+        if form.is_valid():
+            form.save()
+            return redirect('complaintview')
+    else:
+        form=ComplaintForm(instance=edit)
+    return render(request,'complaint.html',{'form':form}) 
+    
+def admincompliaintview(request):
+    data=complaints.objects.all().select_related('stud_id')
+    return render(request,'admincomplaint.html',{'data':data}) 
+
+def adminreplay(request, id):
+    cmp = get_object_or_404(complaints, id=id)
+
+    if request.method == 'POST':
+        form = ReplayForm(request.POST)
+
+        if form.is_valid():
+            cmp.replay = form.cleaned_data['replay']
+            cmp.save()
+            return redirect('admincompliaintview')  
+    else:
+        form = ReplayForm(initial={'replay': cmp.replay})
+
+    return render(request, 'replayadmin.html', {'form': form, 'cmp': cmp})
+
+def subjects_by_semester(request):
+    # Fetch all subjects and group them by semester
+    subjects = Subject.objects.all().order_by('sem')
+
+    # Group courses and electives by subject's semester
+    courses_by_semester = {}
+    for subject in subjects:
+        sem = subject.sem
+        if sem not in courses_by_semester:
+            courses_by_semester[sem] = {
+                'courses': [],
+                'electives': []
+            }
+        
+        courses_by_semester[sem]['courses'].extend(subject.courses.all())
+        courses_by_semester[sem]['electives'].extend(subject.electives.all())
+
+    return render(request, 'adminsubject.html', {'courses_by_semester': courses_by_semester})
+
+def asubedit(request):
+    stud_id=request.session.get('stud_id')   
+    course=get_object_or_404(Course,id=stud_id)
+    elective=get_object_or_404(ElectiveCourse,id=stud_id)
+    if request.method=='POST':
+        form=CourseForm(request.POST,instance=course)
+        form2=ElectiveCourseForm(request.POST, instance=elective)
+        if form.is_valid() and form2.is_valid():
+            form.save()
+            form2.save()
+            return redirect('admin')
+    else:
+        form=CourseForm(instance=course)
+        form2= ElectiveCourseForm( instance=elective)
+
+    return render(request, 'asubedit.html',{'form':form,'form2':form2})
+def asubdel(request,id):
+    a=get_object_or_404(Course,id=id)
+    b=get_object_or_404(ElectiveCourse,id=id)
+    a.delete()
+    b.delete()
+
+    return redirect('adminview')
+
+def asubjectviews(request,id):
+    student = get_object_or_404(Studentreg, id=id)
+    core_subjects = Course.objects.filter(subject__dept=student.department, subject__sem=student.semester)
+    electives = SubjectView.objects.filter(stud_id=student, semester=student.semester)
+    view_sub = ElectiveCourse.objects.filter(name__in=[elective.elective_course for elective in electives])
+    return render(request, 'asubjectviews.html', {
+        'studentid': student.id,
+        'core_subjects': core_subjects,
+        'view_sub': view_sub,
+    })

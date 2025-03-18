@@ -41,12 +41,7 @@
 		<!-- Style CSS -->
 		<link rel="stylesheet" href="{% static 'mainpage/assets/css/style.css' %}">
 		<!-- Responsive CSS -->		
-		<link rel="stylesheet" href="{%static 'mainpage/assets/css/responsive.css' %}">	
-        <!-- Include Bootstrap JS (Ensure this is included at the end of your body tag) -->
-<!-- Include jQuery and Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	
+		<link rel="stylesheet" href="{%static 'mainpage/assets/css/responsive.css' %}">		
 
 	</head>	
     <!-- <meta charset="UTF-8">
@@ -334,47 +329,27 @@
         </div>			
     </header>
     <center>
-    {% comment %} <h4>Search for students...</h4> {% endcomment %}
-    <form method="GET">
-        {% comment %} {% if messages %}
-        {% for a in messages %}
-        {{ a }}
-        {% endfor %}
-        {% endif %} {% endcomment %}
-        {% comment %} <input type="text" name="q" placeholder="Search anything (description, amount, date)" value="{{ query }}">
-        <button type="submit">Search</button>
-    
-    {% if results %}
-        <h2>Search Results:</h2>  {% endcomment %}
+    <form method="GET"  >
         <table>
             <thead>
                 <tr>
-                    <th>Photo</th>
-                    <th>Admission No</th>
-                    <th>Name</th>
-                    <th>Department</th>
                     <th>Semester</th>
-                    <th>Upload Mark</th>
+                    <th>Percentage</th>
                 </tr>
             </thead>
             <tbody>
-                {% for a in results %}
+                {% for a in data %}
                     <tr>
-                        <td><img src="{{ a.photo.url }}" width="100px" height="100px"></td>
-                        <td>{{ a.admno }}</td>
-                        <td>{{ a.name }}</td>
-                        <td>{{ a.department }}</td>
-                        <td>{{ a.semester }}</td>
-                        <td><a href="{%  url 'viewsubjectt' a.id %}" class="btn btn-primary">upload</a></td>
+                        
+                        <td>{{ a.login_id.semester }}</td>
+                        <td>{{ percentage }}</td>
+
+                       
                     </tr>
                 {% endfor %}
             </tbody>
-        </table>   
-        
-
-    {% comment %} {% else %}
-        <p>No results found.</p>
-    {% endif %} {% endcomment %}
+        </table>
+</form>
     
 
     
@@ -493,5 +468,5 @@
                     <p>Copyright © 2024 <a href="#">Edumon</a>. All rights reserved.</p>
                 </div>
             </section>
-            </body>
+</body>
 </html>

@@ -336,11 +336,7 @@
     <center>
     {% comment %} <h4>Search for students...</h4> {% endcomment %}
     <form method="GET">
-        {% comment %} {% if messages %}
-        {% for a in messages %}
-        {{ a }}
-        {% endfor %}
-        {% endif %} {% endcomment %}
+       
         {% comment %} <input type="text" name="q" placeholder="Search anything (description, amount, date)" value="{{ query }}">
         <button type="submit">Search</button>
     
@@ -349,28 +345,26 @@
         <table>
             <thead>
                 <tr>
-                    <th>Photo</th>
-                    <th>Admission No</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Semester</th>
-                    <th>Upload Mark</th>
+                    
+                    <th>Complaint</th>
+                    <th>Reply</th>
+                    <th>EDIT</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                {% for a in results %}
+                {% for a in data %}
                     <tr>
-                        <td><img src="{{ a.photo.url }}" width="100px" height="100px"></td>
-                        <td>{{ a.admno }}</td>
-                        <td>{{ a.name }}</td>
-                        <td>{{ a.department }}</td>
-                        <td>{{ a.semester }}</td>
-                        <td><a href="{%  url 'viewsubjectt' a.id %}" class="btn btn-primary">upload</a></td>
+                        <td>{{ a.complaint }}</td>
+                        <td>{{ a.replay }}</td>
+                         <td><a href="{% url 'complaintedit' a.id %}" class="btn btn-primary">EDIT</a></td> 
+                        <td><a href="{% url 'complaintdelete' a.id %}" class="btn btn-primary">DELETE</a></td> 
                     </tr>
                 {% endfor %}
             </tbody>
         </table>   
         
+     </form>
 
     {% comment %} {% else %}
         <p>No results found.</p>
