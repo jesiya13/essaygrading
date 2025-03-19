@@ -1024,12 +1024,10 @@
 										<th>DEPARTMENT</th>
 										<th>SEMESTER</th>
                                         <th>EMAIL</th>
-                                        <th>complaint</th>
-                                        <th>Replay</th>
-                                        <th>View Replay</th>
-
-
-
+                                        <th>COMPLAINT</th>
+                                        <th>REPLY</th>
+                                        <th>VIEW REPLY</th>
+										<th>REMOVE</th>
 									</tr>
 									{% for a in data %}
 									
@@ -1043,12 +1041,9 @@
 										<td>{{a.stud_id.semester}}</td>
 										<td>{{a.stud_id.login_id.email}}</td>
                                         <td>{{a.complaint}}</td>
-                                        <td><a href="{% url 'adminreplay' a.id %}" class="btn btn-primary">replay</a></td> 
+                                        <td><a href="{% url 'adminreplay' a.id %}" class="btn btn-primary">Reply</a></td> 
                                         <td>{{a.replay}}</td>
-
-
-
-                                        
+										<td><a href="{% url 'removecomplaint' a.id %}" class="btn btn-primary">Remove</a></td>
 									</tr>
 									{%endfor%}
 									{% comment %} <tr>

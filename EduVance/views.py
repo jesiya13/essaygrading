@@ -767,3 +767,21 @@ def asubjectviews(request,id):
         'core_subjects': core_subjects,
         'view_sub': view_sub,
     })
+
+def removecomplaint(request,id):
+    a=get_object_or_404(complaints,id=id)
+    a.delete()
+    return redirect('admincompliaintview')
+
+def searchstudad(request):
+    query = request.GET.get('q', '') 
+    results = Studentreg.objects.all()  
+
+    if query:
+        results = results.filter(
+           Q(admno__icontains=query)|
+           Q(name__icontains=query)|
+           Q(department__icontains=query)  
+        )
+
+    return render(request, 'adminstudview.html', {'results': results, 'query': query})

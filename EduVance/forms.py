@@ -294,3 +294,12 @@ class ReplayForm(forms.ModelForm):
         widgets = {
             'replay': forms.TextInput(attrs={'class': 'form-control'}),
               }
+class Examdate(forms.ModelForm): 
+
+    class Meta:
+        model = exam
+        fields = ['date','remark']
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'remark': forms.TextInput(attrs={'class': 'form-control'}),
+              }

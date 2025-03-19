@@ -87,11 +87,10 @@
 					<div class="col-xl-3 col-lg-3 col-md-6 align-self-center">
 						<div class="site-logo">
 							<img src="{% static 'mainpage/assets/img/Logo.svg'%}" alt="EduVance">
-						</div>
-													
-					</div><!-- End Col -->			
-
-					<div class="col-xl-6 col-lg-6 col-md-6 menu_col justify-content-center d-flex align-self-center">
+						</div>    
+					</div><!-- End Col -->            
+		
+					<div class="col-xl-9 col-lg-9 col-md-6 menu_col justify-content-center d-flex align-self-center">
 						<nav id="main-menu">
 							<ul>
 								<li class="menu-item-has-children">
@@ -99,40 +98,37 @@
 									<ul class="sub-menu">
 										<li><a href="{% url 'viewsubject' %}">View Subjects</a></li>
 									</ul>
-								</li>	
+								</li>    
 								<li class="menu-item-has-children">
 									<a href="{% url 'teachersview' %}">Upload</a>
 									<ul class="sub-menu">
 										<li><a href="{% url 'viewessay' %}">View Essays</a></li>
-										<li><a href="{% url 'viewomr' %}">View OMR </a></li>
+										<li><a href="{% url 'viewomr' %}">View OMR</a></li>
 										<li><a href="{% url 'viewanswer' %}">View Answer</a></li>
 										<li><a href="{% url 'viewassignment' %}">View Assignment</a></li>
 									</ul>
-								</li>		
-								<li>
-									<a href="{% url 'studattendance' %}">Attendance</a>
-								</li>
+								</li>        
+								<li><a href="{% url 'studattendance' %}">Attendance</a></li>
 								<li class="menu-item-has-children">
 									<a href="{% url 'complaint' %}">Complaint</a>
 									<ul class="sub-menu">
-										<a href="{% url 'complaintview' %}">View Complaints</a>
+										<li><a href="{% url 'complaintview' %}">View Complaints</a></li>
 									</ul>
 								</li>
-								<li>
-									<a href="{% url 'sprofile' %}">Profile</a>
-								</li>
+								<li><a href="{% url 'sprofile' %}">Profile</a></li>
+								<li><a href="{% url 'login' %}" >Log Out</a></li>
 							</ul>
 						</nav>
-					</div><!-- End Col -->		
-
-					<div class="col-xl-3 col-lg-3 col-md-6 align-self-center text-end">
-						
+					</div><!-- End Col -->        
+		
+					{% comment %} <div class="col-xl-3 col-lg-3 col-md-6 align-self-center text-end">
 						<a href="{% url 'login' %}" class="bg_btn bt">Log Out</a>
-					</div>
+					</div> {% endcomment %}
 				</div>
 			</div>
+		
 			
-			<ul class='mobile_menu'>
+			{% comment %} <ul class='mobile_menu'>
 				<li class="menu-item-has-children">
 					<a href="#">Home</a>
 					<ul class="sub-menu">
@@ -173,10 +169,10 @@
 				<li>
 					<a href="contact.html">Contact</a>
 				</li>
-			</ul>	
+			</ul>	 {% endcomment %}
 			
 			<!-- Start Drawer -->
-			<div id="mini_cart" class="min_cart_wrapper">
+			{% comment %} <div id="mini_cart" class="min_cart_wrapper">
 				<div class="cart_drawer">
 					<div class="cart_top">
 						<a href="#" class="cart_close"><i class='bx bx-x'></i></a>
@@ -290,10 +286,10 @@
 						</div>
 					</div>
 				</div>				
-			</div>
+			</div> {% endcomment %}
 			<!-- End Drawer -->
 			
-			<div class="search_box">
+			{% comment %} <div class="search_box">
 				<div class="close-btn">
 					<i class="ti-close"></i>
 				</div>
@@ -308,7 +304,7 @@
 						</button>
 					</form>
 				</div>			
-			</div>			
+			</div>			 {% endcomment %}
 		</header>
 		<!-- End Header -->
 		

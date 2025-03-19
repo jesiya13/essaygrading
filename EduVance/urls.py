@@ -63,21 +63,10 @@ urlpatterns=[
     path('asubedit', views.asubedit, name='asubedit'),
     path('adminsubject/<int:id>', views.asubdel, name='asubdel'),
     path('asubjectviews/<int:id>', views.asubjectviews, name='asubjectviews'),
-
-
-
-
-
-
-
-
-
-
-
-
     path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
     path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
-
+    path('removecomplaint/<int:id>', views.removecomplaint, name='removecomplaint'),
+    path('searchstudad', views.searchstudad, name='searchstudad'),
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
