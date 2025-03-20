@@ -56,7 +56,7 @@
             width: 100%;
             padding: 0 50px;
         }
-        h2 {
+        h3 {
             font-size: 2em;
             color: #0ef;
             text-align: center;
@@ -138,17 +138,15 @@
         }</style>
     <div class="container">
         <div class="login-box">
-            <h2>Login</h2>
+            <h3>Login</h3>
             <form method="POST">
                 {% csrf_token %}
                 <div class="input-box">
-                    <h3>Email</h3>
-                    {% comment %} <label>Email</label> {% endcomment %}
+                    <h4>Email</h4>
                     {{ login.email }}
                 </div>
                 <div class="input-box">
-                    <h3>Password</h3>
-                    {% comment %} <label>Password</label> {% endcomment %}
+                    <h4>Password</h4>
                     {{ login.password }}
                 </div>
                 <!-- <div class="forgot-pass">
