@@ -67,6 +67,14 @@ urlpatterns=[
     path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
     path('removecomplaint/<int:id>', views.removecomplaint, name='removecomplaint'),
     path('searchstudad', views.searchstudad, name='searchstudad'),
+    path('adminexam', views.adminexam, name='adminexam'),
+    path('notifications', views.notifications, name='notifications'),
+    path('notificationt', views.notificationt, name='notificationt'),
+
+
+
+    
+
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

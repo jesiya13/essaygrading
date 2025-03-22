@@ -114,7 +114,6 @@ class complaints(models.Model):
      replay=models.CharField(max_length=100)
 
 class exam(models.Model):
-     tid = models.ForeignKey('teacherreg', on_delete=models.CASCADE)
      date = models.DateField(max_length=20)
      remark = models.CharField(max_length=60)
     

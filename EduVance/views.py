@@ -12,7 +12,8 @@ def main(request):
 def admin(request):
     return render(request, 'admin.html')
 def user(request):
-    return render(request, 'user.html')
+    results =exam.objects.all()
+    return render(request, 'user.html',{'data':results})
 def tuser(request):
     return render(request, 'tuser.html')
 def studentreg(request):
@@ -87,6 +88,9 @@ def login(request):
                     elif user.usertype==2:
                         request.session['t_id']=user.id
                         return redirect('tuser')
+                    elif user.usertype==3:
+                        request.session['a_id']=user.id
+                        return redirect('admin')
                 else:
                     messages.error(request,'invalid password')    
             except Login.DoesNotExist:
@@ -781,7 +785,37 @@ def searchstudad(request):
         results = results.filter(
            Q(admno__icontains=query)|
            Q(name__icontains=query)|
-           Q(department__icontains=query)  
+           Q(semester__icontains=query)|
+           Q(department__icontains=query) 
+
         )
 
     return render(request, 'adminstudview.html', {'results': results, 'query': query})
+
+def adminexam(request):
+    if request.method == 'POST':
+        form = Examdate(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin') 
+    else:
+        form = Examdate()
+    return render(request,'adminexam.html',{'form':form})
+
+def studexamview(request):
+    results =exam.objects.all()
+    return render(request,'user.html',{'data':results})
+
+def notifications(request):
+    stud_id = request.session.get('stud_id')
+    login_id = get_object_or_404(Studentreg, id=stud_id) 
+
+    results =exam.objects.all()
+    return render(request,'notifications.html',{'data':results})
+def notificationt(request):
+    te_id = request.session.get('t_id')
+    login_id = get_object_or_404(Studentreg, id=te_id) 
+
+    results =exam.objects.all()
+    return render(request,'notificationt.html',{'data':results})
+
