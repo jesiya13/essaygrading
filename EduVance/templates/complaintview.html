@@ -168,8 +168,14 @@
                     <tr>
                         <td>{{ a.complaint }}</td>
                         <td>{{ a.replay }}</td>
+						{% if a.replay == '' %}
                         <td><a href="{% url 'complaintedit' a.id %}" class="btn btn-primary">EDIT</a></td> 
+						{% else %}
+						<td>Cannot edit</td>
+						{% endif %}
+
                         <td><a href="{% url 'complaintdelete' a.id %}" class="btn btn-primary">DELETE</a></td> 
+
                     </tr>
                 {% endfor %}
             </tbody>

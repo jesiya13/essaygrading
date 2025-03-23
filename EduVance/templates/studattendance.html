@@ -155,15 +155,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for a in data %}
                     <tr>
                         
-                        <td>{{ a.login_id.semester }}</td>
-                        <td>{{ percentage }}</td>
+                        <td>{{ data.0.login_id.semester }}</td>
+                        <td>{{ percentage }}%</td>
 
                        
                     </tr>
-                {% endfor %}
             </tbody>
         </table>
 </form>
