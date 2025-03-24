@@ -84,8 +84,7 @@
 		<header id="navigation" class="header-2">
 			<div class="container">
 				<div class="row">
-					
-					<div class="col-xl-3 col-lg-3 col-md-6 align-self-center">
+					<div class="col-xl-3 col-lg-1 col-md-6 align-self-center">
 						<div class="site-logo">
 							<img src="{% static 'mainpage/assets/img/logotwo.svg'%}" alt="EduVance">
 						</div>    
@@ -118,24 +117,27 @@
 								</li>
 								<li><a href="{% url 'sprofile' %}">Profile</a></li>
 								<li><a href="{% url 'login' %}" class="btn btn-primary">Log Out</a></li>
+								<div class="col-xl-12 col-lg-9 col-md-6 align-self-center text-end">
+									<div class="searchcart">
+										<div class="cart-icon">
+											<!-- Outline Bell Icon -->
+											<a href="#" class="mcart_open" data-menu="#mini_cart">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+													<path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22Z"/>
+													<path d="M18 16V11C18 7.69 16.07 5.27 13 4.56V4C13 3.45 12.55 3 12 3C11.45 3 11 3.45 11 4V4.56C7.93 5.27 6 7.69 6 11V16L4 18V19H20V18L18 16Z"/>
+												</svg>
+											</a>
+											<span>3</span>
+										</div>
+									</div>
+													
+								</div>
 							</ul> 
 
 						</nav>
 					</div><!-- End Col -->		
 
-					<div class="col-xl-12 col-lg-9 col-md-6 align-self-center text-end">
-						<div class="searchcart">
-							<div class="cart-icon">
-								<a href="#" class="mcart_open" data-menu="#mini_cart"><svg fill="none" viewBox="0 0 17 19"><path fill="#fff" d="M7.465.072C5.288.345 3.627 2.132 3.627 4.21v.446l-.811.018c-.777.013-.829.017-1.063.13A1.656 1.656 0 00.807 6.01c-.073.442-.832 11.316-.806 11.576.052.53.494 1.106 1.015 1.314l.247.1h13.489l.247-.1c.52-.208.963-.785 1.015-1.314.026-.26-.733-11.13-.807-11.572a1.786 1.786 0 00-.139-.451c-.143-.29-.485-.612-.784-.75-.26-.122-.296-.126-1.08-.14l-.816-.017v-.35c-.004-1.05-.477-2.157-1.258-2.942A4.32 4.32 0 008.484.068a3.492 3.492 0 00-1.019.004zm1.301 1.453C10.03 1.845 11 3.073 11 4.348v.317H5.015v-.317c0-.177.039-.468.082-.646a3.01 3.01 0 013.67-2.177zM3.648 7.883l-.03 1.835.1.148c.147.212.303.312.525.338.251.03.511-.1.646-.321l.104-.165.013-1.835.013-1.83h5.977l.013 1.83.013 1.835.104.165a.678.678 0 00.646.32c.217-.02.377-.125.52-.333.096-.143.096-.148.096-1.978V6.053h.672c.647 0 .673.004.733.095.048.074.16 1.475.46 5.713l.4 5.617-.096.078c-.091.073-.39.078-6.55.078-6.159 0-6.458-.005-6.549-.078l-.095-.078.399-5.617c.299-4.238.412-5.639.46-5.713.06-.09.082-.095.758-.095h.699l-.03 1.83z"/></svg></a>
-								<span>3</span>
-							</div>							
-							
-							<div class="cart-icon mobile_cart">
-								<a href="cart.html" class="mcart_open"><svg fill="none" viewBox="0 0 17 19"><path fill="#fff" d="M7.465.072C5.288.345 3.627 2.132 3.627 4.21v.446l-.811.018c-.777.013-.829.017-1.063.13A1.656 1.656 0 00.807 6.01c-.073.442-.832 11.316-.806 11.576.052.53.494 1.106 1.015 1.314l.247.1h13.489l.247-.1c.52-.208.963-.785 1.015-1.314.026-.26-.733-11.13-.807-11.572a1.786 1.786 0 00-.139-.451c-.143-.29-.485-.612-.784-.75-.26-.122-.296-.126-1.08-.14l-.816-.017v-.35c-.004-1.05-.477-2.157-1.258-2.942A4.32 4.32 0 008.484.068a3.492 3.492 0 00-1.019.004zm1.301 1.453C10.03 1.845 11 3.073 11 4.348v.317H5.015v-.317c0-.177.039-.468.082-.646a3.01 3.01 0 013.67-2.177zM3.648 7.883l-.03 1.835.1.148c.147.212.303.312.525.338.251.03.511-.1.646-.321l.104-.165.013-1.835.013-1.83h5.977l.013 1.83.013 1.835.104.165a.678.678 0 00.646.32c.217-.02.377-.125.52-.333.096-.143.096-.148.096-1.978V6.053h.672c.647 0 .673.004.733.095.048.074.16 1.475.46 5.713l.4 5.617-.096.078c-.091.073-.39.078-6.55.078-6.159 0-6.458-.005-6.549-.078l-.095-.078.399-5.617c.299-4.238.412-5.639.46-5.713.06-.09.082-.095.758-.095h.699l-.03 1.83z"/></svg></a>
-								<span>3</span>
-							</div>
-						</div>					
-					</div>
+					
 				</div>
 			</div>
 
@@ -202,25 +204,7 @@
 					</div>
 				</div>				
 			</div>
-			<!-- End Drawer -->
-			 
-			
-			<div class="search_box">
-				<div class="close-btn">
-					<i class="ti-close"></i>
-				</div>
-								
-				<div class="search-data">
-					<form action="#" method="get">
-						<input type="text" required>
-						<div class="line"></div>
-						<label>Type to search..</label>
-						<button type="submit">
-							<span class="ti-search"></span>
-						</button>
-					</form>
-				</div>			
-			</div>			
+			<!-- End Drawer -->		
 		</header>
 		<!-- End Header -->
 		
