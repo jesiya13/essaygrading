@@ -819,3 +819,98 @@ def notificationt(request):
     results =exam.objects.all()
     return render(request,'notificationt.html',{'data':results})
 
+import fitz  # PyMuPDF for extracting text
+
+def get_grade(plagiarism_percentage):
+    """Assigns a grade based on plagiarism percentage."""
+    if plagiarism_percentage <= 10:
+        return "A (Excellent)"
+    elif plagiarism_percentage <= 30:
+        return "B (Good)"
+    elif plagiarism_percentage <= 50:
+        return "C (Average)"
+    elif plagiarism_percentage <= 70:
+        return "D (Poor)"
+    else:
+        return "F (Fail)"
+
+
+def extract_text_from_pdf(pdf_file):
+    """Extracts text from a PDF file."""
+    doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
+    text = "\n".join(page.get_text("text") for page in doc)
+    return text
+
+import requests
+
+SERPAPI_KEY = "94b65f1294f187c198929c1c4f9c88d51a8206980ce972b9bcf04ba1ca4e8879"  # Replace with your SerpAPI key
+
+def search_serpapi(query):
+    """Searches Google Scholar using SerpAPI."""
+    url = "https://serpapi.com/search"
+    params = {
+        "api_key": SERPAPI_KEY,
+         "q": f'"{query}"',
+        "engine": "google_scholar",
+        "num": 5  # Number of results
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        if "organic_results" in data:
+            return [result["link"] for result in data["organic_results"]]
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return []
+
+
+def check_plagiarism(text):
+    """Checks plagiarism and calculates plagiarism percentage."""
+    sentences = text.split(". ")[:10]  # Check first 10 sentences
+    total_sentences = len(sentences)
+    matched_sentences = 0
+    plagiarism_results = {}
+
+    for sentence in sentences:
+        search_results = search_serpapi(sentence)  # Exact match search
+        if search_results:
+            matched_sentences += 1
+            plagiarism_results[sentence] = search_results
+
+    # Calculate plagiarism percentage
+    plagiarism_percentage = (matched_sentences / total_sentences) * 100 if total_sentences > 0 else 0
+
+    return plagiarism_results, plagiarism_percentage
+
+
+def essaycheck(request):
+    plagiarism_results = None
+    plagiarism_percentage = 0
+    grade = "N/A"
+    extracted_text = ""
+
+    if request.method == 'POST':
+        form = Essayup(request.POST, request.FILES)
+        if form.is_valid():
+            pdf_file = request.FILES['essay']
+            extracted_text = extract_text_from_pdf(pdf_file)
+
+            # Check plagiarism and get percentage
+            plagiarism_results, plagiarism_percentage = check_plagiarism(extracted_text)
+
+            # Assign a grade
+            grade = get_grade(plagiarism_percentage)
+
+    else:
+        form = Essayup()
+
+    return render(request, 'essaycheck.html', {
+        'form': form,
+        'plagiarism_results': plagiarism_results,
+        'plagiarism_percentage': plagiarism_percentage,
+        'grade': grade,
+        'extracted_text': extracted_text[:500]  # Show first 500 chars
+    })

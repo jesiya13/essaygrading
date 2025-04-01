@@ -304,3 +304,5 @@ class Examdate(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'remark': forms.TextInput(attrs={'class': 'form-control'}),
               }
+class Essayup(forms.Form):
+    essay = forms.FileField()

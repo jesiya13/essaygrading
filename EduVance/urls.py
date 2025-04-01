@@ -70,12 +70,7 @@ urlpatterns=[
     path('adminexam', views.adminexam, name='adminexam'),
     path('notifications', views.notifications, name='notifications'),
     path('notificationt', views.notificationt, name='notificationt'),
-
-
-
-    
-
-
+    path('essaycheck', views.essaycheck, name='essaycheck'),
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
  
