@@ -80,7 +80,7 @@ class teacherform(forms.ModelForm):
     tdepartment = forms.ChoiceField(choices=tdept_choices, widget=forms.Select(attrs={'class': 'form-control'}))    
     class Meta:
         model = teacherreg
-        fields = ['tname','tgender','age','tdepartment','tcontactno','tphoto']
+        fields = ['tname','tgender','age','tdepartment','tcontactno','tphoto','tcertificate']
         widgets={
             'tname':forms.TextInput(attrs={'class':'form-control'}),
             'tgender':forms.Select(attrs={'class':'form-control'}),
@@ -88,6 +88,8 @@ class teacherform(forms.ModelForm):
             'age':forms.TextInput(attrs={'class':'form-control'}),
             'tcontactno':forms.TextInput(attrs={'class':'form-control'}),
             'tphoto':forms.FileInput(attrs={'class':'form-control'}),
+            'tcertificate':forms.FileInput(attrs={'class':'form-control'}),
+
         }         
 
 class essayuploadform(forms.ModelForm):
@@ -111,11 +113,7 @@ class assignment(forms.ModelForm):
         model=Assignment
         fields=['assignment']
 
-# class attendance(forms.Form):
-#     departments=Studentreg.objects.values_list('department','department').distinct()
-#     semesters=Studentreg.objects.values_list('semester','semester').distinct()
-#     department=forms.ChoiceField(choices=departments,label='Select department')
-#     semester=forms.ChoiceField(choices=semesters,label='Select semesters')
+
 
 class attendance(forms.Form):
     department = forms.ChoiceField(label='Select Department')
@@ -135,44 +133,6 @@ class attendance(forms.Form):
 class attendanceview(forms.Form):
     date=forms.CharField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
 
-# class subjects(forms.ModelForm):
-#     dept_choices = (
-#         ('choose department', 'Choose department'),
-#         ('bca', 'BCA'),
-#         ('bcom', 'B.Com.Computer Application'),
-#         ('bba', 'BBA'),
-#         ('b.a.english', 'B.A. English'),
-#         ('b.sc.psychology', 'B.Sc.Psychology'),
-#         ('b.com.taxation', 'B.Com.Taxation'),
-#     )
-#     dept = forms.ChoiceField(choices=dept_choices, widget=forms.Select(attrs={'class': 'form-control'}))
-#     sem_choices = (
-#         ('choose semester', 'Choose semester'),
-#         ('1', 'Semester 1'),
-#         ('2', 'Semester 2'),
-#         ('3', 'Semester 3'),
-#         ('4', 'Semester 4'),
-#         ('5', 'Semester 5'),
-#         ('6', 'Semester 6'),
-#         ('7', 'Semester 7'),
-#         ('8', 'Semester 8'),
-#     )
-#     sem = forms.ChoiceField(choices=sem_choices, widget=forms.Select(attrs={'class': 'form-control'}))
-
-#     class Meta:
-#         model = Subjects
-#         fields = ['dept', 'sem', 'course1', 'course2', 'course3', 'course4', 'ecourse1', 'ecourse2','ecourse3']
-#         widgets = {
-#             'dept': forms.Select(attrs={'class': 'form-control'}),
-#             'sem': forms.Select(attrs={'class': 'form-control'}),
-#             'course1': forms.TextInput(attrs={'class': 'form-control'}),
-#             'course2': forms.TextInput(attrs={'class': 'form-control'}),
-#             'course3': forms.TextInput(attrs={'class': 'form-control'}),
-#             'course4': forms.TextInput(attrs={'class': 'form-control'}),
-#             'ecourse1': forms.TextInput(attrs={'class': 'form-control'}),
-#             'ecourse2': forms.TextInput(attrs={'class': 'form-control'}),
-#             'ecourse3':forms.TextInput(attrs={'class': 'form-control'}),
-#         }
 
 from django import forms
 from .models import ElectiveCourse, SubjectView
@@ -199,13 +159,6 @@ class ElectiveForm(forms.ModelForm):
                 subject__sem=student.semester
             )
 
-
-
-# class uploadmark(forms.Form):
-#     departments=Studentreg.objects.values_list('department','department').distinct()
-#     semesters=Studentreg.objects.values_list('semester','semester').distinct()
-#     department=forms.ChoiceField(choices=departments,label='Select department')
-#     semester=forms.ChoiceField(choices=semesters,label='Select semesters')
 
 class uploadmark(forms.Form):
     department = forms.ChoiceField(label='Select Department')

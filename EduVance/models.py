@@ -24,6 +24,8 @@ class teacherreg(models.Model):
     tgender=models.CharField(max_length=10)
     age=models.CharField(max_length=20)
     tdepartment=models.CharField(max_length=40)
+    tcertificate=models.FileField(upload_to='uploads/')
+    tdepartment=models.CharField(max_length=40)
     tcontactno=models.CharField(max_length=10)
     login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
    
