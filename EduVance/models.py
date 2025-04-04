@@ -16,6 +16,7 @@ class Login(models.Model):
     email=models.EmailField()
     password=models.CharField(max_length=50)
     usertype=models.IntegerField(default=0,null=True)
+    status=models.IntegerField(default=0)
 
 
 class teacherreg(models.Model):
@@ -24,10 +25,12 @@ class teacherreg(models.Model):
     tgender=models.CharField(max_length=10)
     age=models.CharField(max_length=20)
     tdepartment=models.CharField(max_length=40)
+    tqualification=models.CharField(max_length=40)
+    treferenceletter=models.FileField(upload_to='uploads/')
     tcertificate=models.FileField(upload_to='uploads/')
-    tdepartment=models.CharField(max_length=40)
+    texp=models.CharField(max_length=40)
     tcontactno=models.CharField(max_length=10)
-    login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
+    login_id=models.OneToOneField('Login', on_delete=models.CASCADE,related_name ='t')
    
 class Essay(models.Model):
     essay=models.FileField(upload_to='uploads/')

@@ -80,7 +80,7 @@ class teacherform(forms.ModelForm):
     tdepartment = forms.ChoiceField(choices=tdept_choices, widget=forms.Select(attrs={'class': 'form-control'}))    
     class Meta:
         model = teacherreg
-        fields = ['tname','tgender','age','tdepartment','tcontactno','tphoto','tcertificate']
+        fields = ['tname','tgender','age','tdepartment','tcontactno','tphoto','tcertificate','tqualification','treferenceletter','texp']
         widgets={
             'tname':forms.TextInput(attrs={'class':'form-control'}),
             'tgender':forms.Select(attrs={'class':'form-control'}),
@@ -89,6 +89,9 @@ class teacherform(forms.ModelForm):
             'tcontactno':forms.TextInput(attrs={'class':'form-control'}),
             'tphoto':forms.FileInput(attrs={'class':'form-control'}),
             'tcertificate':forms.FileInput(attrs={'class':'form-control'}),
+            'tqualification':forms.TextInput(attrs={'class':'form-control'}), 
+            'treferenceletter':forms.FileInput(attrs={'class':'form-control'}),
+            'texp':forms.TextInput(attrs={'class':'form-control'}),
 
         }         
 

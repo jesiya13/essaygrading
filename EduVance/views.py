@@ -34,21 +34,36 @@ def studentreg(request):
         form=studentform()
         logins=loginform()
     return render(request,'studentreg.html',{'form':form,'login':logins})
+
 def adminstudview(request):
-    view_id=Studentreg.objects.all()
+    view_id=Login.objects.filter(usertype=1).select_related('student_as_loginid')
     return render(request,'adminstudview.html',{'data':view_id})
+def rejects(request,id):
+    a=get_object_or_404(Login,id=id)
+    a.status=2
+    a.save()
+    return redirect('adminstudview')
+def approves(request,id):
+    a=get_object_or_404(Login,id=id)
+    a.status=1
+    a.save()
+    return redirect('adminstudview')
+
 
 def adminteachview(request):
-    view_id=teacherreg.objects.all()
+    view_id=Login.objects.filter(usertype=2).select_related('t')
     return render(request,'adminteachview.html',{'data':view_id})
 def rejectt(request,id):
-    a=get_object_or_404(teacherreg,id=id)
-    a.delete()
+    a=get_object_or_404(Login,id=id)
+    a.status=2
+    a.save()
     return redirect('adminteachview')
-def rejects(request,id):
-    a=get_object_or_404(Studentreg,id=id)
-    a.delete()
-    return redirect('adminstudview')
+def approvet(request,id):
+    a=get_object_or_404(Login,id=id)
+    a.status=1
+    a.save()
+    return redirect('adminteachview')
+
 
 
 def teacherregister(request):
@@ -778,16 +793,17 @@ def removecomplaint(request,id):
     return redirect('admincompliaintview')
 
 def searchstudad(request):
+    results = Login.objects.filter(usertype=1).select_related('student_as_loginid') 
+
     query = request.GET.get('q', '') 
-    results = Studentreg.objects.all()  
 
     if query:
         results = results.filter(
-           Q(admno__icontains=query)|
-           Q(name__icontains=query)|
-           Q(semester__icontains=query)|
-           Q(department__icontains=query) 
-
+           Q(student_as_loginid__admno__icontains=query)|
+           Q(student_as_loginid__name__icontains=query)|
+           Q(student_as_loginid__semester__icontains=query)|
+           Q(student_as_loginid__department__icontains=query) 
+    
         )
 
     return render(request, 'adminstudview.html', {'results': results, 'query': query})

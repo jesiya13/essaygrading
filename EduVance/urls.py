@@ -14,6 +14,7 @@ urlpatterns=[
     path('adminstudview', views.adminstudview, name='adminstudview'),
     path('adminteachview', views.adminteachview, name='adminteachview'),
     path('rejectt/<int:id>', views.rejectt, name='rejectt'),
+    path('approves/<int:id>', views.approves, name='approves'),
     path('rejects/<int:id>', views.rejects, name='rejects'),
     path('sprofile', views.sprofile, name='sprofile'),
     path('tprofile', views.tprofile, name='tprofile'),
@@ -71,6 +72,8 @@ urlpatterns=[
     path('notifications', views.notifications, name='notifications'),
     path('notificationt', views.notificationt, name='notificationt'),
     path('essaycheck', views.essaycheck, name='essaycheck'),
+    path('approvet/<int:id>', views.approvet, name='approvet'),
+
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
  
