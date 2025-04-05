@@ -396,36 +396,84 @@ def markupload(request):
     return render(request, 'attendance.html',{'form':form})
 
 
+# def adminsubjects(request):
+#     if request.method == 'POST':
+#         dept = request.POST.get('dept')
+#         sem = request.POST.get('sem')
+#         courses = request.POST.getlist('courses[]')  # Get all courses
+#         elective_courses = request.POST.getlist('elective_courses[]')  # Get electives
+
+#         if len(elective_courses) != 3:  # Ensure exactly 3 elective courses
+#             messages.error(request, "You must enter exactly 3 elective courses.")
+#             return redirect('admin')
+
+#         # Create Subject (semester)
+#         subject = Subject.objects.create(dept=dept, sem=sem)
+
+#         # Save each regular course
+#         for course_name in courses:
+#             if course_name.strip():
+#                 Course.objects.create(subject=subject, name=course_name)
+
+#         # Save exactly 3 elective courses
+#         for elective_name in elective_courses:
+#             if elective_name.strip():
+#                 ElectiveCourse.objects.create(subject=subject, name=elective_name)
+
+#         messages.success(request, "Subject and courses added successfully.")
+#         return redirect('admin')
+
+#     else:
+#         form = SubjectForm()  
+#     return render(request, 'subjects.html', {'form': form})
+
+
+
+
 def adminsubjects(request):
+    form = SubjectForm()          # Ensure form is initialized
+    detail_form = SubjectDetailForm()
     if request.method == 'POST':
-        dept = request.POST.get('dept')
-        sem = request.POST.get('sem')
-        courses = request.POST.getlist('courses[]')  # Get all courses
-        elective_courses = request.POST.getlist('elective_courses[]')  # Get electives
+        if 'select_dept_sem' in request.POST:
+            dept = request.POST.get('dept')
+            sem = request.POST.get('sem')
 
-        if len(elective_courses) != 3:  # Ensure exactly 3 elective courses
-            messages.error(request, "You must enter exactly 3 elective courses.")
-            return redirect('admin')
+            if dept and sem:
+                return render(request, 'subjects.html', {
+                    'dept': dept,
+                    'sem': sem,
+                    'form': SubjectForm(),
+                    'detail_form': SubjectDetailForm()
+                })
+            else:
+                messages.error(request, "Please select both Department and Semester.")
+                return redirect('adminsubjects')
 
-        # Create Subject (semester)
-        subject = Subject.objects.create(dept=dept, sem=sem)
+        elif 'add_subject' in request.POST:
+            dept = request.POST.get('dept')
+            sem = request.POST.get('sem')
 
-        # Save each regular course
-        for course_name in courses:
-            if course_name.strip():
-                Course.objects.create(subject=subject, name=course_name)
+            # Create Subject
+            subject = Subject.objects.create(dept=dept, sem=sem)
 
-        # Save exactly 3 elective courses
-        for elective_name in elective_courses:
-            if elective_name.strip():
-                ElectiveCourse.objects.create(subject=subject, name=elective_name)
-
-        messages.success(request, "Subject and courses added successfully.")
-        return redirect('admin')
+            # Handle Subject Details
+            detail_form = SubjectDetailForm(request.POST)
+            if detail_form.is_valid():
+                subject_detail = detail_form.save(commit=False)
+                subject_detail.subject = subject
+                subject_detail.save()
+                messages.success(request, "Subject and details added successfully.")
+                return redirect('adminsubjects')
+            else:
+                messages.error(request, "Please correct the errors in the form.")
 
     else:
-        form = SubjectForm()  
-    return render(request, 'subjects.html', {'form': form})
+        form = SubjectForm()
+        detail_form = SubjectDetailForm()
+
+    return render(request, 'subjects.html', {'form': form, 'detail_form': detail_form})
+
+
 
 # def subchoice(request):
 #     stud_id = request.session.get('stud_id')

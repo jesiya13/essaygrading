@@ -228,6 +228,10 @@ class ElectiveCourseForm(forms.ModelForm):
     class Meta:
         model = ElectiveCourse
         fields = ['name']
+class ElectiveCourseForm2(forms.ModelForm):
+    class Meta:
+        model = ElectiveCourse2
+        fields = ['name']
 
 class InternalMarksForm(forms.ModelForm):
     class Meta:
@@ -262,3 +266,39 @@ class Examdate(forms.ModelForm):
               }
 class Essayup(forms.Form):
     essay = forms.FileField()
+
+# 
+class SubjectDetailForm(forms.ModelForm):
+    minors_1 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Minor 1'}))
+    minors_2 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Minor 2'}))
+    aec_1 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AEC 1'}))
+    aec_2 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AEC 2'}))
+    aecb_1 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AECB 1'}))
+    aecb_2 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'AECB 2'}))
+    vac_1 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'VAC 1'}))
+    vac_2 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'VAC 2'}))
+    elective1 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Elective 1'}))
+    elective2 = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Elective 2'}))
+    mdc = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'MDC'}))
+    sec = forms.CharField(max_length=60, required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'SEC (Optional)'}))
+
+    class Meta:
+        model = SubjectDetail
+        fields = ['mdc', 'sec', 'minors', 'aeca', 'vac', 'elective_courses', 'aecb']
+    def clean(self):
+        cleaned_data = super().clean()
+        # Combine fields if they have values
+        minors = f"{cleaned_data.get('minors_1')}, {cleaned_data.get('minors_2')}".strip(", ")
+        aeca = f"{cleaned_data.get('aec_1')}, {cleaned_data.get('aec_2')}".strip(", ")
+        aecb = f"{cleaned_data.get('aecb_1')}, {cleaned_data.get('aecb_2')}".strip(", ")
+        vac = f"{cleaned_data.get('vac_1')}, {cleaned_data.get('vac_2')}".strip(", ")
+        electives = f"{cleaned_data.get('elective1')}, {cleaned_data.get('elective2')}".strip(", ")
+
+        # Assign values only if they are not empty
+        cleaned_data['minors'] = minors if minors else None
+        cleaned_data['aeca'] = aeca if aeca else None
+        cleaned_data['aecb'] = aecb if aecb else None
+        cleaned_data['vac'] = vac if vac else None
+        cleaned_data['elective_courses'] = electives if electives else None
+
+        return cleaned_data

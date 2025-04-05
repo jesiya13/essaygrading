@@ -121,4 +121,35 @@ class complaints(models.Model):
 class exam(models.Model):
      date = models.DateField(max_length=20)
      remark = models.CharField(max_length=60)
-    
+
+class subjects(models.Model):
+    minor1=models.CharField(null=True,max_length=60)
+    minor2=models.CharField(null=True,max_length=60)
+    aec_a=models.CharField(null=True,max_length=60)
+    aec_b=models.CharField(null=True,max_length=60)
+    mdc=models.CharField(null=True,max_length=60)
+    vac1=models.CharField(null=True,max_length=60)
+    vac2=models.CharField(null=True,max_length=60)
+    sec=models.CharField(null=True,max_length=60)
+    subjectid = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='sub')
+
+
+class ElectiveCourse2(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='elective2')
+    name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+class SubjectDetail(models.Model):
+    minors = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    aeca = models.TextField(null=True, blank=True)      # Example: "Art, Music"
+    aecb = models.TextField(null=True, blank=True)      # Example: "Art, Music"
+    mdc = models.CharField(max_length=60, null=True, blank=True)
+    vac = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
+    sec = models.CharField(max_length=60, null=True, blank=True)
+    elective_courses = models.TextField(null=True, blank=True)  # Example: "Art, Music"
+
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='details')
+
+    def __str__(self):
+        return f"Details for {self.subject.dept} - {self.subject.sem}"

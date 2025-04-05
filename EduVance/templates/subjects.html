@@ -1011,56 +1011,68 @@
 					</div>
 				</div>
 				<!--end breadcrumb-->
-				
 				<form method="post">
 					{% csrf_token %}
 					<h6 class="mb-0 text-uppercase">Subject Adding</h6>
 					<div class="card">
+						<!-- Department & Semester Selection -->
 						<div class="card-body">
 							<label>Department</label>
-							<td>{{ form.dept }}</td>
+							{{ form.dept }}
 						</div>
 						<div class="card-body">
 							<label>Semester</label>
-							<td>{{ form.sem }}</td>
-						</div>
-						
-						<!-- Regular Courses -->
-						<div class="card-body">
-							<label>Regular Courses</label>
-							<div id="courses-container">
-								<input type="text" class="form-control mb-2" name="courses[]" placeholder="Enter Course">
-							</div>
-							<button type="button" class="btn btn-secondary" onclick="addCourse()">Add More Courses</button>
+							{{ form.sem }}
 						</div>
 				
-						<!-- Elective Courses -->
+						<!-- Subject Details Form -->
 						<div class="card-body">
-							<label>Elective Courses (Exactly 3 Required)</label>
-							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 1" required>
-							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 2" required>
-							<input type="text" class="form-control mb-2" name="elective_courses[]" placeholder="Elective Course 3" required>
+							<label>Minor Subjects (Exactly 2 Required)</label>
+							{{ detail_form.minors_1 }}
+							{{ detail_form.minors_2 }}
+						</div>
+				
+						<div class="card-body">
+							<label>AEC(A) Subjects (Exactly 2 Required)</label>
+							{{ detail_form.aec_1 }}
+							{{ detail_form.aec_2 }}
+						</div>
+						<div class="card-body">
+							<label>AEC(A) Subjects (Exactly 2 Required)</label>
+							{{ detail_form.aecb_1 }}
+							{{ detail_form.aecb_2 }}
+						</div>
+				
+						<div class="card-body">
+							<label>VAC Subjects (Exactly 2 Required)</label>
+							{{ detail_form.vac_1 }}
+							{{ detail_form.vac_2 }}
+						</div>
+				
+						<div class="card-body">
+							<label>Elective Courses (Exactly 2 Required)</label>
+							{{ detail_form.elective1 }}
+							{{ detail_form.elective2 }}
+						</div>
+				
+						<div class="card-body">
+							<label>MDC (Mandatory)</label>
+							{{ detail_form.mdc }}
+						</div>
+				
+						<div class="card-body">
+							<label>SEC (Optional)</label>
+							{{ detail_form.sec }}
 						</div>
 				
 						<center>
 							<div class="form-group col-xl-12">
-								<button class="btn btn-dark" type="submit">Submit</button>
+								<button class="btn btn-dark" type="submit" name="add_subject">Submit</button>
 							</div>
 						</center>
 					</div>
 				</form>
 				
-				<script>
-					function addCourse() {
-						var container = document.getElementById("courses-container");
-						var input = document.createElement("input");
-						input.type = "text";
-						input.name = "courses[]";
-						input.className = "form-control mb-2";
-						input.placeholder = "Enter Course";
-						container.appendChild(input);
-					}
-				</script>
 				
 							</div>
 						</div>
