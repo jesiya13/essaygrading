@@ -48,7 +48,7 @@ urlpatterns=[
     path('attendanceviewt', views.attendanceviewt, name='attendanceviewt'),
     path('adminsubjects', views.adminsubjects, name='adminsubjects'),
     path('subchoice', views.subchoice, name='subchoice'),
-    path('viewsubject', views.viewsubject, name='viewsubject'),
+    path('viewsubject', views.subjectstudview, name='viewsubject'),
     path('viewsubjectt/<int:id>', views.viewsubjectt, name='viewsubjectt'),
     path('uploadmarks', views.uploadmarks, name='uploadmarks'),
     path('promote/<int:id>', views.promote, name='promote'),
@@ -73,6 +73,7 @@ urlpatterns=[
     path('notificationt', views.notificationt, name='notificationt'),
     path('essaycheck', views.essaycheck, name='essaycheck'),
     path('approvet/<int:id>', views.approvet, name='approvet'),
+    path('subject_detail_view', views.subject_selection_view,name='subject_detail_view'),
 
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

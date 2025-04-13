@@ -94,7 +94,7 @@
 						<nav id="main-menu">
 							<ul>
 								<li class="menu-item-has-children">
-									<a href="{% url 'subchoice' %}">Choose Subjects</a>
+									<a href="{% url 'subject_detail_view' %}">Choose Subjects</a>
 									<ul class="sub-menu">
 										<li><a href="{% url 'viewsubject' %}">View Subjects</a></li>
 									</ul>
@@ -209,6 +209,11 @@
 			<!-- End Drawer -->		
 		</header>
 		<!-- End Header -->
+		{% if messages %}
+        {% for a in messages %}
+        {{ a }}
+        {% endfor %}
+        {% endif %}
 		
 		<!-- Start Home Banner -->
 		<section class="home-banner hbstyle-2" style="background-image: url(assets/img/bg/banner.jpg);">

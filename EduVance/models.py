@@ -1,4 +1,5 @@
 from django.db import models    
+import uuid
 
 class Studentreg(models.Model):
     photo=models.FileField(upload_to='uploads/')
@@ -20,6 +21,7 @@ class Login(models.Model):
 
 
 class teacherreg(models.Model):
+    teacherid = models.CharField(max_length=40, unique=True,editable=False)
     tphoto=models.FileField(upload_to='uploads/')
     tname=models.CharField(max_length=50)
     tgender=models.CharField(max_length=10)
@@ -31,6 +33,12 @@ class teacherreg(models.Model):
     texp=models.CharField(max_length=40)
     tcontactno=models.CharField(max_length=10)
     login_id=models.OneToOneField('Login', on_delete=models.CASCADE,related_name ='t')
+    def save(self, *args, **kwargs):
+        # Assign a shortened teacherid before saving, if it's not set
+        if not self.teacherid:
+            # Generate a UUID, and use the first 5 hexadecimal characters
+            self.teacherid = uuid.uuid4().hex[:5]  # Get first 5 hex digits
+        super(teacherreg, self).save(*args, **kwargs)
    
 class Essay(models.Model):
     essay=models.FileField(upload_to='uploads/')
@@ -141,15 +149,42 @@ class ElectiveCourse2(models.Model):
     def __str__(self):
         return self.name
 class SubjectDetail(models.Model):
-    minors = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    major1 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    major2 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    major3= models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    minorsone = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    minortwo = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
     aeca = models.TextField(null=True, blank=True)      # Example: "Art, Music"
     aecb = models.TextField(null=True, blank=True)      # Example: "Art, Music"
     mdc = models.CharField(max_length=60, null=True, blank=True)
-    vac = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
+    vac1 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
+    vac2 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
     sec = models.CharField(max_length=60, null=True, blank=True)
-    elective_courses = models.TextField(null=True, blank=True)  # Example: "Art, Music"
+    elective1 = models.TextField(null=True, blank=True)  # Example: "Art, Music"
+    elective2= models.TextField(null=True, blank=True)  # Example: "Art, Music"
+
 
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='details')
 
     def __str__(self):
         return f"Details for {self.subject.dept} - {self.subject.sem}"
+    
+class StudentSubjectSelection(models.Model):
+    student = models.ForeignKey('Studentreg', on_delete=models.CASCADE)
+    subject = models.ForeignKey('SubjectDetail', on_delete=models.CASCADE,null=True)
+
+    minorsone = models.CharField(max_length=100, null=True, blank=True)
+    minortwo = models.CharField(max_length=100, null=True, blank=True)
+    aeca = models.CharField(max_length=100, null=True, blank=True)
+    aecb = models.CharField(max_length=100, null=True, blank=True)
+    mdc = models.CharField(max_length=100, null=True, blank=True)
+    vac1 = models.CharField(max_length=100, null=True, blank=True)
+    vac2 = models.CharField(max_length=100, null=True, blank=True)
+    sec = models.CharField(max_length=100, null=True, blank=True)
+    elective1 = models.CharField(max_length=100, null=True, blank=True)
+    elective2 = models.CharField(max_length=100, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.name} - {self.subject.dept} Sem {self.subject.sem} Selection"

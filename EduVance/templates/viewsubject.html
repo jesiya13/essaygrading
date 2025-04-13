@@ -150,12 +150,12 @@
         <thead>
             <tr>
                 <th>Subjects you have chosen</th>
-                <th>Internal Marks</th>
+                {% comment %} <th>Internal Marks</th> {% endcomment %}
             </tr>
         </thead>
         <tbody>
             <!-- Loop through core subjects (courses) -->
-            {% for course in courses %}
+            {% comment %} {% for  in courses %}
                 <tr>
                     <td>{{ course.name }}</td>
                     <td>
@@ -170,13 +170,14 @@
                         {% endif %}
                     </td>
                 </tr>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
     
             <!-- Loop through selected electives (the electives the student has chosen) -->
             {% for elective in electives %}
                 <tr>
-                    <td>{{ elective.name }}</td>
-                    <td>
+                    <td>{{ elective.sec }}</td>
+
+                    {% comment %} <td>
                         {% if elective.marks %}
                             {% if elective.marks == "Not Uploaded" %}
                                 <span class="not-uploaded">Marks Not Yet Uploaded</span>
@@ -186,7 +187,7 @@
                         {% else %}
                             <span class="not-uploaded">Marks Not Yet Uploaded</span>
                         {% endif %}
-                    </td>
+                    </td> {% endcomment %}
                 </tr>
             {% endfor %}
         </tbody>

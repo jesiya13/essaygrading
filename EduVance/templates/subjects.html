@@ -37,7 +37,7 @@
 					<img src="{% static 'admin/assets/images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">Dashtrans</h4>
+					<h4 class="logo-text">eduvance</h4>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
 				</div>
@@ -45,8 +45,8 @@
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
 				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class='bx bx-home-alt'></i>
+					{% comment %} <a href="javascript:;" class="has-arrow"> {% endcomment %}
+						{% comment %} <div class="parent-icon"><i class='bx bx-home-alt'></i>
 						</div>
 						<div class="menu-title">Dashboard</div>
 					</a>
@@ -57,30 +57,60 @@
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class="bx bx-category"></i>
-						</div>
-						<div class="menu-title">Application</div>
-					</a>
-					<ul>
-						<li> <a href="app-emailbox.html"><i class='bx bx-radio-circle'></i>Email</a>
-						</li>
-						<li> <a href="app-chat-box.html"><i class='bx bx-radio-circle'></i>Chat Box</a>
-						</li>
-						<li> <a href="app-file-manager.html"><i class='bx bx-radio-circle'></i>File Manager</a>
-						</li>
-						<li> <a href="app-contact-list.html"><i class='bx bx-radio-circle'></i>Contatcs</a>
-						</li>
-						<li> <a href="app-to-do.html"><i class='bx bx-radio-circle'></i>Todo List</a>
-						</li>
-						<li> <a href="app-invoice.html"><i class='bx bx-radio-circle'></i>Invoice</a>
-						</li>
-						<li> <a href="app-fullcalender.html"><i class='bx bx-radio-circle'></i>Calendar</a>
-						</li>
-					</ul>
-				</li>
-				<li class="menu-label">UI Elements</li>
+				<li> {% endcomment %}
+					{% comment %} <a href="javascript:;" class="has-arrow"> {% endcomment %}
+						{% comment %} <div class="parent-icon"><i class="bx bx-category"></i> {% endcomment %}
+						{% comment %} </div> {% endcomment %}
+						<li>
+					
+							<a href="{% url 'adminsubjects' %}">
+							<div class="parent-icon"><i class='bx bx-book'></i>
+							</div>
+							<div class="menu-title">Add Subjects</div>
+						</a>
+						
+					</li>
+					<li>
+						<a href="{% url 'subjectview' %}">
+							<div class="parent-icon"><i class='bx bx-book-open'></i>
+							</div>
+							<div class="menu-title">View Subjects</div>
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'admincompliaintview' %}">
+							<div class="parent-icon"><i class="bx bx-envelope"></i>
+							</div>
+							<div class="menu-title" >Complaints</div>
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'adminexam' %}">
+							<div class="parent-icon"><i class="bx bx-bell"></i>
+							</div>
+							<div class="menu-title" >Notify Exam</div>
+						</a>
+					</li>
+	
+					
+					<li class="menu-label">Tables</li>
+					<li>
+						
+					
+						<a class="has-arrow" href="javascript:;">
+							<div class="parent-icon"><i class="bx bx-grid-alt"></i>
+							</div>
+							<div class="menu-title"> Data Tables</div>
+						</a>
+						<ul>
+							<li> <a href="{% url 'searchstudad' %}"><i class='bx bx-radio-circle'></i>Students</a>
+							</li>
+							<li> <a href="{% url 'adminteachview' %}"><i class='bx bx-radio-circle'></i>Teachers</a>
+							</li>
+						</ul>
+					</li>
+
+				{% comment %} <li class="menu-label">UI Elements</li>
 				<li>
 					<a href="widgets.html">
 						<div class="parent-icon"><i class='bx bx-cookie'></i>
@@ -108,8 +138,8 @@
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-						</div>
-						<div class="menu-title">Components</div>
+						</div> {% endcomment %}
+						{% comment %} <div class="menu-title">Components</div>
 					</a>
 					<ul>
 						<li> <a href="component-alerts.html"><i class='bx bx-radio-circle'></i>Alerts</a>
@@ -210,8 +240,8 @@
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
+				<li> {% endcomment %}
+					{% comment %} <a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
 						</div>
 						<div class="menu-title">Tables</div>
@@ -257,21 +287,21 @@
 						</li>
 					</ul>
 				</li>
-				<li>
-					<a href="user-profile.html">
+				<li> {% endcomment %}
+					{% comment %} <a href="user-profile.html">
 						<div class="parent-icon"><i class="bx bx-user-circle"></i>
 						</div>
 						<div class="menu-title">User Profile</div>
 					</a>
 				</li>
-				<li>
-					<a href="timeline.html">
+				<li> {% endcomment %}
+					{% comment %} <a href="timeline.html">
 						<div class="parent-icon"> <i class="bx bx-video-recording"></i>
 						</div>
 						<div class="menu-title">Timeline</div>
 					</a>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-error"></i>
 						</div>
@@ -287,22 +317,22 @@
 						<li> <a href="error-blank-page.html" target="_blank"><i class='bx bx-radio-circle'></i>Blank Page</a>
 						</li>
 					</ul>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a href="faq.html">
 						<div class="parent-icon"><i class="bx bx-help-circle"></i>
 						</div>
 						<div class="menu-title">FAQ</div>
 					</a>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a href="pricing-table.html">
 						<div class="parent-icon"><i class="bx bx-diamond"></i>
 						</div>
 						<div class="menu-title">Pricing</div>
 					</a>
-				</li>
-				<li class="menu-label">Charts & Maps</li>
+				</li> {% endcomment %}
+				{% comment %} <li class="menu-label">Charts & Maps</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-line-chart"></i>
@@ -317,8 +347,8 @@
 						<li> <a href="charts-highcharts.html"><i class='bx bx-radio-circle'></i>Highcharts</a>
 						</li>
 					</ul>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-map-alt"></i>
 						</div>
@@ -330,9 +360,9 @@
 						<li> <a href="map-vector-maps.html"><i class='bx bx-radio-circle'></i>Vector Maps</a>
 						</li>
 					</ul>
-				</li>
-				<li class="menu-label">Others</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li class="menu-label">Others</li> {% endcomment %}
+				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-menu"></i>
 						</div>
@@ -357,14 +387,14 @@
 						</div>
 						<div class="menu-title">Documentation</div>
 					</a>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a href="https://themeforest.net/user/codervent" target="_blank">
 						<div class="parent-icon"><i class="bx bx-support"></i>
 						</div>
 						<div class="menu-title">Support</div>
 					</a>
-				</li>
+				</li> {% endcomment %}
 			</ul>
 			<!--end navigation-->
 		</div>
@@ -1027,9 +1057,26 @@
 				
 						<!-- Subject Details Form -->
 						<div class="card-body">
-							<label>Minor Subjects (Exactly 2 Required)</label>
+							<label>MAJOR 1</label>
+							{{ detail_form.major_1 }}
+						</div>
+						<div class="card-body">
+							<label>MAJOR 2</label>
+							{{ detail_form.major_2 }}
+						</div>
+						<div class="card-body">
+							<label>MAJOR 3</label>
+							{{ detail_form.major_3 }}
+						</div>
+						<div class="card-body">
+							<label>Minor 1 Subjects (Exactly 2 Required)</label>
 							{{ detail_form.minors_1 }}
 							{{ detail_form.minors_2 }}
+						</div>
+						<div class="card-body">
+							<label>Minor 2 Subjects (Exactly 2 Required)</label>
+							{{ detail_form.min_1 }}
+							{{ detail_form.min_2 }}
 						</div>
 				
 						<div class="card-body">
@@ -1044,25 +1091,40 @@
 						</div>
 				
 						<div class="card-body">
-							<label>VAC Subjects (Exactly 2 Required)</label>
+							<label>VAC 1 Subjects (Exactly 2 Required)</label>
 							{{ detail_form.vac_1 }}
 							{{ detail_form.vac_2 }}
 						</div>
+						<div class="card-body">
+							<label>VAC 2 Subjects (Exactly 2 Required)</label>
+							{{ detail_form.vac1 }}
+							{{ detail_form.vac2 }}
+						</div>
+				
 				
 						<div class="card-body">
-							<label>Elective Courses (Exactly 2 Required)</label>
+							<label>Elective Courses 1</label>
 							{{ detail_form.elective1 }}
 							{{ detail_form.elective2 }}
+						</div>
+
+						<div class="card-body">
+							<label>Elective Courses 2</label>
+							{{ detail_form.elective_1 }}
+							{{ detail_form.elective_2 }}
 						</div>
 				
 						<div class="card-body">
 							<label>MDC (Mandatory)</label>
-							{{ detail_form.mdc }}
+							{{ detail_form.mdc1 }}
+							{{ detail_form.mdc2 }}
+
 						</div>
 				
 						<div class="card-body">
 							<label>SEC (Optional)</label>
-							{{ detail_form.sec }}
+							{{ detail_form.sec1 }}
+							{{ detail_form.sec2 }}
 						</div>
 				
 						<center>

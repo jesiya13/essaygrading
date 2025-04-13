@@ -592,46 +592,46 @@ def upload_internal_marks_elective(request, course_id, student_id):
     return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
 
 
-def viewsubject(request):
-    # Get the student ID from the session (assuming the user is linked to the Studentreg model)
-    student_id = request.session.get('stud_id')
-    st = get_object_or_404(Studentreg, login_id=student_id)
+# def viewsubject(request):
+#     # Get the student ID from the session (assuming the user is linked to the Studentreg model)
+#     student_id = request.session.get('stud_id')
+#     st = get_object_or_404(Studentreg, login_id=student_id)
 
-    # Get all subjects for the student based on their department and semester
-    subjects = Subject.objects.filter(dept=st.department, sem=st.semester)
+#     # Get all subjects for the student based on their department and semester
+#     subjects = Subject.objects.filter(dept=st.department, sem=st.semester)
 
-    # Get all the courses (core subjects) for the student's semester
-    courses = Course.objects.filter(subject__in=subjects)
+#     # Get all the courses (core subjects) for the student's semester
+#     courses = Course.objects.filter(subject__in=subjects)
 
-    # Get the electives selected by the student for the current semester from the SubjectView model
-    selected_electives = SubjectView.objects.filter(stud_id=st, semester=st.semester)
-    electives = ElectiveCourse.objects.filter(name__in=[selection.elective_course for selection in selected_electives])
+#     # Get the electives selected by the student for the current semester from the SubjectView model
+#     selected_electives = SubjectView.objects.filter(stud_id=st, semester=st.semester)
+#     electives = ElectiveCourse.objects.filter(name__in=[selection.elective_course for selection in selected_electives])
 
-    # Get the student's marks for the courses and electives from the InternalMarks model
-    course_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[course.id for course in courses])
-    elective_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[elective.id for elective in electives])
+#     # Get the student's marks for the courses and electives from the InternalMarks model
+#     course_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[course.id for course in courses])
+#     elective_marks = InternalMarks.objects.filter(stud_id=st.id, subject__in=[elective.id for elective in electives])
 
-    # Attach marks to courses and electives
-    for course in courses:
-        course.marks = None  # Default to None if no marks found
-        for mark in course_marks:
-            if mark.subject == course:
-                course.marks = mark.marks
-                break
+#     # Attach marks to courses and electives
+#     for course in courses:
+#         course.marks = None  # Default to None if no marks found
+#         for mark in course_marks:
+#             if mark.subject == course:
+#                 course.marks = mark.marks
+#                 break
 
-    for elective in electives:
-        elective.marks = None  # Default to None if no marks found
-        for mark in elective_marks:
-            if mark.subject == elective:
-                elective.marks = mark.marks
-                break
+#     for elective in electives:
+#         elective.marks = None  # Default to None if no marks found
+#         for mark in elective_marks:
+#             if mark.subject == elective:
+#                 elective.marks = mark.marks
+#                 break
 
-    # Pass the data to the template
-    return render(request, 'viewsubject.html', {
-        'student': st,  # Pass the student details
-        'courses': courses,
-        'electives': electives,
-    })
+#     # Pass the data to the template
+#     return render(request, 'viewsubject.html', {
+#         'student': st,  # Pass the student details
+#         'courses': courses,
+#         'electives': electives,
+#     })
 
 # def viewsubjectt(request, id):
 #     student = get_object_or_404(Studentreg, id=id)
@@ -978,3 +978,75 @@ def essaycheck(request):
         'grade': grade,
         'extracted_text': extracted_text[:500]  # Show first 500 chars
     })
+# def subject_selection_view(request):
+#     st=request.session.get('stud_id')
+#     student = get_object_or_404(Studentreg, login_id=st)
+
+#     # if StudentSubjectSelection.objects.filter(student=student).exists():
+#     #     messages.info(request, "You have already submitted your subject selections.")
+#     #     return redirect('user') 
+
+#     # Get subject & its details based on student's semester and dept
+#     subject = Subject.objects.filter(dept=student.department, sem=student.semester).first()
+#     subject_detail = SubjectDetail.objects.filter(subject=subject).first()
+
+#     if request.method == 'POST':
+#         form = StudentSelectionForm(request.POST, subject_detail=subject_detail)
+#         if form.is_valid():
+#             selection = form.save(commit=False)
+#             selection.student = student
+#             selection.subject = subject_detail
+#             selection.save()
+#             return redirect('user')
+#     else:
+#         form = StudentSelectionForm(subject_detail=subject_detail)
+
+#     context = {
+#         'form': form,
+#         'subject': subject,
+#         'subject_detail': subject_detail,
+#     }
+#     return render(request, 's.html', context)
+def subject_selection_view(request):
+    st = request.session.get('stud_id')
+    student = get_object_or_404(Studentreg, login_id=st)
+
+    # Check if student has already submitted a selection
+    # if StudentSubjectSelection.objects.filter(student=student).exists():
+    #     messages.info(request, "You have already submitted your subject selections.")
+    #     return redirect('user')  # Adjust the redirect page as needed
+
+    # Get subject & details based on student's semester and department
+    subject = Subject.objects.filter(dept=student.department, sem=student.semester).first()
+    subject_detail = SubjectDetail.objects.filter(subject=subject).first()
+
+    if request.method == 'POST':
+        form = StudentSelectionForm(request.POST, subject_detail=subject_detail, student=student)
+        if form.is_valid():
+            selection = form.save(commit=False)
+            selection.student = student
+            selection.subject = subject  # or subject_detail if you want to track the details
+            selection.save()
+            return redirect('user')  # Redirect to the appropriate page
+    else:
+        form = StudentSelectionForm(subject_detail=subject_detail, student=student)
+
+    context = {
+        'form': form,
+        'subject': subject,
+        'subject_detail': subject_detail,
+    }
+    return render(request, 's.html', context)
+
+
+def subjectstudview(request):
+    student_id = request.session.get('stud_id')
+    st = get_object_or_404(Studentreg, login_id=student_id)
+    electivesub = StudentSubjectSelection.objects.filter(student=st)
+    return render(request, 'viewsubject.html', {
+        'student': st,  # Pass the student details
+        'electives': electivesub,
+    })
+
+
+
