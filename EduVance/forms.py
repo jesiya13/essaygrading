@@ -377,7 +377,7 @@ class StudentSelectionForm(forms.ModelForm):
             semester = student.semester  # Access student's semester
 
             # Fields that could change based on semester
-            selectable_fields = ['minorsone', 'minortwo', 'aeca', 'aecb', 'vac1', 'vac2', 'elective1', 'elective2']
+            selectable_fields = ['minorsone', 'minortwo', 'aeca', 'aecb', 'vac1', 'vac2', 'elective1', 'elective2','sec']
 
             # Clear all fields first to avoid showing irrelevant fields
             for field in selectable_fields + ['mdc', 'sec']:
@@ -442,9 +442,7 @@ class StudentSelectionForm(forms.ModelForm):
                 self.fields['mdc'].widget = forms.Select(choices=[('', '--- No option available ---')])
 
             if detail.sec:
-                self.fields['sec'].widget = forms.Select(
-                    choices=[('', '--- Select ---'), (detail.sec, detail.sec)]
-                )
+                self.fields['sec'].widget = self.get_select_widget(detail.sec)
             else:
                 self.fields['sec'].widget = forms.Select(choices=[('', '--- No option available ---')])
 

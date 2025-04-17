@@ -75,6 +75,7 @@ urlpatterns=[
     path('approvet/<int:id>', views.approvet, name='approvet'),
     path('subject_detail_view', views.subject_selection_view,name='subject_detail_view'),
 
+
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
  

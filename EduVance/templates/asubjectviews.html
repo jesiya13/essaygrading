@@ -1015,24 +1015,48 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Subject</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Loop through core subjects (courses) -->
-                                    {% for subject in core_subjects %}
-                <tr>
-                    <td>{{ subject.name }}</td>
-                </tr>
-                                    {% endfor %}
-                                    {% for item in view_sub %}
-                                    <tr>
-                                        <td>{{ item.name }}</td>
-                                    </tr>
-                                    {% endfor %}
+                            <h2>Core Subjects</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Core Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for core in core_subjects %}
+            <tr>
+                <td>{{ core }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>No core subjects found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Selected Subjects</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Subject Type</th>
+            <th>Selected Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject_type, subject in selected_subjects %}
+            <tr>
+                <td>{{ subject_type }}</td>
+                <td>{{ subject }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="2">No subjects selected.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+							
 					</div>
 				</div>
 			</div>

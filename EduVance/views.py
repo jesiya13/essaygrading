@@ -781,24 +781,34 @@ def adminreplay(request, id):
 
     return render(request, 'replayadmin.html', {'form': form, 'cmp': cmp})
 
+from django.shortcuts import render
+from .models import SubjectDetail
+from django.db.models import Q
+
 def subjects_by_semester(request):
-    # Fetch all subjects and group them by semester
-    subjects = Subject.objects.all().order_by('sem')
+    query = request.GET.get('q', '').strip()
 
-    # Group courses and electives by subject's semester
-    courses_by_semester = {}
-    for subject in subjects:
-        sem = subject.sem
-        if sem not in courses_by_semester:
-            courses_by_semester[sem] = {
-                'courses': [],
-                'electives': []
-            }
-        
-        courses_by_semester[sem]['courses'].extend(subject.courses.all())
-        courses_by_semester[sem]['electives'].extend(subject.electives.all())
+    # Filter subject details based on subject's semester or department
+    if query:
+        subject_details = SubjectDetail.objects.filter(
+            Q(subject__sem__icontains=query) |
+            Q(subject__dept__icontains=query)
+        ).select_related('subject')
+    else:
+        subject_details = SubjectDetail.objects.select_related('subject').all()
 
-    return render(request, 'adminsubject.html', {'courses_by_semester': courses_by_semester})
+    # Grouping subject details by semester
+    details_by_semester = {}
+    for detail in subject_details:
+        sem = detail.subject.sem
+        if sem not in details_by_semester:
+            details_by_semester[sem] = []
+        details_by_semester[sem].append(detail)
+
+    return render(request, 'adminsubject.html', {
+        'details_by_semester': details_by_semester,
+        'query': query,
+    })
 
 def asubedit(request):
     stud_id=request.session.get('stud_id')   
@@ -824,15 +834,62 @@ def asubdel(request,id):
 
     return redirect('adminview')
 
-def asubjectviews(request,id):
+from .models import Studentreg, StudentSubjectSelection
+
+def asubjectviews(request, id):
     student = get_object_or_404(Studentreg, id=id)
-    core_subjects = Course.objects.filter(subject__dept=student.department, subject__sem=student.semester)
-    electives = SubjectView.objects.filter(stud_id=student, semester=student.semester)
-    view_sub = ElectiveCourse.objects.filter(name__in=[elective.elective_course for elective in electives])
+
+    # Get the SubjectDetail that matches the student's dept & sem
+    subject_detail = SubjectDetail.objects.filter(
+        subject__dept=student.department,
+        subject__sem=student.semester
+    ).first()
+
+    # Extract core subjects
+    core_subjects = []
+    if subject_detail:
+        core_fields = ['major1', 'major2', 'major3']
+        for field in core_fields:
+            value = getattr(subject_detail, field)
+            if value:
+                core_subjects.extend([s.strip() for s in value.split(',')])
+
+    # Get the student's selection
+    selection = StudentSubjectSelection.objects.filter(
+        student=student,
+        subject__subject__dept=student.department,
+        subject__subject__sem=student.semester
+    ).first()
+
+    selected_subjects = []
+    if selection:
+        fields_to_check = [
+            'minorsone', 'minortwo', 'aeca', 'aecb', 'mdc',
+            'vac1', 'vac2', 'sec', 'elective1', 'elective2'
+        ]
+
+        field_labels = {
+            'minorsone': 'Minor 1',
+            'minortwo': 'Minor 2',
+            'aeca': 'AECC A',
+            'aecb': 'AECC B',
+            'mdc': 'MDC',
+            'vac1': 'VAC 1',
+            'vac2': 'VAC 2',
+            'sec': 'SEC',
+            'elective1': 'Elective 1',
+            'elective2': 'Elective 2',
+        }
+
+        for field in fields_to_check:
+            value = getattr(selection, field)
+            if value:
+                selected_subjects.append((field_labels.get(field, field), value))
+
     return render(request, 'asubjectviews.html', {
-        'studentid': student.id,
+        'student': student,
         'core_subjects': core_subjects,
-        'view_sub': view_sub,
+        'selected_subjects': selected_subjects
     })
 
 def removecomplaint(request,id):
@@ -1025,7 +1082,7 @@ def subject_selection_view(request):
         if form.is_valid():
             selection = form.save(commit=False)
             selection.student = student
-            selection.subject = subject  # or subject_detail if you want to track the details
+            selection.subject = subject_detail  # or subject_detail if you want to track the details
             selection.save()
             return redirect('user')  # Redirect to the appropriate page
     else:
