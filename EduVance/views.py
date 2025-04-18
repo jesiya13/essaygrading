@@ -656,22 +656,29 @@ def upload_internal_marks_elective(request, course_id, student_id):
 #         'internal_marks': internal_marks,
 #     })
 
-def viewsubjectt(request,id):
-
+def viewsubjectt(request, id):
     student = get_object_or_404(Studentreg, id=id)
 
-    core_subjects = Course.objects.filter(subject__dept=student.department, subject__sem=student.semester)
-    electives = SubjectView.objects.filter(stud_id=student, semester=student.semester)
-    view_sub = ElectiveCourse.objects.filter(name__in=[elective.elective_course for elective in electives])
+    # Get the student's subject selection
+    selection = StudentSubjectSelection.objects.filter(student=student).first()
 
-    internal_marks = InternalMarks.objects.filter(stud_id=student)
-    # print(internal_marks)
+    # Extract core subjects from related SubjectDetail
+    core_subjects = []
+    if selection and selection.subject:
+        subject_detail = selection.subject
+        for field in ['major1', 'major2', 'major3']:
+            field_value = getattr(subject_detail, field, None)
+            if field_value:
+                core_subjects.extend([sub.strip() for sub in field_value.split(',') if sub.strip()])
+
     return render(request, 'viewsubjectt.html', {
-        'studentid': student.id,
+        'student': student,
+        'selection': selection,
         'core_subjects': core_subjects,
-        'view_sub': view_sub,
-        'internal_marks': internal_marks,
     })
+
+
+
 
 # def viewsubjectt(request, id):
 #     # Get student details
@@ -834,63 +841,113 @@ def asubdel(request,id):
 
     return redirect('adminview')
 
-from .models import Studentreg, StudentSubjectSelection
+
+
+
+
+# def asubjectviews(request, id):
+#     student = get_object_or_404(Studentreg, id=id)
+
+#     # Get SubjectDetail for student's department & semester
+#     subject_detail = SubjectDetail.objects.filter(
+#         subject__dept__iexact=student.department,
+#         subject__sem=student.semester
+#     ).first()
+
+#     # Extract core subjects
+#     core_subjects = []
+#     if subject_detail:
+#         for field in ['major1', 'major2', 'major3']:
+#             value = getattr(subject_detail, field)
+#             if value:
+#                 core_subjects.extend([s.strip() for s in value.split(',') if s.strip()])
+
+#     # Get student’s elective selections
+#     selection = StudentSubjectSelection.objects.filter(
+#         student=student,
+#         subject=subject_detail  # Since we already have the SubjectDetail
+#     ).first()
+
+#     selected_subjects = []
+#     if selection:
+#         fields_to_check = [
+#             'minorsone', 'minortwo', 'aeca', 'aecb', 'mdc',
+#             'vac1', 'vac2', 'sec', 'elective1', 'elective2'
+#         ]
+
+#         field_labels = {
+#             'minorsone': 'Minor 1',
+#             'minortwo': 'Minor 2',
+#             'aeca': 'AECC A',
+#             'aecb': 'AECC B',
+#             'mdc': 'MDC',
+#             'vac1': 'VAC 1',
+#             'vac2': 'VAC 2',
+#             'sec': 'SEC',
+#             'elective1': 'Elective 1',
+#             'elective2': 'Elective 2',
+#         }
+
+#         for field in fields_to_check:
+#             value = getattr(selection, field)
+#             if value:
+#                 selected_subjects.append((field_labels.get(field, field), value.strip()))
+
+#     return render(request, 'asubjectviews.html', {
+#         'student': student,
+#         'core_subjects': core_subjects,
+#         'selected_subjects': selected_subjects
+#     })
+
+
 
 def asubjectviews(request, id):
-    student = get_object_or_404(Studentreg, id=id)
+    student = get_object_or_404(Studentreg, login_id=id)
 
-    # Get the SubjectDetail that matches the student's dept & sem
-    subject_detail = SubjectDetail.objects.filter(
-        subject__dept=student.department,
-        subject__sem=student.semester
-    ).first()
+    selection = StudentSubjectSelection.objects.filter(student=student).first()
 
-    # Extract core subjects
     core_subjects = []
-    if subject_detail:
-        core_fields = ['major1', 'major2', 'major3']
-        for field in core_fields:
-            value = getattr(subject_detail, field)
-            if value:
-                core_subjects.extend([s.strip() for s in value.split(',')])
-
-    # Get the student's selection
-    selection = StudentSubjectSelection.objects.filter(
-        student=student,
-        subject__subject__dept=student.department,
-        subject__subject__sem=student.semester
-    ).first()
-
     selected_subjects = []
+
     if selection:
-        fields_to_check = [
-            'minorsone', 'minortwo', 'aeca', 'aecb', 'mdc',
-            'vac1', 'vac2', 'sec', 'elective1', 'elective2'
+        subject_detail = selection.subject
+
+        if subject_detail:
+            # Collect core subjects (major1, major2, major3)
+            for field in [subject_detail.major1, subject_detail.major2, subject_detail.major3]:
+                if field:
+                    core_subjects += [sub.strip() for sub in field.split(',') if sub.strip()]
+
+        # Now collect only filled selected subjects
+        subject_fields = [
+            ('Minor 1', selection.minorsone),
+            ('Minor 2', selection.minortwo),
+            ('AECA', selection.aeca),
+            ('AECB', selection.aecb),
+            ('MDC', selection.mdc),
+            ('VAC 1', selection.vac1),
+            ('VAC 2', selection.vac2),
+            ('SEC', selection.sec),
+            ('Elective 1', selection.elective1),
+            ('Elective 2', selection.elective2),
         ]
 
-        field_labels = {
-            'minorsone': 'Minor 1',
-            'minortwo': 'Minor 2',
-            'aeca': 'AECC A',
-            'aecb': 'AECC B',
-            'mdc': 'MDC',
-            'vac1': 'VAC 1',
-            'vac2': 'VAC 2',
-            'sec': 'SEC',
-            'elective1': 'Elective 1',
-            'elective2': 'Elective 2',
-        }
+        # Filter only the non-empty ones
+        selected_subjects = [(label, val) for label, val in subject_fields if val]
 
-        for field in fields_to_check:
-            value = getattr(selection, field)
-            if value:
-                selected_subjects.append((field_labels.get(field, field), value))
-
-    return render(request, 'asubjectviews.html', {
+    context = {
         'student': student,
         'core_subjects': core_subjects,
-        'selected_subjects': selected_subjects
-    })
+        'selected_subjects': selected_subjects,
+    }
+
+    return render(request, 'asubjectviews.html', context)
+
+
+
+
+
+
 
 def removecomplaint(request,id):
     a=get_object_or_404(complaints,id=id)
@@ -1099,10 +1156,26 @@ def subject_selection_view(request):
 def subjectstudview(request):
     student_id = request.session.get('stud_id')
     st = get_object_or_404(Studentreg, login_id=student_id)
-    electivesub = StudentSubjectSelection.objects.filter(student=st)
+
+    # Student's selected subjects
+    selection = StudentSubjectSelection.objects.filter(student=st).first()
+
+    # Get the subject detail (core subjects) from the selection
+    subject_detail = selection.subject if selection else None
+
+    # Prepare core subjects list (major1, major2, major3)
+    core_subjects = []
+    if subject_detail:
+        for field in ['major1', 'major2', 'major3']:
+            field_value = getattr(subject_detail, field, None)
+            if field_value:
+                # split by comma and strip spaces
+                core_subjects.extend([sub.strip() for sub in field_value.split(',') if sub.strip()])
+
     return render(request, 'viewsubject.html', {
-        'student': st,  # Pass the student details
-        'electives': electivesub,
+        'student': st,
+        'selection': selection,
+        'core_subjects': core_subjects,  # List of core subjects
     })
 
 

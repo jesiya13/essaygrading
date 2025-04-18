@@ -145,53 +145,59 @@
 </section>
 <!-- End Main Banner -->
 <br>
-<h2>Semester: {{ semester }}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Subjects you have chosen</th>
-                {% comment %} <th>Internal Marks</th> {% endcomment %}
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Loop through core subjects (courses) -->
-            {% comment %} {% for  in courses %}
-                <tr>
-                    <td>{{ course.name }}</td>
-                    <td>
-                        {% if course.marks %}
-                            {% if course.marks == null %}
-                                <span class="not-uploaded">Marks Not Yet Uploaded</span>
-                            {% else %}
-                                {{ course.marks }}
-                            {% endif %}
-                        {% else %}
-                            <span class="not-uploaded">Marks Not Yet Uploaded</span>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %} {% endcomment %}
-    
-            <!-- Loop through selected electives (the electives the student has chosen) -->
-            {% for elective in electives %}
-                <tr>
-                    <td>{{ elective.sec }}</td>
+<h2>Semester: {{ selection.subject.subject.sem }}</h2>
 
-                    {% comment %} <td>
-                        {% if elective.marks %}
-                            {% if elective.marks == "Not Uploaded" %}
-                                <span class="not-uploaded">Marks Not Yet Uploaded</span>
-                            {% else %}
-                                {{ elective.marks }}
-                            {% endif %}
-                        {% else %}
-                            <span class="not-uploaded">Marks Not Yet Uploaded</span>
-                        {% endif %}
-                    </td> {% endcomment %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table>
+    <thead>
+        <tr>
+            <th>Subjects you have chosen</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <!-- Core Subjects -->
+        {% for core in core_subjects %}
+            <tr>
+                <td>{{ core }}</td>
+            </tr>
+        {% endfor %}
+
+        <!-- Selected Electives -->
+        {% if selection %}
+            {% if selection.minorsone %}
+            <tr><td>{{ selection.minorsone }}</td></tr>
+            {% endif %}
+            {% if selection.minortwo %}
+            <tr><td>{{ selection.minortwo }}</td></tr>
+            {% endif %}
+            {% if selection.aeca %}
+            <tr><td>{{ selection.aeca }}</td></tr>
+            {% endif %}
+            {% if selection.aecb %}
+            <tr><td>{{ selection.aecb }}</td></tr>
+            {% endif %}
+            {% if selection.mdc %}
+            <tr><td>{{ selection.mdc }}</td></tr>
+            {% endif %}
+            {% if selection.vac1 %}
+            <tr><td>{{ selection.vac1 }}</td></tr>
+            {% endif %}
+            {% if selection.vac2 %}
+            <tr><td>{{ selection.vac2 }}</td></tr>
+            {% endif %}
+            {% if selection.sec %}
+            <tr><td>{{ selection.sec }}</td></tr>
+            {% endif %}
+            {% if selection.elective1 %}
+            <tr><td>{{ selection.elective1 }}</td></tr>
+            {% endif %}
+            {% if selection.elective2 %}
+            <tr><td>{{ selection.elective2 }}</td></tr>
+            {% endif %}
+        {% endif %}
+    </tbody>
+</table>
+    
             <br>
            <!-- Start Footer -->
 		<section class="footer fstyle-2">

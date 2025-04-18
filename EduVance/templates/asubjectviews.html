@@ -1019,41 +1019,53 @@
 <table>
     <thead>
         <tr>
-            <th>Core Subject</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for core in core_subjects %}
-            <tr>
-                <td>{{ core }}</td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td>No core subjects found.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+			<h2>Course Details for {{ student.name }}</h2>
 
-<h2>Selected Subjects</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Subject Type</th>
-            <th>Selected Subject</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for subject_type, subject in selected_subjects %}
-            <tr>
-                <td>{{ subject_type }}</td>
-                <td>{{ subject }}</td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="2">No subjects selected.</td>
-            </tr>
-        {% endfor %}
+			<!-- Core Subjects -->
+			<h3>Core Subjects</h3>
+			{% if core_subjects %}
+				<table>
+					<thead>
+						<tr>
+							<th>Core Subject</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for core in core_subjects %}
+							<tr>
+								<td>{{ core }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<p>No core subjects found.</p>
+			{% endif %}
+		
+		
+			<!-- Selected Subjects -->
+			<h3>Selected Subjects</h3>
+			{% if selected_subjects %}
+				<table>
+					<thead>
+						<tr>
+							<th>Subject Type</th>
+							<th>Selected Subject</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for subject_type, subject in selected_subjects %}
+							<tr>
+								<td>{{ subject_type }}</td>
+								<td>{{ subject }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<p>No subjects selected.</p>
+			{% endif %}
+		
     </tbody>
 </table>
 							

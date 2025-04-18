@@ -328,76 +328,55 @@
             </div>			
         </div>			
     </header>
-   <table align="center">
-    <thead>
-        <tr>
-            <th>Core Subjects</th>
-            <th>Upload Marks</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if core_subjects %}
-            {% for subject in core_subjects %}
-                <tr>
-                    <td>{{ subject.name }}</td>
-                    <td>
-                        {% with marks_added=False %}
-                            {% for mark in internal_marks %}
-                                {% if mark.subject.id == subject.id and mark.stud_id.id == studentid %}
-                                    <span class="badge bg-success">Added: {{ mark.marks }}</span>
-                                    {% with marks_added=True %}
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            {% if not marks_added %}
-                                <a href="{% url 'internals' subject.id studentid %}" class="btn btn-primary">Upload Marks</a>
-                            {% endif %}
-                        {% endwith %}
-                    </td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <tr><td colspan="2">No core subjects found.</td></tr>
-        {% endif %}
-    </tbody>
-</table>
+    <h2>Subjects for {{ student.name }}</h2>
 
-<table align="center">
-    <thead>
-        <tr>
-            <th>Elective Courses</th>
-            <th>Upload Marks</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        {% if view_sub %}
-           {% for item in view_sub %}
-    <tr>
-        <td>{{ item.name }}</td>
-        <td>
-            {% with marks_added=False %}
-                {% for mark in internal_marks %}
-                    {% if mark.subject.id == item.id and mark.stud_id.id == studentid %}
-                        <span class="badge bg-success">Added: {{ mark.marks }}</span>
-                        {% with marks_added=True %}
-                        {% endwith %}
-                    {% endif %}
+    <table align="center" border="1" cellpadding="8">
+        <thead>
+            <tr> 
+                <th>Core Subjects</th>
+                <th>Internal Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if core_subjects %}
+                {% for subject in core_subjects %}
+                    <tr>
+                        <td>{{ subject }}</td>
+                        <td>
+                            <a href="" class="btn btn-primary">Upload Marks</a>
+                        </td>
+                    </tr>
                 {% endfor %}
-                {% if not marks_added %}
-                    <a href="{% url 'internals_elective' item.id studentid %}" class="btn btn-primary">Upload Marks</a>
-                {% endif %}
-            {% endwith %}
-        </td>
-    </tr>
-{% endfor %}
-
-        {% else %}
-            <tr><td colspan="2">No electives selected.</td></tr>
-        {% endif %}
-    </tbody>
-</table>
-
+            {% else %}
+                <tr><td colspan="2">No core subjects found.</td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+    
+    <br>
+    
+    <table align="center" border="1" cellpadding="8">
+        <thead>
+            <tr><th colspan="2">Electives / Selected Subjects</th></tr>
+        </thead>
+        <tbody>
+            {% if selection %}
+                {% if selection.minorsone %}<tr><td>{{ selection.minorsone }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.minortwo %}<tr><td>{{ selection.minortwo }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.aeca %}<tr><td>{{ selection.aeca }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.aecb %}<tr><td>{{ selection.aecb }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.mdc %}<tr><td>{{ selection.mdc }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.vac1 %}<tr><td>{{ selection.vac1 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.vac2 %}<tr><td>{{ selection.vac2 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.sec %}<tr><td>{{ selection.sec }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.elective1 %}<tr><td>{{ selection.elective1 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.elective2 %}<tr><td>{{ selection.elective2 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+            {% else %}
+                <tr><td colspan="2">No electives selected.</td></tr>
+            {% endif %}
+        </tbody>
+    </table>
+    
 
     
             <br>

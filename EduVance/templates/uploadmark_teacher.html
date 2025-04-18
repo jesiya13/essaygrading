@@ -386,35 +386,15 @@
 						<div class="register">
 							<h4 class="login_register_title">Upload Internal Marks</h4>
 
-<form method="post">
-    {% csrf_token %}
-    <table align="center">
-        <tr>
-            <td>Student Name:</td>
-            <td>{{ student.name }}</td>
-        </tr>
-        <tr>
-            <td>Department:</td>
-            <td>{{ student.department }}</td>
-        </tr>
-        <tr>
-            <td>Semester:</td>
-            <td>{{ student.semester }}</td>
-        </tr>
-        <tr>
-            <td>Subject:</td>
-            <td>{{ course.name }}</td>
-        </tr>
-        <tr>
-            <td>Internal Marks:</td>
-            <td>
-                <input type="text" name="marks"  required>
-            </td>
-        </tr>
-</table>
-<br><br>
-<div class="form-group col-lg-12">
-<button class="bg_btn bt" type="submit" name="submit">Next</button>     
+							<h2>Upload Marks for {{ student.name }} - {{ subject }}</h2>
+
+							<form method="POST">
+								{% csrf_token %}
+								<label for="marks">Enter Marks:</label>
+								<input type="number" name="marks" min="0" max="100" required>
+								<button type="submit" class="btn btn-success">Submit</button>
+							</form>
+							
 					</div><!--- END COL -->
 					</form>
 				</div><!--- END ROW -->

@@ -109,16 +109,17 @@ class ElectiveCourse(models.Model):
 
 
 class InternalMarks(models.Model):
-    subject = models.ForeignKey('Course', on_delete=models.CASCADE)  # Connect marks to the subject
+    subject = models.ForeignKey('StudentSubjectSelection', on_delete=models.CASCADE)  # Connect marks to the subjec
+    subjects = models.ForeignKey('SubjectDetail', on_delete=models.CASCADE)  # Connect marks to the subject
     marks = models.IntegerField(null=True, blank=True)  # Marks are now integers, allowing null/blank
     stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)  # Relating marks to student
     login_id = models.ForeignKey('teacherreg', on_delete=models.CASCADE)  # Teacher who entered the marks
 
     class Meta:
-        unique_together = ('stud_id', 'subject')  # Prevent multiple marks entries for the same student-subject
+        unique_together = ('stud_id', 'subject','subjects')  # Prevent multiple marks entries for the same student-subject
 
     def __str__(self):
-        return f"{self.stud_id} - {self.subject} - Marks: {self.marks}"
+        return f"{self.stud_id} - {self.subject} - {self.subjects}- Marks: {self.marks}"
 
 class complaints(models.Model):
      current_date = models.DateTimeField(auto_now_add=True)
@@ -129,17 +130,6 @@ class complaints(models.Model):
 class exam(models.Model):
      date = models.DateField(max_length=20)
      remark = models.CharField(max_length=60)
-
-class subjects(models.Model):
-    minor1=models.CharField(null=True,max_length=60)
-    minor2=models.CharField(null=True,max_length=60)
-    aec_a=models.CharField(null=True,max_length=60)
-    aec_b=models.CharField(null=True,max_length=60)
-    mdc=models.CharField(null=True,max_length=60)
-    vac1=models.CharField(null=True,max_length=60)
-    vac2=models.CharField(null=True,max_length=60)
-    sec=models.CharField(null=True,max_length=60)
-    subjectid = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='sub')
 
 
 class ElectiveCourse2(models.Model):
