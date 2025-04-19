@@ -145,7 +145,7 @@
 								</li>		
 
 								<li>
-									{% comment %} <a href="{% url 'uploadessay' %}">Upload Essay</a> {% endcomment %}
+									<a href="standard-blog.html">Blog</a>
 								</li>
 
 								<li>
@@ -359,9 +359,9 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xl-12 text-center">
-						<h2>Upload Marks</h2>
+						<h2>Attendance</h2>
 						<p>
-							<!-- <a href="#">Home</a> <i class='bx bx-chevrons-right'></i> Upload Essay -->
+							<a href="#">Home</a> <i class='bx bx-chevrons-right'></i> Attendance
 						</p>
 					</div>
 				</div>				
@@ -379,32 +379,27 @@
 		<!-- End Main Banner -->
 
 		<!-- START LOGIN AND REGISTER -->
-		<h1>Upload Marks for {{ student.name }} - Dept: {{ subject_detail.subject.dept }} | Sem: {{ subject_detail.subject.sem }}</h1>
+		<section class="login_register section-padding">
+			<div class="container">
+				<div class="row">				
+					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
+						<div class="register">
+							<h4 class="login_register_title">Upload Internal Marks</h4>
 
-<form method="POST">
-    {% csrf_token %}
-    
-    {% for sub in subjects %}
-        <div>
-            <label for="{{ sub }}">{{ sub }}:</label>
-            <input type="number" name="{{ sub }}" id="{{ sub }}" required>
-        </div>
-    {% endfor %}
+							<h2>Upload Marks for {{ student.name }} - {{ subject }}</h2>
 
-    <button type="submit">Submit Marks</button>
-</form>
-
-<p><a href="{% url 'student_list' %}">Back to Student List</a></p>
-
-{% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-        
+							<form method="POST">
+								{% csrf_token %}
+								<label for="marks">Enter Marks:</label>
+								<input type="number" name="marks" min="0" max="100" required>
+								<button type="submit" class="btn btn-success">Submit</button>
+							</form>
+							
+					</div><!--- END COL -->
+					</form>
+				</div><!--- END ROW -->
+			</div><!--- END CONTAINER -->
+		</section>
 		<!-- END LOGIN AND REGISTER -->
 
 		<!-- Start Footer -->

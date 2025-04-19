@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db.models import Q
 from datetime import date 
 from django.http import JsonResponse
+from django.http import HttpResponseNotFound
 
 
 def main(request):
@@ -523,73 +524,73 @@ def uploadmarks(request):
 
 
 
-def upload_internal_marks(request, course_id, student_id):
-    # Fetch the course, student, and subject
-    course = get_object_or_404(Course, id=course_id)
-    student = get_object_or_404(Studentreg, id=student_id)
-    subject = course.id  # Fetch the correct subject from the course
-    logid = request.session.get('t_id')
-    teacher_id = get_object_or_404(teacherreg, login_id=logid)
+# def upload_internal_marks(request, course_id, student_id):
+#     # Fetch the course, student, and subject
+#     course = get_object_or_404(Course, id=course_id)
+#     student = get_object_or_404(Studentreg, id=student_id)
+#     subject = course.id  # Fetch the correct subject from the course
+#     logid = request.session.get('t_id')
+#     teacher_id = get_object_or_404(teacherreg, login_id=logid)
 
-    # Check if marks already exist for this student and subject
-    existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
+#     # Check if marks already exist for this student and subject
+#     existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
 
-    if request.method == 'POST':
-        marks = request.POST.get('marks')  # Get the marks from the form input
+#     if request.method == 'POST':
+#         marks = request.POST.get('marks')  # Get the marks from the form input
 
-        # Validate marks (ensure it's a numeric value)
-        if not marks.isdigit():
-            messages.error(request, "Marks must be a numeric value.")
-            return redirect('internals', course_id=course_id, student_id=student_id)
+#         # Validate marks (ensure it's a numeric value)
+#         if not marks.isdigit():
+#             messages.error(request, "Marks must be a numeric value.")
+#             return redirect('internals', course_id=course_id, student_id=student_id)
 
-        marks = int(marks)  # Convert marks to integer
+#         marks = int(marks)  # Convert marks to integer
 
-        if existing_marks:
-            # If marks already exist for the student and subject, prevent duplicate entry
-            messages.error(request, 'Marks for this student in this subject already exist.')
-        else:
-            # Create a new entry
-            InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
-            messages.success(request, 'Marks uploaded successfully!')
+#         if existing_marks:
+#             # If marks already exist for the student and subject, prevent duplicate entry
+#             messages.error(request, 'Marks for this student in this subject already exist.')
+#         else:
+#             # Create a new entry
+#             InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
+#             messages.success(request, 'Marks uploaded successfully!')
 
-        return redirect('viewsubjectt', student.id)  # Redirect after saving
+#         return redirect('viewsubjectt', student.id)  # Redirect after saving
 
-    # If GET request, render the form
-    return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
+#     # If GET request, render the form
+#     return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
 
-def upload_internal_marks_elective(request, course_id, student_id):
-    # Fetch the course, student, and subject
-    course = get_object_or_404(ElectiveCourse, id=course_id)
-    student = get_object_or_404(Studentreg, id=student_id)
-    subject = course.id  # Fetch the correct subject from the course
-    logid = request.session.get('t_id')
-    teacher_id = get_object_or_404(teacherreg, login_id=logid)
+# def upload_internal_marks_elective(request, course_id, student_id):
+#     # Fetch the course, student, and subject
+#     course = get_object_or_404(ElectiveCourse, id=course_id)
+#     student = get_object_or_404(Studentreg, id=student_id)
+#     subject = course.id  # Fetch the correct subject from the course
+#     logid = request.session.get('t_id')
+#     teacher_id = get_object_or_404(teacherreg, login_id=logid)
 
-    # Check if marks already exist for this student and subject
-    existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
+#     # Check if marks already exist for this student and subject
+#     existing_marks = InternalMarks.objects.filter(subject=subject, stud_id=student).exists()
 
-    if request.method == 'POST':
-        marks = request.POST.get('marks')  # Get the marks from the form input
+#     if request.method == 'POST':
+#         marks = request.POST.get('marks')  # Get the marks from the form input
 
-        # Validate marks (ensure it's a numeric value)
-        if not marks.isdigit():
-            messages.error(request, "Marks must be a numeric value.")
-            return redirect('internals', course_id=course_id, student_id=student_id)
+#         # Validate marks (ensure it's a numeric value)
+#         if not marks.isdigit():
+#             messages.error(request, "Marks must be a numeric value.")
+#             return redirect('internals', course_id=course_id, student_id=student_id)
 
-        marks = int(marks)  # Convert marks to integer
+#         marks = int(marks)  # Convert marks to integer
 
-        if existing_marks:
-            # If marks already exist for the student and subject, prevent duplicate entry
-            messages.error(request, 'Marks for this student in this subject already exist.')
-        else:
-            # Create a new entry
-            InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
-            messages.success(request, 'Marks uploaded successfully!')
+#         if existing_marks:
+#             # If marks already exist for the student and subject, prevent duplicate entry
+#             messages.error(request, 'Marks for this student in this subject already exist.')
+#         else:
+#             # Create a new entry
+#             InternalMarks.objects.create(subject_id=subject, stud_id=student, marks=marks, login_id=teacher_id)
+#             messages.success(request, 'Marks uploaded successfully!')
 
-        return redirect('viewsubjectt', student.id)  # Redirect after saving
+#         return redirect('viewsubjectt', student.id)  # Redirect after saving
 
-    # If GET request, render the form
-    return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
+#     # If GET request, render the form
+#     return render(request, 'uploadmark_teacher.html', {'course': course, 'student': student})
 
 
 # def viewsubject(request):
@@ -1177,6 +1178,86 @@ def subjectstudview(request):
         'selection': selection,
         'core_subjects': core_subjects,  # List of core subjects
     })
+def internals_elective(request, student_id, subject_name):
+    # electives = get_object_or_404(StudentSubjectSelection, id=subject_name)
+    electives = SubjectDetail.objects.filter(
+    Q(minorsone__icontains=subject_name) |
+    Q(minortwo__icontains=subject_name) |
+    Q(aeca__icontains=subject_name) |
+    Q(aecb__icontains=subject_name) |
+    Q(mdc__icontains=subject_name) |
+    Q(vac1__icontains=subject_name) |
+    Q(vac2__icontains=subject_name) |
+    Q(sec__icontains=subject_name) |
+    Q(elective1__icontains=subject_name) |
+    Q(elective2__icontains=subject_name)
+    ).first()
+    student = get_object_or_404(Studentreg, id=student_id)
+    if not electives:
+        return HttpResponseNotFound("Subject not found.")
+
+    logid = request.session.get('t_id')
+    teacher = get_object_or_404(teacherreg, login_id=logid)
+
+    if request.method == 'POST':
+        marks = request.POST.get('marks')
+        if not marks.isdigit():
+            messages.error(request, "Marks must be numeric.")
+        elif InternalMarks.objects.filter(subject=subject_name, stud_id=student).exists():
+            messages.error(request, 'Marks already exist for this subject.')
+        else:
+            InternalMarks.objects.create(
+                subject=subject_name,
+                stud_id=student,
+                marks=int(marks),
+                login_id=teacher
+            )
+            messages.success(request, 'Marks uploaded successfully!')
+            return redirect('viewsubjectt', id=student.id)
+
+
+    return render(request, 'uploadmark_teacher.html', {
+        'electives': electives,
+        'student': student
+    })
 
 
 
+
+def internals_major(request, student_id, subject_name):
+    student = get_object_or_404(Studentreg, id=student_id)
+
+    # Try to find SubjectDetail where any of the major fields match subject_name
+    subject_detail = SubjectDetail.objects.filter(
+        Q(major1__icontains=subject_name) |
+        Q(major2__icontains=subject_name) |
+        Q(major3__icontains=subject_name)
+    ).first()
+
+    if not subject_detail:
+        return HttpResponseNotFound("Subject not found.")
+
+    logid = request.session.get('t_id')
+    teacher = get_object_or_404(teacherreg, login_id=logid)
+
+    if request.method == 'POST':
+        marks = request.POST.get('marks')
+        if not marks.isdigit():
+            messages.error(request, "Marks must be numeric.")
+        elif InternalMarks.objects.filter(subject=subject_name, stud_id=student).exists():
+            messages.error(request, 'Marks already exist for this subject.')
+        else:
+            InternalMarks.objects.create(
+                subject=subject_name,
+                stud_id=student,
+                marks=int(marks),
+                login_id=teacher
+            )
+            messages.success(request, 'Marks uploaded successfully!')
+            return redirect('viewsubjectt', id=student.id)
+
+    return render(request, 'uploadmark_teacher_major.html', {
+        'core': subject_detail,
+        'subject_name': subject_name,
+        'student': student
+    })

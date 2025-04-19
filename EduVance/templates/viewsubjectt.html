@@ -343,7 +343,7 @@
                     <tr>
                         <td>{{ subject }}</td>
                         <td>
-                            <a href="" class="btn btn-primary">Upload Marks</a>
+                            <a href="{% url 'upload_marks_major' student.id subject %}" class="btn btn-primary">Upload Marks</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -361,16 +361,16 @@
         </thead>
         <tbody>
             {% if selection %}
-                {% if selection.minorsone %}<tr><td>{{ selection.minorsone }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.minortwo %}<tr><td>{{ selection.minortwo }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.aeca %}<tr><td>{{ selection.aeca }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.aecb %}<tr><td>{{ selection.aecb }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.mdc %}<tr><td>{{ selection.mdc }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.vac1 %}<tr><td>{{ selection.vac1 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.vac2 %}<tr><td>{{ selection.vac2 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.sec %}<tr><td>{{ selection.sec }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.elective1 %}<tr><td>{{ selection.elective1 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.elective2 %}<tr><td>{{ selection.elective2 }}</td><td><a href="" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+            {% if selection.minorsone %}<tr><td>{{ selection.minorsone }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.minorsone }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+            {% if selection.minortwo %}<tr><td>{{ selection.minortwo }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.minortwo }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.aeca %}<tr><td>{{ selection.aeca }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.aeca }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.aecb %}<tr><td>{{ selection.aecb }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.aecb }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.mdc %}<tr><td>{{ selection.mdc }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.mdc }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.vac1 %}<tr><td>{{ selection.vac1 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.vac1 }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.vac2 %}<tr><td>{{ selection.vac2 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.vac2 }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.sec %}<tr><td>{{ selection.sec }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.sec}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.elective1 %}<tr><td>{{ selection.elective1 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.elective1}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
+                {% if selection.elective2 %}<tr><td>{{ selection.elective2 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.elective2}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
             {% else %}
                 <tr><td colspan="2">No electives selected.</td></tr>
             {% endif %}

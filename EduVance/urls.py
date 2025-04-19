@@ -64,8 +64,8 @@ urlpatterns=[
     path('asubedit', views.asubedit, name='asubedit'),
     path('adminsubject/<int:id>', views.asubdel, name='asubdel'),
     path('asubjectviews/<int:id>', views.asubjectviews, name='asubjectviews'),
-    path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
-    path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
+    # path('upload-marks/<int:course_id>/<int:student_id>/', views.upload_internal_marks, name='internals'),
+    # path('upload-marks-internal/<int:course_id>/<int:student_id>/', views.upload_internal_marks_elective, name='internals_elective'),
     path('removecomplaint/<int:id>', views.removecomplaint, name='removecomplaint'),
     path('searchstudad', views.searchstudad, name='searchstudad'),
     path('adminexam', views.adminexam, name='adminexam'),
@@ -74,8 +74,11 @@ urlpatterns=[
     path('essaycheck', views.essaycheck, name='essaycheck'),
     path('approvet/<int:id>', views.approvet, name='approvet'),
     path('subject_detail_view', views.subject_selection_view,name='subject_detail_view'),
+    path('upload_marks/<int:student_id>/<str:subject_name>/', views.internals_elective, name='upload_internal_marks'),
+path('upload_marks_major/<int:student_id>/<str:subject_name>/', views.internals_major, name='upload_marks_major'),
 
 
+  
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
  

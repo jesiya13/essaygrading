@@ -109,14 +109,10 @@ class ElectiveCourse(models.Model):
 
 
 class InternalMarks(models.Model):
-    subject = models.ForeignKey('StudentSubjectSelection', on_delete=models.CASCADE)  # Connect marks to the subjec
-    subjects = models.ForeignKey('SubjectDetail', on_delete=models.CASCADE)  # Connect marks to the subject
+    subject = models.CharField(max_length=100)  # Connect marks to the subjec
     marks = models.IntegerField(null=True, blank=True)  # Marks are now integers, allowing null/blank
     stud_id = models.ForeignKey('Studentreg', on_delete=models.CASCADE)  # Relating marks to student
     login_id = models.ForeignKey('teacherreg', on_delete=models.CASCADE)  # Teacher who entered the marks
-
-    class Meta:
-        unique_together = ('stud_id', 'subject','subjects')  # Prevent multiple marks entries for the same student-subject
 
     def __str__(self):
         return f"{self.stud_id} - {self.subject} - {self.subjects}- Marks: {self.marks}"
