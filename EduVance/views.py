@@ -1093,43 +1093,15 @@ def essaycheck(request):
         'grade': grade,
         'extracted_text': extracted_text[:500]  # Show first 500 chars
     })
-# def subject_selection_view(request):
-#     st=request.session.get('stud_id')
-#     student = get_object_or_404(Studentreg, login_id=st)
 
-#     # if StudentSubjectSelection.objects.filter(student=student).exists():
-#     #     messages.info(request, "You have already submitted your subject selections.")
-#     #     return redirect('user') 
-
-#     # Get subject & its details based on student's semester and dept
-#     subject = Subject.objects.filter(dept=student.department, sem=student.semester).first()
-#     subject_detail = SubjectDetail.objects.filter(subject=subject).first()
-
-#     if request.method == 'POST':
-#         form = StudentSelectionForm(request.POST, subject_detail=subject_detail)
-#         if form.is_valid():
-#             selection = form.save(commit=False)
-#             selection.student = student
-#             selection.subject = subject_detail
-#             selection.save()
-#             return redirect('user')
-#     else:
-#         form = StudentSelectionForm(subject_detail=subject_detail)
-
-#     context = {
-#         'form': form,
-#         'subject': subject,
-#         'subject_detail': subject_detail,
-#     }
-#     return render(request, 's.html', context)
 def subject_selection_view(request):
     st = request.session.get('stud_id')
     student = get_object_or_404(Studentreg, login_id=st)
 
     # Check if student has already submitted a selection
-    # if StudentSubjectSelection.objects.filter(student=student).exists():
-    #     messages.info(request, "You have already submitted your subject selections.")
-    #     return redirect('user')  # Adjust the redirect page as needed
+    if StudentSubjectSelection.objects.filter(student=student).exists():
+        messages.info(request, "You have already submitted your subject selections.")
+        return redirect('user')  # Adjust the redirect page as needed
 
     # Get subject & details based on student's semester and department
     subject = Subject.objects.filter(dept=student.department, sem=student.semester).first()
@@ -1178,6 +1150,7 @@ def subjectstudview(request):
         'selection': selection,
         'core_subjects': core_subjects,  # List of core subjects
     })
+
 def internals_elective(request, student_id, subject_name):
     # electives = get_object_or_404(StudentSubjectSelection, id=subject_name)
     electives = SubjectDetail.objects.filter(
@@ -1260,4 +1233,34 @@ def internals_major(request, student_id, subject_name):
         'core': subject_detail,
         'subject_name': subject_name,
         'student': student
+    })
+
+from django.db.models import Q
+from .models import InternalMarks, SubjectDetail, Studentreg, teacherreg, StudentSubjectSelection
+
+def teacher_view_marks(request):
+    # Get the teacher's id from the session
+    teacher_id = request.session.get('t_id')
+    teacher = get_object_or_404(teacherreg, login_id=teacher_id)  # Assuming the teacher is logged in
+
+    # Get all marks uploaded by the teacher
+    marks_uploaded = InternalMarks.objects.filter(login_id=teacher)
+
+    # If filters are applied, filter the marks accordingly
+    if 'dept' in request.GET and request.GET['dept']:
+        dept = request.GET['dept']
+        marks_uploaded = marks_uploaded.filter(stud_id__department=dept)
+
+    if 'sem' in request.GET and request.GET['sem']:
+        sem = request.GET['sem']
+        marks_uploaded = marks_uploaded.filter(stud_id__semester=sem)
+
+    if 'subject' in request.GET and request.GET['subject']:
+        subject_name = request.GET['subject']
+        marks_uploaded = marks_uploaded.filter(subject=subject_name)
+
+    # Prepare context for rendering
+    return render(request, 'markviewtech.html', {
+        'marks_uploaded': marks_uploaded,
+        'teacher': teacher,
     })

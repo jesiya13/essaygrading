@@ -75,7 +75,8 @@ urlpatterns=[
     path('approvet/<int:id>', views.approvet, name='approvet'),
     path('subject_detail_view', views.subject_selection_view,name='subject_detail_view'),
     path('upload_marks/<int:student_id>/<str:subject_name>/', views.internals_elective, name='upload_internal_marks'),
-path('upload_marks_major/<int:student_id>/<str:subject_name>/', views.internals_major, name='upload_marks_major'),
+    path('upload_marks_major/<int:student_id>/<str:subject_name>/', views.internals_major, name='upload_marks_major'),
+    path('teacher/view_marks/', views.teacher_view_marks, name='teacher_view_marks'),
 
 
   

@@ -129,68 +129,84 @@
                     </nav>
                 </div><!-- End Col -->		
     </header>
-    <h2>Subjects for {{ student.name }}</h2>
+    <!-- End Header -->
+<!-- Start Main Banner -->
 
-    <table align="center" border="1" cellpadding="8">
+<br>
+<center>
+    <form method="GET">
+        <label for="dept">Department:</label>
+        <select name="dept" id="dept">
+            <option value="">--Select Department--</option>
+            {% for mark in marks_uploaded %}
+                <option value="{{ mark.stud_id.department }}" {% if request.GET.dept == mark.stud_id.department %}selected{% endif %}>
+                    {{ mark.stud_id.department }}
+                </option>
+            {% endfor %}
+        </select>
+    
+        <label for="sem">Semester:</label>
+        <select name="sem" id="sem">
+            <option value="">--Select Semester--</option>
+            {% for mark in marks_uploaded %}
+                <option value="{{ mark.stud_id.semester }}" {% if request.GET.sem == mark.stud_id.semester %}selected{% endif %}>
+                    {{ mark.stud_id.semester }}
+                </option>
+            {% endfor %}
+        </select>
+    
+        <label for="subject">Subject:</label>
+        <select name="subject" id="subject">
+            <option value="">--Select Subject--</option>
+            {% for mark in marks_uploaded %}
+                <option value="{{ mark.subject }}" {% if request.GET.subject == mark.subject %}selected{% endif %}>
+                    {{ mark.subject }}
+                </option>
+            {% endfor %}
+        </select>
+    
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</center>
+    <br>
+    
+    <table border="1" cellpadding="8" align="center">
         <thead>
-            <tr> 
-                <th>Core Subjects</th>
-                <th>Internal Marks</th>
+            <tr>
+                <th>Student Photo</th>
+                <th>Student Name</th>
+                <th>Subject</th>
+                <th>Marks</th>
+                <th>Department</th>
+                <th>Semester</th>
             </tr>
         </thead>
         <tbody>
-            
-            {% if core_subjects %}
-                {% for subject in core_subjects %}
-                    <tr>
-                        <td>{{ subject }}</td>
-                        {% comment %} <td>{% if subject.marks == ' '%}</td> {% endcomment %}
-                          <td>  <a href="{% url 'upload_marks_major' student.id subject %}" class="btn btn-primary">Upload Marks</a></td>
-                            {% comment %} {% else %} {% endcomment %}
-						{% comment %} <td>marks uploaded</td> {% endcomment %}
-						{% comment %} {% endif %} {% endcomment %}
-                    
-
-                    </tr>
-                {% endfor %}
-            {% else %}
-                <tr><td colspan="2">No core subjects found.</td></tr>
-            {% endif %}
+            {% for mark in marks_uploaded %}
+            <tr>
+                <td>
+                    {% if mark.stud_id.photo %}
+                        <img src="{{ mark.stud_id.photo.url }}" alt="Student Photo" width="50" height="50">
+                    {% else %}
+                        <img src="/static/default-avatar.jpg" alt="Default Photo" width="50" height="50">
+                    {% endif %}
+                </td>
+                <td>{{ mark.stud_id.name }}</td>
+                <td>{{ mark.subject }}</td>
+                <td>{{ mark.marks }}</td>
+                <td>{{ mark.stud_id.department }}</td>
+                <td>{{ mark.stud_id.semester }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No marks found.</td></tr>
+            {% endfor %}
         </tbody>
     </table>
+    
+    
+
     
     <br>
-    
-    <table align="center" border="1" cellpadding="8">
-        <thead>
-            <tr><th colspan="2">Electives / Selected Subjects</th></tr>
-        </thead>
-        <tbody>
-            {% if selection %}
-            {% if selection.minorsone %}
-            <tr>
-                <td>{{ selection.minorsone }}</td>
-                <td><a href="../upload_marks/{{selection.student.id}}/{{ selection.minorsone }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-            {% if selection.minortwo %} 
-            <tr> 
-                <td>{{ selection.minortwo }}</td> 
-                <td><a href="../upload_marks/{{selection.student.id}}/{{ selection.minortwo }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.aeca %}<tr><td>{{ selection.aeca }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.aeca }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.aecb %}<tr><td>{{ selection.aecb }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.aecb }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.mdc %}<tr><td>{{ selection.mdc }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.mdc }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.vac1 %}<tr><td>{{ selection.vac1 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.vac1 }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.vac2 %}<tr><td>{{ selection.vac2 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{ selection.vac2 }}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.sec %}<tr><td>{{ selection.sec }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.sec}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.elective1 %}<tr><td>{{ selection.elective1 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.elective1}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-                {% if selection.elective2 %}<tr><td>{{ selection.elective2 }}</td><td><a href="../upload_marks/{{selection.student.id}}/{{selection.elective2}}/" class="btn btn-primary">Upload Marks</a></td></tr>{% endif %}
-            {% else %}
-                <tr><td colspan="2">No electives selected.</td></tr>
-            {% endif %}
-        </tbody>
-    </table>
-    
-
-    
     <section class="footer fstyle-2">
         <div class="container">
             <div class="row footer-bottom justify-content-center">
@@ -247,4 +263,3 @@
     </section>
 </body>
 </html>
-

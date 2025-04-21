@@ -87,251 +87,52 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-3 col-md-6 align-self-center">
                     <div class="site-logo">
-                        <a href="index-2.html"><img src="{% static 'mainpage/assets/img/logo.svg'%}" alt="Edumon"></a>
+                        <img src="{% static 'mainpage/assets/img/logotwo.svg'%}" alt="EduVance">
                     </div>
                                                 
                 </div><!-- End Col -->			
-
-                <div class="col-xl-6 col-lg-6 col-md-6 menu_col justify-content-center d-flex align-self-center">
+    
+                <div class="col-xl-9 col-lg-8 col-md-6 menu_col justify-content-start d-flex align-self-center">
                     <nav id="main-menu">
                         <ul>
+                            <li>
+                                <a href="{% url 'search_student' %}">Students</a>
+                            </li>
                             <li class="menu-item-has-children">
-                                <a href="#">Home</a>
+                                <a href="#">Uploads</a>
                                 <ul class="sub-menu">
-                                    <li><a href="index.html">Home One</a></li>
-                                    <li><a href="index-2.html">Home Two</a></li>
+                                    <li><a href="{% url 'viewessayt' %}">View Essay</a></li>
+                                    <li><a href="{% url 'viewanswert' %}">View Answer sheet</a></li> 
+                                    <li><a href="{% url 'viewomrt' %}">View OMR sheet</a></li> 
+                                    <li><a href="{% url 'viewassignmentt' %}">View Assignment</a></li> 
+    
                                 </ul>
-                            </li>	
-
+                            </li>					
                             <li class="menu-item-has-children">
-                                <a href="#">Courses</a>
+                                <a href="#">Attendance</a>
                                 <ul class="sub-menu">
-                                    <li><a href="courses.html">Course Style1</a></li>
-                                    <li><a href="courses-2.html">Course Style2</a></li>
-                                    <li><a href="course-details.html">Course Details</a></li>
-                                </ul>
-                            </li>							
-                            
-                            <li class="menu-item-has-children">
-                                <a href="#">Pages</a>
-                                <ul class="sub-menu">
-                                    <li><a href="grid-blog.html">Grid Blog</a></li>
-                                    <li><a href="standard-blog.html">Standard Blog</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="instructors.html">Instructors</a></li>
-                                    <li><a href="404.html">404</a></li>
+                                    <li><a href="{% url 'viewattendance' %}">Attendance marking</a></li>
+                                    <li><a href="{% url 'attendanceviewt' %}">Check attendance</a></li>
                                 </ul>
                             </li>		
-                            <li>
-                                <a href="{% url 'studentsview' %}">Students</a>
-                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Internal Exam</a>
+                                <ul class="sub-menu">
+                                    <li><a href="{% url 'uploadmarks' %}">Upload marks</a></li>
+                                </ul>
+                            </li>		
+                            
+                            
+                            
                             <li>
                                 <a href="{% url 'tprofile' %}">Profile</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'login' %}" class="btn btn-primary">Log out</a>
                             </li>
                         </ul>
                     </nav>
                 </div><!-- End Col -->		
-
-                <div class="col-xl-3 col-lg-3 col-md-6 align-self-center text-end">
-                    <div class="searchcart">
-                        <a href="#" class="sicon search-btn"><svg fill="none" viewBox="0 0 20 20"><path fill="#fff" d="M7.536.044a8.418 8.418 0 00-5.1 2.434C1.476 3.44.826 4.487.413 5.745a8.018 8.018 0 000 5.08 7.977 7.977 0 002.03 3.27c1.906 1.896 4.503 2.756 7.182 2.377a8.529 8.529 0 003.846-1.579c.117-.09.223-.156.239-.152.015.008 1.198 1.164 2.628 2.57 1.628 1.603 2.655 2.584 2.749 2.627a.627.627 0 00.89-.47c.063-.327.281-.093-3.999-4.32l-1.335-1.322.226-.265c.976-1.13 1.62-2.56 1.867-4.123.094-.61.094-1.727 0-2.345-.277-1.793-1.062-3.333-2.37-4.634A8.463 8.463 0 007.536.044zm1.87 1.309c1.578.23 2.964.918 4.061 2.012 1.344 1.349 2.043 3.025 2.043 4.92 0 .7-.063 1.18-.227 1.786-.828 3.08-3.635 5.209-6.869 5.209-1.925 0-3.713-.73-5.049-2.067a6.958 6.958 0 01-1.84-3.17c-.288-1.082-.288-2.434 0-3.516A7.082 7.082 0 016.572 1.52c.89-.23 1.98-.297 2.835-.168z"/></svg></a>
-                        <div class="cart-icon">
-                            <a href="#" class="mcart_open" data-menu="#mini_cart"><svg fill="none" viewBox="0 0 17 19"><path fill="#fff" d="M7.465.072C5.288.345 3.627 2.132 3.627 4.21v.446l-.811.018c-.777.013-.829.017-1.063.13A1.656 1.656 0 00.807 6.01c-.073.442-.832 11.316-.806 11.576.052.53.494 1.106 1.015 1.314l.247.1h13.489l.247-.1c.52-.208.963-.785 1.015-1.314.026-.26-.733-11.13-.807-11.572a1.786 1.786 0 00-.139-.451c-.143-.29-.485-.612-.784-.75-.26-.122-.296-.126-1.08-.14l-.816-.017v-.35c-.004-1.05-.477-2.157-1.258-2.942A4.32 4.32 0 008.484.068a3.492 3.492 0 00-1.019.004zm1.301 1.453C10.03 1.845 11 3.073 11 4.348v.317H5.015v-.317c0-.177.039-.468.082-.646a3.01 3.01 0 013.67-2.177zM3.648 7.883l-.03 1.835.1.148c.147.212.303.312.525.338.251.03.511-.1.646-.321l.104-.165.013-1.835.013-1.83h5.977l.013 1.83.013 1.835.104.165a.678.678 0 00.646.32c.217-.02.377-.125.52-.333.096-.143.096-.148.096-1.978V6.053h.672c.647 0 .673.004.733.095.048.074.16 1.475.46 5.713l.4 5.617-.096.078c-.091.073-.39.078-6.55.078-6.159 0-6.458-.005-6.549-.078l-.095-.078.399-5.617c.299-4.238.412-5.639.46-5.713.06-.09.082-.095.758-.095h.699l-.03 1.83z"/></svg></a>
-                            <span>3</span>
-                        </div>							
-                        
-                        <div class="cart-icon mobile_cart">
-                            <a href="cart.html" class="mcart_open"><svg fill="none" viewBox="0 0 17 19"><path fill="#fff" d="M7.465.072C5.288.345 3.627 2.132 3.627 4.21v.446l-.811.018c-.777.013-.829.017-1.063.13A1.656 1.656 0 00.807 6.01c-.073.442-.832 11.316-.806 11.576.052.53.494 1.106 1.015 1.314l.247.1h13.489l.247-.1c.52-.208.963-.785 1.015-1.314.026-.26-.733-11.13-.807-11.572a1.786 1.786 0 00-.139-.451c-.143-.29-.485-.612-.784-.75-.26-.122-.296-.126-1.08-.14l-.816-.017v-.35c-.004-1.05-.477-2.157-1.258-2.942A4.32 4.32 0 008.484.068a3.492 3.492 0 00-1.019.004zm1.301 1.453C10.03 1.845 11 3.073 11 4.348v.317H5.015v-.317c0-.177.039-.468.082-.646a3.01 3.01 0 013.67-2.177zM3.648 7.883l-.03 1.835.1.148c.147.212.303.312.525.338.251.03.511-.1.646-.321l.104-.165.013-1.835.013-1.83h5.977l.013 1.83.013 1.835.104.165a.678.678 0 00.646.32c.217-.02.377-.125.52-.333.096-.143.096-.148.096-1.978V6.053h.672c.647 0 .673.004.733.095.048.074.16 1.475.46 5.713l.4 5.617-.096.078c-.091.073-.39.078-6.55.078-6.159 0-6.458-.005-6.549-.078l-.095-.078.399-5.617c.299-4.238.412-5.639.46-5.713.06-.09.082-.095.758-.095h.699l-.03 1.83z"/></svg></a>
-                            <span>3</span>
-                        </div>
-                    </div>					
-                    <a href="#" class="bg_btn bt">Sign In</a>
-                </div><!-- End Col -->
-            </div>
-        </div>
-        
-        <ul class='mobile_menu'>
-            <li class="menu-item-has-children">
-                <a href="#">Home</a>
-                <ul class="sub-menu">
-                    <li><a href="index.html">Home One</a></li>
-                    <li><a href="index-2.html">Home Two</a></li>
-                </ul>
-            </li>	
-
-            <li class="menu-item-has-children">
-                <a href="#">Courses</a>
-                <ul class="sub-menu">
-                    <li><a href="courses.html">Course Style1</a></li>
-                    <li><a href="courses-2.html">Course Style2</a></li>
-                    <li><a href="course-details.html">Course Details</a></li>
-                </ul>
-            </li>							
-            
-            <li class="menu-item-has-children">
-                <a href="#">Pages</a>
-                <ul class="sub-menu">
-                    <li><a href="grid-blog.html">Grid Blog</a></li>
-                    <li><a href="standard-blog.html">Standard Blog</a></li>
-                    <li><a href="blog-details.html">Blog Details</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                    <li><a href="checkout.html">Checkout</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="instructors.html">Instructors</a></li>
-                    <li><a href="404.html">404</a></li>
-                </ul>
-            </li>		
-
-            <li>
-                <a href="standard-blog.html">Blog</a>
-            </li>
-
-            <li>
-                <a href="contact.html">Contact</a>
-            </li>
-        </ul>	
-        
-        <!-- Start Drawer -->
-        <div id="mini_cart" class="min_cart_wrapper">
-            <div class="cart_drawer">
-                <div class="cart_top">
-                    <a href="#" class="cart_close"><i class='bx bx-x'></i></a>
-                    <h3 class="title">Courses List</h3>
-                    <span class="cart_number">
-                        3
-                    </span>
-                </div>
-                
-                <div class="mini_cart_list">
-                    <ul>
-                        <li class="d-flex">
-                            <div class="thumb_img_cartmini">
-                                <a href="course-details.html" class="mc_img">
-                                    <img src="{% static 'mainpage/assets/img/mcart/1.jpg' %}" alt="Product Name" >
-                                </a>
-                            </div>	
-                            
-                            <div class="product-detail">
-                                <h3 class="product_name_mini">
-                                     <a href="course-details.html">
-                                        Photography Crash Course
-                                    </a>
-                                </h3>
-                                <div class="product_info">
-                                    <div class="product_quanity">QTY : 1 </div>
-                                    <div class="product_price">
-                                        <span class="price_sale">$25.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="produc_remove">
-                                <a href="#" class="remove-product">
-                                    <i class='bx bx-trash'></i>
-                                </a>              
-                            </div>
-                        </li>					
-                        
-                        <li class="d-flex">
-                            <div class="thumb_img_cartmini">
-                                <a href="course-details.html" class="mc_img">
-                                    <img src="{% static 'mainpage/assets/img/mcart/2.jpg' %}" alt="Product Name" >
-                                </a>
-                            </div>	
-                            
-                            <div class="product-detail">
-                                <h3 class="product_name_mini">
-                                     <a href="course-details.html">
-                                        Photography Crash Course
-                                    </a>
-                                </h3>
-                                <div class="product_info">
-                                    <div class="product_quanity">QTY : 1 </div>
-                                    <div class="product_price">
-                                        <span class="price_sale">$25.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="produc_remove">
-                                <a href="#" class="remove-product">
-                                    <i class='bx bx-trash'></i>
-                                </a>              
-                            </div>
-                        </li>					
-                        
-                        <li class="d-flex">
-                            <div class="thumb_img_cartmini">
-                                <a href="course-details.html" class="mc_img">
-                                    <img src="{% static 'mainpage/assets/img/mcart/3.jpg' %}" alt="Product Name" >
-                                </a>
-                            </div>	
-                            
-                            <div class="product-detail">
-                                <h3 class="product_name_mini">
-                                     <a href="course-details.html">
-                                        Photography Crash Course
-                                    </a>
-                                </h3>
-                                <div class="product_info">
-                                    <div class="product_quanity">QTY : 1 </div>
-                                    <div class="product_price">
-                                        <span class="price_sale">$25.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="produc_remove">
-                                <a href="#" class="remove-product">
-                                    <i class='bx bx-trash'></i>
-                                </a>              
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="cart_drawer_btm">
-                    <div class="sub-total">
-                        <span class="total-title float-start">Total:</span>
-                        <span class="total-price float-end">$75.00</span>
-                    </div>
-                    
-                    <div class="bottom_group">
-                        <a href="cart.html" class="button-viewcart">
-                            <span>View Cart</span>
-                        </a>
-                        <a href="checkout.html" class="button-checkout">
-                            <span>Checkout</span>
-                        </a>
-                    </div>
-                </div>
-            </div>				
-        </div>
-        <!-- End Drawer -->
-        
-        <div class="search_box">
-            <div class="close-btn">
-                <i class="ti-close"></i>
-            </div>
-                            
-            <div class="search-data">
-                <form action="#" method="get">
-                    <input type="text" required>
-                    <div class="line"></div>
-                    <label>Type to search..</label>
-                    <button type="submit">
-                        <span class="ti-search"></span>
-                    </button>
-                </form>
-            </div>			
-        </div>			
     </header>
     <center>
     {% comment %} <h4>Search for students...</h4> {% endcomment %}
@@ -381,82 +182,22 @@
             <br>
             <section class="footer fstyle-2">
                 <div class="container">
-                    <div class="row footer-bottom">
+                    <div class="row footer-bottom justify-content-center">
                         <div class="col-xl-3 col-md-6 col-12 wow fadeIn">
                             <div class="single-footer">
                                 <div class="about-footer">
+                                    <center>
                                     <div class="footer-logo">
-                                        <a href="#"><img src="{% static 'mainpage/assets/img/footer-logo.svg' %}" alt="Edumon"></a>
+                                        <h2 style="color: #FFFFFF;">EduVance</h2>
                                     </div>
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit varius congue Morbi 
+                                     A digital platform that streamlines student enrollment, course management, grades tracking, and communication between students, faculty, and administration, improving efficiency and organization.
                                     </p>
-                                    
-                                    <div class="fot-social">
-                                        <span>Follow Us On :</span>
-                                        <ul>
-                                            <li>
-                                                <a href="#"><i class="bx bxl-facebook"></i></a>
-                                            </li>
-    
-                                            <li>
-                                                <a href="#"><i class="bx bxl-twitter"></i></a>										
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="bx bxl-linkedin"></i></a>	
-                                            </li>
-                                            <li>
-                                                <a href="#"><i class="bx bxl-youtube"></i></a>								
-                                            </li>																				
-                                        </ul>
-                                    </div>
+                                </center>
                                 </div>
                             </div>
                         </div><!-- End Col -->
-                        
-                        <div class="col-xl-3 col-md-6 col-12 wow fadeIn">
-                            <div class="single-footer">
-                                <h3 class="footer-title">Useful Links</h3>
-                                <ul>
-                                    <li><a href="#">Home</a></li>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Courses</a></li>
-                                    <li><a href="#">Categories</a></li>
-                                    <li><a href="#">Pricing</a></li>
-                                    <li><a href="#">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div><!-- End Col -->	
     
-                        <div class="col-xl-3 col-md-6 col-12 wow fadeIn">
-                            <div class="single-footer">
-                                <h3 class="footer-title">Resources</h3>
-                                <ul>
-                                    <li><a href="#">Community</a></li>
-                                    <li><a href="#">Support</a></li>
-                                    <li><a href="#">Video Guides</a></li>
-                                    <li><a href="#">Terms and Conditions</a></li>
-                                    <li><a href="#">Blog</a></li>
-                                    <li><a href="#">Security</a></li>
-                                </ul>
-                            </div>
-                        </div><!-- End Col -->
-                        
-                        <div class="col-xl-3 col-md-6 col-12 wow fadeIn">
-                            <div class="single-footer">
-                                <h3 class="footer-title">Newsletter</h3>
-                                <div class="newsletter">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur <br>
-                                        adipiscing elit. In varius congue .
-                                    </p>								
-                                    <form action="#" method="post">
-                                        <input type="email" name="EMAIL" placeholder="Email Address">
-                                        <button type="submit">Subscribe</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div><!-- End Col -->
                     </div>
                     
                     <div class="fbulb_shape">
@@ -490,7 +231,7 @@
                 </div>
                 
                 <div class="copyright text-center wow fadeIn">
-                    <p>Copyright © 2024 <a href="#">Edumon</a>. All rights reserved.</p>
+                    <p>Copyright © Sanjana. All rights reserved.</p>
                 </div>
             </section>
             </body>

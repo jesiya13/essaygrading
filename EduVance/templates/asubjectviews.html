@@ -37,14 +37,14 @@
 					<img src="{% static 'admin/assets/images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
 				</div>
 				<div>
-					<h4 class="logo-text">Dashtrans</h4>
+					<h4 class="logotwo">EduVance</h4>
 				</div>
 				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
 				</div>
 			 </div>
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
-				<li>
+				{% comment %} <li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class='bx bx-home-alt'></i>
 						</div>
@@ -56,12 +56,12 @@
 						<li> <a href="index2.html"><i class='bx bx-radio-circle'></i>Analytics</a>
 						</li>
 					</ul>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class="bx bx-category"></i>
-						</div>
-						<div class="menu-title">Application</div>
+						</div> {% endcomment %}
+						{% comment %} <div class="menu-title">Application</div>
 					</a>
 					<ul>
 						<li> <a href="app-emailbox.html"><i class='bx bx-radio-circle'></i>Email</a>
@@ -80,150 +80,56 @@
 						</li>
 					</ul>
 				</li>
-				<li class="menu-label">UI Elements</li>
+				<li class="menu-label">UI Elements</li> {% endcomment %}
 				<li>
-					<a href="widgets.html">
-						<div class="parent-icon"><i class='bx bx-cookie'></i>
+					
+						<a href="{% url 'adminsubjects' %}">
+						<div class="parent-icon"><i class='bx bx-book'></i>
 						</div>
-						<div class="menu-title">Widgets</div>
+						<div class="menu-title">Add Subjects</div>
+					</a>
+					
+				</li>
+				<li>
+					<a href="{% url 'subjectview' %}">
+						<div class="parent-icon"><i class='bx bx-book-open'></i>
+						</div>
+						<div class="menu-title">View Subjects</div>
 					</a>
 				</li>
 				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class='bx bx-cart'></i>
+					<a href="{% url 'admincompliaintview' %}">
+						<div class="parent-icon"><i class="bx bx-envelope"></i>
 						</div>
-						<div class="menu-title">eCommerce</div>
+						<div class="menu-title" >Complaints</div>
 					</a>
-					<ul>
-						<li> <a href="ecommerce-products.html"><i class='bx bx-radio-circle'></i>Products</a>
-						</li>
-						<li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>Product Details</a>
-						</li>
-						<li> <a href="ecommerce-add-new-products.html"><i class='bx bx-radio-circle'></i>Add New Products</a>
-						</li>
-						<li> <a href="ecommerce-orders.html"><i class='bx bx-radio-circle'></i>Orders</a>
-						</li>
-					</ul>
 				</li>
 				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
+					<a href="{% url 'adminexam' %}">
+						<div class="parent-icon"><i class="bx bx-bell"></i>
 						</div>
-						<div class="menu-title">Components</div>
+						<div class="menu-title" >Notify Exam</div>
 					</a>
-					<ul>
-						<li> <a href="component-alerts.html"><i class='bx bx-radio-circle'></i>Alerts</a>
-						</li>
-						<li> <a href="component-accordions.html"><i class='bx bx-radio-circle'></i>Accordions</a>
-						</li>
-						<li> <a href="component-badges.html"><i class='bx bx-radio-circle'></i>Badges</a>
-						</li>
-						<li> <a href="component-buttons.html"><i class='bx bx-radio-circle'></i>Buttons</a>
-						</li>
-						<li> <a href="component-cards.html"><i class='bx bx-radio-circle'></i>Cards</a>
-						</li>
-						<li> <a href="component-carousels.html"><i class='bx bx-radio-circle'></i>Carousels</a>
-						</li>
-						<li> <a href="component-list-groups.html"><i class='bx bx-radio-circle'></i>List Groups</a>
-						</li>
-						<li> <a href="component-media-object.html"><i class='bx bx-radio-circle'></i>Media Objects</a>
-						</li>
-						<li> <a href="component-modals.html"><i class='bx bx-radio-circle'></i>Modals</a>
-						</li>
-						<li> <a href="component-navs-tabs.html"><i class='bx bx-radio-circle'></i>Navs & Tabs</a>
-						</li>
-						<li> <a href="component-navbar.html"><i class='bx bx-radio-circle'></i>Navbar</a>
-						</li>
-						<li> <a href="component-paginations.html"><i class='bx bx-radio-circle'></i>Pagination</a>
-						</li>
-						<li> <a href="component-popovers-tooltips.html"><i class='bx bx-radio-circle'></i>Popovers & Tooltips</a>
-						</li>
-						<li> <a href="component-progress-bars.html"><i class='bx bx-radio-circle'></i>Progress</a>
-						</li>
-						<li> <a href="component-spinners.html"><i class='bx bx-radio-circle'></i>Spinners</a>
-						</li>
-						<li> <a href="component-notifications.html"><i class='bx bx-radio-circle'></i>Notifications</a>
-						</li>
-						<li> <a href="component-avtars-chips.html"><i class='bx bx-radio-circle'></i>Avatrs & Chips</a>
-						</li>
-					</ul>
 				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-repeat"></i>
-						</div>
-						<div class="menu-title">Content</div>
-					</a>
-					<ul>
-						<li> <a href="content-grid-system.html"><i class='bx bx-radio-circle'></i>Grid System</a>
-						</li>
-						<li> <a href="content-typography.html"><i class='bx bx-radio-circle'></i>Typography</a>
-						</li>
-						<li> <a href="content-text-utilities.html"><i class='bx bx-radio-circle'></i>Text Utilities</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"> <i class="bx bx-donate-blood"></i>
-						</div>
-						<div class="menu-title">Icons</div>
-					</a>
-					<ul>
-						<li> <a href="icons-line-icons.html"><i class='bx bx-radio-circle'></i>Line Icons</a>
-						</li>
-						<li> <a href="icons-boxicons.html"><i class='bx bx-radio-circle'></i>Boxicons</a>
-						</li>
-						<li> <a href="icons-feather-icons.html"><i class='bx bx-radio-circle'></i>Feather Icons</a>
-						</li>
-					</ul>
-				</li>
+
 				
-				<li class="menu-label">Forms & Tables</li>
+				<li class="menu-label">Tables</li>
 				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-message-square-edit'></i>
-						</div>
-						<div class="menu-title">Forms</div>
-					</a>
-					<ul>
-						<li> <a href="form-elements.html"><i class='bx bx-radio-circle'></i>Form Elements</a>
-						</li>
-						<li> <a href="form-input-group.html"><i class='bx bx-radio-circle'></i>Input Groups</a>
-						</li>
-						
-						<li> <a href="form-layouts.html"><i class='bx bx-radio-circle'></i>Forms Layouts</a>
-						</li>
-						<li> <a href="form-validations.html"><i class='bx bx-radio-circle'></i>Form Validation</a>
-						</li>
-						<li> <a href="form-wizard.html"><i class='bx bx-radio-circle'></i>Form Wizard</a>
-						</li>
-						<li> <a href="form-text-editor.html"><i class='bx bx-radio-circle'></i>Text Editor</a>
-						</li>
-						<li> <a href="form-file-upload.html"><i class='bx bx-radio-circle'></i>File Upload</a>
-						</li>
-						<li> <a href="form-date-time-pickes.html"><i class='bx bx-radio-circle'></i>Date Pickers</a>
-						</li>
-						<li> <a href="form-select2.html"><i class='bx bx-radio-circle'></i>Select2</a>
-						</li>
-						<li> <a href="form-repeater.html"><i class='bx bx-radio-circle'></i>Form Repeater</a>
-						</li>
-					</ul>
-				</li>
-				<li>
+					
+				
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
 						</div>
-						<div class="menu-title">Tables</div>
+						<div class="menu-title"> Data Tables</div>
 					</a>
 					<ul>
-						<li> <a href="table-basic-table.html"><i class='bx bx-radio-circle'></i>Basic Table</a>
+						<li> <a href="{% url 'searchstudad' %}"><i class='bx bx-radio-circle'></i>Students</a>
 						</li>
-						<li> <a href="table-datatable.html"><i class='bx bx-radio-circle'></i>Data Table</a>
+						<li> <a href="{% url 'adminteachview' %}"><i class='bx bx-radio-circle'></i>Teachers</a>
 						</li>
 					</ul>
 				</li>
-				<li class="menu-label">Pages</li>
+				{% comment %} <li class="menu-label">Pages</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-lock"></i>
@@ -286,8 +192,8 @@
 						</li>
 						<li> <a href="error-blank-page.html" target="_blank"><i class='bx bx-radio-circle'></i>Blank Page</a>
 						</li>
-					</ul>
-				</li>
+					</ul> {% endcomment %}
+				{% comment %} </li>
 				<li>
 					<a href="faq.html">
 						<div class="parent-icon"><i class="bx bx-help-circle"></i>
@@ -317,8 +223,8 @@
 						<li> <a href="charts-highcharts.html"><i class='bx bx-radio-circle'></i>Highcharts</a>
 						</li>
 					</ul>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-map-alt"></i>
 						</div>
@@ -330,8 +236,8 @@
 						<li> <a href="map-vector-maps.html"><i class='bx bx-radio-circle'></i>Vector Maps</a>
 						</li>
 					</ul>
-				</li>
-				<li class="menu-label">Others</li>
+				</li> {% endcomment %}
+				{% comment %} <li class="menu-label">Others</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-menu"></i>
@@ -350,8 +256,8 @@
 							</ul>
 						</li>
 					</ul>
-				</li>
-				<li>
+				</li> {% endcomment %}
+				{% comment %} <li>
 					<a href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-folder"></i>
 						</div>
@@ -364,18 +270,18 @@
 						</div>
 						<div class="menu-title">Support</div>
 					</a>
-				</li>
-			</ul>
+				</li> {% endcomment %}
+			{% comment %} </ul> {% endcomment %}
 			<!--end navigation-->
 		</div>
 		<!--end sidebar wrapper -->
 		<!--start header -->
 		<header>
-			<div class="topbar d-flex align-items-center">
+		<div class="topbar d-flex align-items-center">
 				<nav class="navbar navbar-expand gap-3">
-					<div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
+						 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
 					</div>
-					<div class="search-bar flex-grow-1">
+					{% comment %}<div class="search-bar flex-grow-1">
 						<div class="position-relative search-bar-box">
 							<input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
 							<span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
@@ -388,7 +294,7 @@
 								</a>
 							</li>
 							<li class="nav-item dropdown dropdown-laungauge d-none d-sm-flex">
-								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="avascript:;" data-bs-toggle="dropdown"><img src="assets/images/county/02.png" width="22" alt="">
+								<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="avascript:;" data-bs-toggle="dropdown"><img src="{% static 'admin/assets/images/county/02.png' %}" width="22" alt="">
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end">
 									<li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img src="{% static 'admin/assets/images/county/01.png' %}" width="20" alt=""><span class="ms-2">English</span></a>
@@ -949,32 +855,27 @@
 									</a>
 								</div>
 							</li>
-						</ul>
-					</div>
+						</ul> {% endcomment %}
+					{% comment %} </div> {% endcomment %}
 					<div class="user-box dropdown px-3">
 						<a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="{% static 'admin/assets/images/avatars/avatar-2.png' %}" class="user-img" alt="user avatar">
 							<div class="user-info">
-								<p class="user-name mb-0">Pauline Seitz</p>
-								<p class="designattion mb-0">Web Designer</p>
+								<p class="user-name mb-0">Admin</p>
+								<p class="designattion mb-0"></p>
 							</div>
+							<br>
+							<div class="ms-auto">
+								<div class="btn-group">
+									<button type="button" class="btn btn-secondary"><a href="{% url 'login' %}">Log out</button>
+									</button>
+									
+								</div>
+							</div> 
 						</a>
-						<ul class="dropdown-menu dropdown-menu-end">
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-user fs-5"></i><span>Profile</span></a>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-cog fs-5"></i><span>Settings</span></a>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-home-circle fs-5"></i><span>Dashboard</span></a>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-dollar-circle fs-5"></i><span>Earnings</span></a>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-download fs-5"></i><span>Downloads</span></a>
-							</li>
-							<li>
-								<div class="dropdown-divider mb-0"></div>
-							</li>
-							<li><a class="dropdown-item d-flex align-items-center" href="javascript:;"><i class="bx bx-log-out-circle"></i><span>Logout</span></a>
-							</li>
+						
+							
+							
 						</ul>
 					</div>
 				</nav>
@@ -1015,22 +916,17 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
-                            <h2>Core Subjects</h2>
 <table>
     <thead>
         <tr>
 			<h2>Course Details for {{ student.name }}</h2>
-
 			<!-- Core Subjects -->
-			<h3>Core Subjects</h3>
+			 <br>
+			<h4>Course Subjects:</h4>
 			{% if core_subjects %}
 				<table>
-					<thead>
-						<tr>
-							<th>Core Subject</th>
-						</tr>
-					</thead>
 					<tbody>
+						<br>
 						{% for core in core_subjects %}
 							<tr>
 								<td>{{ core }}</td>
@@ -1042,21 +938,21 @@
 				<p>No core subjects found.</p>
 			{% endif %}
 		
-		
+		<br>
 			<!-- Selected Subjects -->
 			<h3>Selected Subjects</h3>
 			{% if selected_subjects %}
 				<table>
 					<thead>
 						<tr>
-							<th>Subject Type</th>
+							<th>Types</th>
 							<th>Selected Subject</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for subject_type, subject in selected_subjects %}
 							<tr>
-								<td>{{ subject_type }}</td>
+								<td>{{ subject_type }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 								<td>{{ subject }}</td>
 							</tr>
 						{% endfor %}
