@@ -151,54 +151,28 @@
     <thead>
         <tr>
             <th>Subjects you have chosen</th>
-			<th>Internal Marks</th>
-
+            <th>Internal Marks</th>
         </tr>
     </thead>
     <tbody>
-
         <!-- Core Subjects -->
-        {% for core in core_subjects %}
+        {% for subject, mark in core_subjects_with_marks %}
             <tr>
-                <td>{{ core }}</td>
+                <td>{{ subject }}</td>
+                <td>{{ mark }}</td>
             </tr>
         {% endfor %}
 
-        <!-- Selected Electives -->
-        {% if selection %}
-            {% if selection.minorsone %}
-            <tr><td>{{ selection.minorsone }}</td></tr>
-            {% endif %}
-            {% if selection.minortwo %}
-            <tr><td>{{ selection.minortwo }}</td></tr>
-            {% endif %}
-            {% if selection.aeca %}
-            <tr><td>{{ selection.aeca }}</td></tr>
-            {% endif %}
-            {% if selection.aecb %}
-            <tr><td>{{ selection.aecb }}</td></tr>
-            {% endif %}
-            {% if selection.mdc %}
-            <tr><td>{{ selection.mdc }}</td></tr>
-            {% endif %}
-            {% if selection.vac1 %}
-            <tr><td>{{ selection.vac1 }}</td></tr>
-            {% endif %}
-            {% if selection.vac2 %}
-            <tr><td>{{ selection.vac2 }}</td></tr>
-            {% endif %}
-            {% if selection.sec %}
-            <tr><td>{{ selection.sec }}</td></tr>
-            {% endif %}
-            {% if selection.elective1 %}
-            <tr><td>{{ selection.elective1 }}</td></tr>
-            {% endif %}
-            {% if selection.elective2 %}
-            <tr><td>{{ selection.elective2 }}</td></tr>
-            {% endif %}
-        {% endif %}
+        <!-- Elective Subjects -->
+        {% for subject, mark in elective_subjects_with_marks %}
+            <tr>
+                <td>{{ subject }}</td>
+                <td>{{ mark }}</td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
+
     
             <br>
            <!-- Start Footer -->

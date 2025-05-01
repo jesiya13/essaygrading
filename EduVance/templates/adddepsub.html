@@ -1,151 +1,146 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-	
-<!-- Mirrored from getmasum.com/html-preview/edumon/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 11 Jan 2025 06:30:29 GMT -->
 <head>
-	<!-- Meta -->
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<!-- SITE TITLE -->
-	<title>EduVance</title>			
-	<!-- Latest Bootstrap min CSS -->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/bootstrap/css/bootstrap.min.css' %}">		
-	<!-- Google Font -->	
-	<link rel="preconnect" href="https://fonts.googleapis.com/">
-	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-	<!-- Icon CSS -->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/fonts/themify-icons.css' %}">
-	<link href="{% static 'mainpage/../../../unpkg.com/boxicons%402.1.4/css/boxicons.min.css' %}" rel='stylesheet'>
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/line-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'mainpage/assets/fonts/fontawesome/fontawesome.css' %}">
-	<!--- owl carousel Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/owlcarousel/css/owl.carousel.min.css' %}">
-	<link rel="stylesheet" href="{% static 'mainpage/assets/owlcarousel/css/owl.theme.default.min.css' %}">	
-	<!--Preloader Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/preloader.css' %}">
-	<!--jquery-simple-mobilemenu Css-->	
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/jquery-simple-mobilemenu.css' %}">	
-	<!--magnific-popup Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/magnific-popup.css' %}">	
-	<!--animate Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/animate.css' %}">		
-	<!--YouTubePopUp Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/YouTubePopUp.css' %}">	
-	 <!--Slick Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/slick.css' %}">	
-	<!--slick theme Css-->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/slick-theme.css' %}">					
-	<!-- Style CSS -->
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/style.css' %}">
-	<!-- Responsive CSS -->		
-	<link rel="stylesheet" href="{% static 'mainpage/assets/css/responsive.css' %}">		
+    <head>
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<!-- SITE TITLE -->
+		<title>Edumon - Education HTML Template</title>			
+		<!-- Latest Bootstrap min CSS -->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/bootstrap/css/bootstrap.min.css' %}">		
+		<!-- Google Font -->	
+		<link rel="preconnect" href="https://fonts.googleapis.com/">
+		<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+		<!-- Icon CSS -->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/fonts/themify-icons.css' %}">
+		<link href='../../../unpkg.com/boxicons%402.1.4/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/line-awesome.css' %}">
+		<link rel="stylesheet" href="assets/fonts/fontawesome/fontawesome.css">
+		<!--- owl carousel Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/owlcarousel/css/owl.carousel.min.css' %}">
+		<link rel="stylesheet" href="{% static 'mainpage/assets/owlcarousel/css/owl.theme.default.min.css' %}">	
+		<!--Preloader Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/preloader.css' %}">
+		<!--jquery-simple-mobilemenu Css-->	
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/jquery-simple-mobilemenu.css' %}">	
+		<!--magnific-popup Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/magnific-popup.css' %}">	
+		<!--animate Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/animate.css' %}">		
+		<!--YouTubePopUp Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/YouTubePopUp.css' %}">	
+		 <!--Slick Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/slick.css' %}">	
+		<!--slick theme Css-->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/slick-theme.css' %}">					
+		<!-- Style CSS -->
+		<link rel="stylesheet" href="{% static 'mainpage/assets/css/style.css' %}">
+		<!-- Responsive CSS -->		
+		<link rel="stylesheet" href="{%static 'mainpage/assets/css/responsive.css' %}">		
 
+	</head>	
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- <title>Document</title> -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 1px solid #0a1b47; 
+            padding: 8px;
+            text-align: left;
+            color: #000000;
+        }
+        td {
+            border: 1px solid #030e16; 
+            padding: 8px;
+            text-align: left;
+            color: #000000;
+        }
+        th {
+            background-color: #0b466e92;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Start Header -->
+  <header id="navigation" class="header-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-6 align-self-center">
+                <div class="site-logo">
+                    <img src="{% static 'mainpage/assets/img/logotwo.svg'%}" alt="EduVance">
+                </div>
+                                            
+            </div><!-- End Col -->			
 
-	<!-- Start Preloader -->
-	<div class="preloader">
-		<div class="book-style">
-		  <div class="inner">
-			<div class="left"></div>
-			<div class="middle"></div>
-			<div class="right"></div>
-		  </div>
-		  <ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		  </ul>
-		</div>
-	</div>	
-	<!-- End Preloader -->
+            <div class="col-xl-9 col-lg-8 col-md-6 menu_col justify-content-start d-flex align-self-center">
+                <nav id="main-menu">
+                    <ul>
+                        <li>
+                            <a href="{% url 'search_student' %}">Students</a>
+                        </li>
+                        <li class="menu-item-has-children">
+                            <a href="#">Uploads</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% url 'viewessayt' %}">View Essay</a></li>
+                                <li><a href="{% url 'viewanswert' %}">View Answer sheet</a></li> 
+                                <li><a href="{% url 'viewomrt' %}">View OMR sheet</a></li> 
+                                <li><a href="{% url 'viewassignmentt' %}">View Assignment</a></li> 
 
-	<!-- Start Header -->
-	<header id="navigation">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-30 left-col align-self-center">
-					<div class="site-logo">
-						<img src="{% static 'mainpage/assets/img/logotwo.svg' %}" alt="EduVance">
-					</div>
-					
-					
-				</div><!-- End Col -->			
-
-				<div class="col-40 justify-content-center d-flex align-self-center">
-					<nav id="main-menu">
-						<ul>
-							<li class="menu-item-has-children">
-							<a href="#">Registration</a>
-							<ul class="sub-menu">
-							<li><a href="{% url 'studentreg' %}">Student</a></li>
-							<li><a href="{% url 'teacherreg' %}">Teacher </a></li>
-					
-						</ul>
-							</li>	
-							
-					</nav>
-				</div><!-- End Col -->		
-
-				<div class="col-30 right-col align-self-center text-end">
-					<a href="{% url 'login' %}" class="white-btn bt">Login</a>
-				</div><!-- End Col -->
-
-			</div>
-		</div>
-		
-			<!-- End Drawer -->
-			
-			<div class="search_box">
-				<div class="close-btn">
-					<i class="ti-close"></i>
-				</div>
-								
-				<div class="search-data">
-					<form action="#" method="get">
-						<input type="text" required>
-						<div class="line"></div>
-						<label>Type to search..</label>
-						<button type="submit">
-							<span class="ti-search"></span>
-						</button>
-					</form>
-				</div>			
-			</div>
-
-		</header>
+                            </ul>
+                        </li>					
+                        <li class="menu-item-has-children">
+                            <a href="#">Attendance</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% url 'viewattendance' %}">Attendance marking</a></li>
+                                <li><a href="{% url 'attendanceviewt' %}">Check attendance</a></li>
+                            </ul>
+                        </li>		
+                        <li class="menu-item-has-children">
+                            <a href="#">Internal Exam</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% url 'uploadmarks' %}">Upload marks</a></li>
+                            </ul>
+                        </li>		
+                        
+                        
+                        
+                        <li>
+                            <a href="{% url 'tprofile' %}">Profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'login' %}" class="btn btn-primary">Log out</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div><!-- End Col -->		
+</header>
 		<!-- End Header -->
-		
-		<!-- Start Main Banner -->
+         <!-- Start Main Banner -->
 		<section class="main-banner" style="background-image: url(assets/img/bg/banner.jpg);">
 			<div class="container">
 				<div class="row">
 					<div class="col-xl-12 text-center">
-						<h2>Register</h2>
+						<h2>Answers from students</h2>
 						<p>
-							<a href="#">Home</a> <i class='bx bx-chevrons-right'></i> Register
+							<a href="{% url 'tuser' %}">Home</a> <i class='bx bx-chevrons-right'></i>
 						</p>
+
 					</div>
 				</div>				
 			</div>
@@ -160,88 +155,233 @@
 			
 		</section>
 		<!-- End Main Banner -->
-
-		<!-- START LOGIN AND REGISTER -->
-		<section class="login_register section-padding">
-			<div class="container">
-				<div class="row">				
-					<div class="col-lg-6 offset-lg-3 col-xs-12 wow fadeIn">
-						<div class="register">
-							<h4 class="login_register_title">Create a new account:</h4>
-                            <form method="post" enctype='multipart/form-data'>
-                                {% csrf_token %}
-								<table align="center">
-									<tr>
-										<td>PHOTO</td>
-										<td>{{ form.tphoto }}</td>
-									</tr>
-									<tr>
-										<td>FULL NAME</td>
-										<td>{{ form.tname }}</td>
-									</tr>
-									<tr>
-										<td>GENDER</td>
-										<td>{{ form.tgender }}</td>
-									</tr>
-									<tr>
-										<td>AGE</td>
-										<td>{{ form.age }}</td>
-									</tr>
-									<tr>
-										<td>DEPARTMENT</td>
-										<td>{{ form.tdepartment }}</td>
-									</tr>
-									<tr>
-										<td>UPLOAD CERTIFICATE</td>
-										<td>{{ form.tcertificate }}</td>
-									</tr>
-									<tr>
-										<td>REFERENCE LETTER</td>
-										<td>{{ form.treferenceletter }}</td>
-									</tr>
-									<tr>
-										<td>QUALIFICATION</td>
-										<td>{{ form.tqualification }}</td>
-									</tr>
-									<tr>
-										<td>EXPERIENCE</td>
-										<td>{{ form.texp }}</td>
-									</tr>
-									<tr>
-										<td>CONTACT NO</td>
-										<td>{{ form.tcontactno }}</td>
-									</tr>
-									<tr>
-										<td>EMAIL ADDRESS</td>
-										<td>{{ login.email }}</td>
-									</tr>
-									<tr>
-										<td>PASSWORD</td>
-										<td>{{ login.password }}</td>
-									</tr>
-									
-										<td>Are you the HOD?</td>
-										<td>{{ form.is_hod }}</td>
-									</tr>
-								</table>
-								
-                                <button type="submit">Submit</button>
-                            </form>
+         <br>
+        
+        <!-- Start Drawer -->
+        <div id="mini_cart" class="min_cart_wrapper">
+            <div class="cart_drawer">
+                <div class="cart_top">
+                    <a href="#" class="cart_close"><i class='bx bx-x'></i></a>
+                    <h3 class="title">Courses List</h3>
+                    <span class="cart_number">
+                        3
+                    </span>
+                </div>
+                
+                <div class="mini_cart_list">
+                    <ul>
+                        <li class="d-flex">
+                            <div class="thumb_img_cartmini">
+                                <a href="course-details.html" class="mc_img">
+                                    <img src="{% static 'mainpage/assets/img/mcart/1.jpg' %}" alt="Product Name" >
+                                </a>
+                            </div>	
                             
-
-                                <div class="form-group col-lg-12">
-                                    <button class="bg_btn bt" type="submit" name="submit">Signup now</button>
+                            <div class="product-detail">
+                                <h3 class="product_name_mini">
+                                     <a href="course-details.html">
+                                        Photography Crash Course
+                                    </a>
+                                </h3>
+                                <div class="product_info">
+                                    <div class="product_quanity">QTY : 1 </div>
+                                    <div class="product_price">
+                                        <span class="price_sale">$25.00</span>
+                                    </div>
                                 </div>
-                                <p>Already have an account? <a href="login.html">Login</a></p>
                             </div>
-                           
-					</div><!--- END COL -->
-				</div><!--- END ROW -->
-			</div><!--- END CONTAINER -->
-		</section>
-		<!-- END LOGIN AND REGISTER -->
+                            
+                            <div class="produc_remove">
+                                <a href="#" class="remove-product">
+                                    <i class='bx bx-trash'></i>
+                                </a>              
+                            </div>
+                        </li>					
+                        
+                        <li class="d-flex">
+                            <div class="thumb_img_cartmini">
+                                <a href="course-details.html" class="mc_img">
+                                    <img src="{% static 'mainpage/assets/img/mcart/2.jpg' %}" alt="Product Name" >
+                                </a>
+                            </div>	
+                            
+                            <div class="product-detail">
+                                <h3 class="product_name_mini">
+                                     <a href="course-details.html">
+                                        Photography Crash Course
+                                    </a>
+                                </h3>
+                                <div class="product_info">
+                                    <div class="product_quanity">QTY : 1 </div>
+                                    <div class="product_price">
+                                        <span class="price_sale">$25.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="produc_remove">
+                                <a href="#" class="remove-product">
+                                    <i class='bx bx-trash'></i>
+                                </a>              
+                            </div>
+                        </li>					
+                        
+                        <li class="d-flex">
+                            <div class="thumb_img_cartmini">
+                                <a href="course-details.html" class="mc_img">
+                                    <img src="{% static 'mainpage/assets/img/mcart/3.jpg' %}" alt="Product Name" >
+                                </a>
+                            </div>	
+                            
+                            <div class="product-detail">
+                                <h3 class="product_name_mini">
+                                     <a href="course-details.html">
+                                        Photography Crash Course
+                                    </a>
+                                </h3>
+                                <div class="product_info">
+                                    <div class="product_quanity">QTY : 1 </div>
+                                    <div class="product_price">
+                                        <span class="price_sale">$25.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="produc_remove">
+                                <a href="#" class="remove-product">
+                                    <i class='bx bx-trash'></i>
+                                </a>              
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="cart_drawer_btm">
+                    <div class="sub-total">
+                        <span class="total-title float-start">Total:</span>
+                        <span class="total-price float-end">$75.00</span>
+                    </div>
+                    
+                    <div class="bottom_group">
+                        <a href="cart.html" class="button-viewcart">
+                            <span>View Cart</span>
+                        </a>
+                        <a href="checkout.html" class="button-checkout">
+                            <span>Checkout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>				
+        </div>
+        <!-- End Drawer -->
+        
+        <div class="search_box">
+            <div class="close-btn">
+                <i class="ti-close"></i>
+            </div>
+                            
+            <div class="search-data">
+                <form action="#" method="get">
+                    <input type="text" required>
+                    <div class="line"></div>
+                    <label>Type to search..</label>
+                    <button type="submit">
+                        <span class="ti-search"></span>
+                    </button>
+                </form>
+            </div>			
+        </div>			
+    </header>
+   
 
-		<!-- Start Footer -->
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Subject Details (Core & Electives)</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group mb-3">
+            <label for="subject"><strong>Select Subject (Department + Semester)</strong></label>
+            {{ form.subject }}
+        </div>
+
+        <hr>
+        <h4 class="mt-4">Core Subjects</h4>
+        <div class="form-group mb-2">
+            <label>Major 1</label>
+            {{ form.major1 }}
+        </div>
+        <div class="form-group mb-2">
+            <label>Major 2</label>
+            {{ form.major2 }}
+        </div>
+        <div class="form-group mb-2">
+            <label>Major 3</label>
+            {{ form.major3 }}
+        </div>
+
+        <h4 class="mt-4">Minor Subjects</h4>
+        <div class="form-group mb-2">
+            <label>Minor 1</label>
+            {{ form.minorsone }}
+        </div>
+        <div class="form-group mb-2">
+            <label>Minor 2</label>
+            {{ form.minortwo }}
+        </div>
+
+        <h4 class="mt-4">AECC Subjects</h4>
+        <div class="form-group mb-2">
+            <label>AECA</label>
+            {{ form.aeca }}
+        </div>
+        <div class="form-group mb-2">
+            <label>AECB</label>
+            {{ form.aecb }}
+        </div>
+
+        <div class="form-group mb-2">
+            <label>MDC</label>
+            {{ form.mdc }}
+        </div>
+
+        <h4 class="mt-4">VAC Subjects</h4>
+        <div class="form-group mb-2">
+            <label>VAC 1</label>
+            {{ form.vac1 }}
+        </div>
+        <div class="form-group mb-2">
+            <label>VAC 2</label>
+            {{ form.vac2 }}
+        </div>
+
+        <div class="form-group mb-2">
+            <label>SEC</label>
+            {{ form.sec }}
+        </div>
+
+        <h4 class="mt-4">Electives</h4>
+        <div class="form-group mb-2">
+            <label>Elective 1</label>
+            {{ form.elective1 }}
+        </div>
+        <div class="form-group mb-2">
+            <label>Elective 2</label>
+            {{ form.elective2 }}
+        </div>
+
+        <button type="submit" class="btn btn-success mt-4">Submit</button>
+    </form>
+</div>
+
+
+    
+    
+
+    
+            <br>
+            <!-- Start Footer -->
 		<section class="footer fstyle-2">
 			<div class="container">
 				<div class="row footer-bottom justify-content-center">
@@ -297,46 +437,6 @@
 			</div>
 		</section>
 		<!-- End Footer -->
-		
-		
-		<!-- Latest jQuery -->
-		<script src="{% static 'mainpage/assets/js/jquery.min.js' %}" ></script>
-		<!-- Latest compiled and minified Bootstrap -->
-		<script src="{% static 'mainpage/assets/bootstrap/js/bootstrap.min.js' %}"></script>
-		<!-- jquery-simple-mobilemenu.min -->
-		<script src="{% static 'mainpage/assets/js/jquery-simple-mobilemenu.js' %}"></script>
-		<!-- imagesloaded.pkgd -->
-		<script src="{% static 'mainpage/assets/js/imagesloaded.pkgd.min.js' %}"></script>
-		<!-- masonry -->
-		<script src="{% static 'mainpage/assets/js/masonry.pkgd.min.js' %}" ></script>			
-		<!-- modernizer JS -->		
-		<script src="{% static 'mainpage/assets/js/modernizr-2.8.3.min.js' %}"></script>																	
-		<!-- owl-carousel min js  -->
-		<script src="{% static 'mainpage/assets/owlcarousel/js/owl.carousel.min.js' %}"></script>
-		<!-- waypoints -->
-		<script src="{% static 'mainpage/assets/js/waypoints.min.js' %}"></script>		
-		<!-- counterup -->
-		<script src="{% static 'mainpage/assets/js/jquery.counterup.min.js' %}"></script>
-		<!-- jquery appear js -->			
-		<script src="{% static 'mainpage/assets/js/jquery.appear.js' %}"></script>
-		<!-- magnific-popup js -->	
-		<script src="{% static 'mainpage/assets/js/jquery.magnific-popup.js' %}"></script>	
-		<!-- YouTubePopUp js -->		
-		<script src="{% static 'mainpage/assets/js/YouTubePopUp.jquery.js' %}"></script>
-		<!-- yvpopup-active js -->		
-		<script src="{% static 'mainpage/assets/js/yvpopup-active.js' %}"></script>		
-		<!-- scrolltopcontrol js -->
-		<script src="{% static 'mainpage/assets/js/scrolltopcontrol.js' %}"></script>
-		<!-- nicesellect js -->		
-		<script src="{% static 'mainpage/assets/js/nicesellect.js' %}"></script>			
-		<!-- Wow js -->				
-		<script src="{% static 'mainpage/assets/js/wow.js' %}"></script>		
-		<!-- slick js -->			
-		<script src="{% static 'mainpage/assets/js/slick.js' %}"></script>									
-		<!-- scripts js -->
-		<script src="{% static 'mainpage/assets/js/scripts.js' %}"></script>
-		
-	</body>
-
-<!-- Mirrored from getmasum.com/html-preview/edumon/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 11 Jan 2025 06:30:29 GMT -->
+</body>
 </html>
+

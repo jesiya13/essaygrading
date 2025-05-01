@@ -20,25 +20,30 @@ class Login(models.Model):
     status=models.IntegerField(default=0)
 
 
+import uuid
+
 class teacherreg(models.Model):
-    teacherid = models.CharField(max_length=40, unique=True,editable=False)
-    tphoto=models.FileField(upload_to='uploads/')
-    tname=models.CharField(max_length=50)
-    tgender=models.CharField(max_length=10)
-    age=models.CharField(max_length=20)
-    tdepartment=models.CharField(max_length=40)
-    tqualification=models.CharField(max_length=40)
-    treferenceletter=models.FileField(upload_to='uploads/')
-    tcertificate=models.FileField(upload_to='uploads/')
-    texp=models.CharField(max_length=40)
-    tcontactno=models.CharField(max_length=10)
-    login_id=models.OneToOneField('Login', on_delete=models.CASCADE,related_name ='t')
+    teacherid = models.CharField(max_length=40, unique=True, editable=False)
+    tphoto = models.FileField(upload_to='uploads/')
+    tname = models.CharField(max_length=50)
+    tgender = models.CharField(max_length=10)
+    age = models.CharField(max_length=20)
+    tdepartment = models.CharField(max_length=40)
+    tqualification = models.CharField(max_length=40)
+    treferenceletter = models.FileField(upload_to='uploads/')
+    tcertificate = models.FileField(upload_to='uploads/')
+    texp = models.CharField(max_length=40)
+    tcontactno = models.CharField(max_length=10)
+    is_hod = models.BooleanField(default=False)  # ✅ Add this line
+    login_id = models.OneToOneField('Login', on_delete=models.CASCADE, related_name='t')
+
     def save(self, *args, **kwargs):
-        # Assign a shortened teacherid before saving, if it's not set
         if not self.teacherid:
-            # Generate a UUID, and use the first 5 hexadecimal characters
-            self.teacherid = uuid.uuid4().hex[:5]  # Get first 5 hex digits
+            self.teacherid = uuid.uuid4().hex[:5]
         super(teacherreg, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.tname} ({self.tdepartment})"
    
 class Essay(models.Model):
     essay=models.FileField(upload_to='uploads/')
@@ -174,3 +179,24 @@ class StudentSubjectSelection(models.Model):
 
     def __str__(self):
         return f"{self.student.name} - {self.subject.dept} Sem {self.subject.sem} Selection"
+    
+class Subjectadd(models.Model):
+    major1 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    major2 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    major3= models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    minorsone = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    minortwo = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
+    aeca = models.TextField(null=True, blank=True)      # Example: "Art, Music"
+    aecb = models.TextField(null=True, blank=True)      # Example: "Art, Music"
+    mdc = models.CharField(max_length=60, null=True, blank=True)
+    vac1 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
+    vac2 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
+    sec = models.CharField(max_length=60, null=True, blank=True)
+    elective1 = models.TextField(null=True, blank=True)  # Example: "Art, Music"
+    elective2= models.TextField(null=True, blank=True)  # Example: "Art, Music"
+
+
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='deta')
+
+    def __str__(self):
+        return f"Details for {self.subject.dept} - {self.subject.sem}"

@@ -1016,6 +1016,7 @@
 		<div class="page-wrapper">
 			<div class="page-content">
 				<!--breadcrumb-->
+				
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
 					<div class="breadcrumb-title pe-3">Forms</div>
 					<div class="ps-3">
@@ -1027,14 +1028,14 @@
 							</ol>
 						</nav>
 					</div>
-					<div class="ms-auto">
+					{% comment %} <div class="ms-auto">
 						<div class="btn-group">
 							<button type="button" class="btn btn-light"><a href="{% url 'login' %}">log out</button>
 							</button>
 							
 							</div>
 						</div>
-					</div> 
+					</div>  {% endcomment %}
 				</div>
 				<!--end breadcrumb-->
 				<form method="post">

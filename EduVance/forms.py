@@ -65,10 +65,13 @@ class login_check(forms.Form):
             'password':forms.PasswordInput(attrs={'class':'form-control'}),
         }
 class teacherform(forms.ModelForm):
-    gender_choices=(
-        ('male','Male'),('female','Female'),('others','Others')
+    gender_choices = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('others', 'Others')
     )
-    tgender=forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect())
+    tgender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect())
+
     tdept_choices = (
         ('bca', 'BCA'),
         ('bcom', 'B.Com.Computer Application'),
@@ -78,22 +81,30 @@ class teacherform(forms.ModelForm):
         ('b.com.taxation', 'B.Com.Taxation'),
     )
     tdepartment = forms.ChoiceField(choices=tdept_choices, widget=forms.Select(attrs={'class': 'form-control'}))    
+
+    # ✅ Add HOD checkbox
+    is_hod = forms.BooleanField(
+        required=False,
+        label="Are you the HOD?",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
     class Meta:
         model = teacherreg
-        fields = ['tname','tgender','age','tdepartment','tcontactno','tphoto','tcertificate','tqualification','treferenceletter','texp']
-        widgets={
-            'tname':forms.TextInput(attrs={'class':'form-control'}),
-            'tgender':forms.Select(attrs={'class':'form-control'}),
-            'tdepartment':forms.Select(attrs={'class':'form-control'}),
-            'age':forms.TextInput(attrs={'class':'form-control'}),
-            'tcontactno':forms.TextInput(attrs={'class':'form-control'}),
-            'tphoto':forms.FileInput(attrs={'class':'form-control'}),
-            'tcertificate':forms.FileInput(attrs={'class':'form-control'}),
-            'tqualification':forms.TextInput(attrs={'class':'form-control'}), 
-            'treferenceletter':forms.FileInput(attrs={'class':'form-control'}),
-            'texp':forms.TextInput(attrs={'class':'form-control'}),
+        fields = ['tname', 'tgender', 'age', 'tdepartment', 'tcontactno',
+                  'tphoto', 'tcertificate', 'tqualification',
+                  'treferenceletter', 'texp', 'is_hod']  # Include in fields
 
-        }         
+        widgets = {
+            'tname': forms.TextInput(attrs={'class': 'form-control'}),
+            'age': forms.TextInput(attrs={'class': 'form-control'}),
+            'tcontactno': forms.TextInput(attrs={'class': 'form-control'}),
+            'tphoto': forms.FileInput(attrs={'class': 'form-control'}),
+            'tcertificate': forms.FileInput(attrs={'class': 'form-control'}),
+            'tqualification': forms.TextInput(attrs={'class': 'form-control'}),
+            'treferenceletter': forms.FileInput(attrs={'class': 'form-control'}),
+            'texp': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 class essayuploadform(forms.ModelForm):
     class Meta:
@@ -456,3 +467,31 @@ class StudentSelectionForm(forms.ModelForm):
         """Helper method to generate a select widget."""
         choices = self.get_choices(field_data)
         return forms.Select(choices=[('', '--- Select ---')] + choices)
+    
+class SubjectaddForm(forms.ModelForm):
+    class Meta:
+        model = Subjectadd
+        fields = [
+            'major1', 'major2', 'major3',
+            'minorsone', 'minortwo',
+            'aeca', 'aecb',
+            'mdc', 'vac1', 'vac2',
+            'sec', 'elective1', 'elective2',
+            'subject'
+        ]
+        widgets = {
+            'major1': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'major2': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'major3': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'minorsone': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'minortwo': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'aeca': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'aecb': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'mdc': forms.TextInput(attrs={'class': 'form-control'}),
+            'vac1': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'vac2': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'sec': forms.TextInput(attrs={'class': 'form-control'}),
+            'elective1': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'elective2': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'subject': forms.Select(attrs={'class': 'form-control'}),
+        }

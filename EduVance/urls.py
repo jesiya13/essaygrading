@@ -77,7 +77,7 @@ urlpatterns=[
     path('upload_marks/<int:student_id>/<str:subject_name>/', views.internals_elective, name='upload_internal_marks'),
     path('upload_marks_major/<int:student_id>/<str:subject_name>/', views.internals_major, name='upload_marks_major'),
     path('teacher/view_marks/', views.teacher_view_marks, name='teacher_view_marks'),
-
+    path('adddepsub', views.add_subject_detail, name='adddepsub'),
 
   
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

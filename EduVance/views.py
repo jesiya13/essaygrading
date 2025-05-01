@@ -43,12 +43,12 @@ def rejects(request,id):
     a=get_object_or_404(Login,id=id)
     a.status=2
     a.save()
-    return redirect('adminstudview')
-def approves(request,id):
-    a=get_object_or_404(Login,id=id)
-    a.status=1
+    return redirect('searchstudad')
+def approves(request, id):
+    a = get_object_or_404(Login, id=id)
+    a.status = 1
     a.save()
-    return redirect('adminstudview')
+    return redirect('searchstudad')
 
 
 def adminteachview(request):
@@ -90,30 +90,40 @@ def teacherregister(request):
     return render(request,'teacherreg.html',{'form':form,'login':logins})
 def login(request):
     if request.method == 'POST':
-        form=login_check(request.POST)
+        form = login_check(request.POST)
         if form.is_valid():
-            print('hiii')
-            email=form.cleaned_data['email']
-            password=form.cleaned_data['password']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
             try:
-                user=Login.objects.get(email=email)
-                if user.password==password:
-                    if user.usertype==1:
-                        request.session['stud_id']=user.id
+                user = Login.objects.get(email=email)
+                if user.password == password:
+                    # Only check status for students and teachers
+                    if user.usertype in [1, 2]:
+                        if user.status == 2:
+                            messages.error(request, 'Your account has been rejected.')
+                            return redirect('login')
+                        elif user.status == 0:
+                            messages.error(request, 'Your account is under review. Please wait for admin approval.')
+                            return redirect('login')
+
+                    # User is allowed to log in
+                    if user.usertype == 1:
+                        request.session['stud_id'] = user.id
                         return redirect('user')
-                    elif user.usertype==2:
-                        request.session['t_id']=user.id
+                    elif user.usertype == 2:
+                        request.session['t_id'] = user.id
                         return redirect('tuser')
-                    elif user.usertype==3:
-                        request.session['a_id']=user.id
+                    elif user.usertype == 3:
+                        request.session['a_id'] = user.id
                         return redirect('admin')
                 else:
-                    messages.error(request,'invalid password')    
+                    messages.error(request, 'Invalid password')
             except Login.DoesNotExist:
-                messages.error(request,'User Does Not Exist')
+                messages.error(request, 'User does not exist')
     else:
-        form=login_check()   
-    return render(request,'login.html',{'login':form})
+        form = login_check()
+    return render(request, 'login.html', {'login': form})
+
 def sprofile(request):
     stud_id=request.session.get('stud_id')   
     login_details=get_object_or_404(Login,id=stud_id)
@@ -1132,24 +1142,39 @@ def subjectstudview(request):
 
     # Student's selected subjects
     selection = StudentSubjectSelection.objects.filter(student=st).first()
-
-    # Get the subject detail (core subjects) from the selection
     subject_detail = selection.subject if selection else None
 
-    # Prepare core subjects list (major1, major2, major3)
+    # Core subjects
     core_subjects = []
     if subject_detail:
         for field in ['major1', 'major2', 'major3']:
             field_value = getattr(subject_detail, field, None)
             if field_value:
-                # split by comma and strip spaces
                 core_subjects.extend([sub.strip() for sub in field_value.split(',') if sub.strip()])
+
+    # Elective subjects
+    elective_fields = ['minorsone', 'minortwo', 'aeca', 'aecb', 'mdc', 'vac1', 'vac2', 'sec', 'elective1', 'elective2']
+    elective_subjects = []
+    if selection:
+        for field in elective_fields:
+            val = getattr(selection, field, None)
+            if val:
+                elective_subjects.append(val.strip())
+
+    # Get marks from InternalMarks model
+    marks_queryset = InternalMarks.objects.filter(stud_id=st)
+    marks_dict = {mark.subject.strip().lower(): mark.marks for mark in marks_queryset}
+
+    # Pair subjects with marks
+    core_subjects_with_marks = [(subj, marks_dict.get(subj.lower(), 'Not Available')) for subj in core_subjects]
+    elective_subjects_with_marks = [(subj, marks_dict.get(subj.lower(), 'Not Available')) for subj in elective_subjects]
 
     return render(request, 'viewsubject.html', {
         'student': st,
-        'selection': selection,
-        'core_subjects': core_subjects,  # List of core subjects
+        'core_subjects_with_marks': core_subjects_with_marks,
+        'elective_subjects_with_marks': elective_subjects_with_marks,
     })
+
 
 def internals_elective(request, student_id, subject_name):
     # electives = get_object_or_404(StudentSubjectSelection, id=subject_name)
@@ -1239,28 +1264,53 @@ from django.db.models import Q
 from .models import InternalMarks, SubjectDetail, Studentreg, teacherreg, StudentSubjectSelection
 
 def teacher_view_marks(request):
-    # Get the teacher's id from the session
     teacher_id = request.session.get('t_id')
-    teacher = get_object_or_404(teacherreg, login_id=teacher_id)  # Assuming the teacher is logged in
+    if not teacher_id:
+        return HttpResponse("Teacher not logged in or session expired", status=401)
 
-    # Get all marks uploaded by the teacher
+    teacher = get_object_or_404(teacherreg, login_id=teacher_id)
+
     marks_uploaded = InternalMarks.objects.filter(login_id=teacher)
 
-    # If filters are applied, filter the marks accordingly
     if 'dept' in request.GET and request.GET['dept']:
-        dept = request.GET['dept']
-        marks_uploaded = marks_uploaded.filter(stud_id__department=dept)
+        marks_uploaded = marks_uploaded.filter(stud_id__department=request.GET['dept'])
 
     if 'sem' in request.GET and request.GET['sem']:
-        sem = request.GET['sem']
-        marks_uploaded = marks_uploaded.filter(stud_id__semester=sem)
+        marks_uploaded = marks_uploaded.filter(stud_id__semester=request.GET['sem'])
 
     if 'subject' in request.GET and request.GET['subject']:
-        subject_name = request.GET['subject']
-        marks_uploaded = marks_uploaded.filter(subject=subject_name)
+        marks_uploaded = marks_uploaded.filter(subject=request.GET['subject'])
 
-    # Prepare context for rendering
     return render(request, 'markviewtech.html', {
         'marks_uploaded': marks_uploaded,
         'teacher': teacher,
     })
+
+def is_hod(teacher):
+    return teacher.is_hod  # Make sure `is_hod` field is defined in `teacherreg` model
+
+
+def add_subject_detail(request):
+    teacher_id = request.session.get('t_id')
+    if not teacher_id:
+        return redirect('login')  # If not logged in
+
+    teacher = get_object_or_404(teacherreg, login_id=teacher_id)
+
+    # ✅ Only HOD can access this page
+    if not is_hod(teacher):
+        messages.error(request, "Access denied. Only HODs can upload subjects.")
+        return redirect('tuser')  # Or wherever teachers go by default
+
+    if request.method == 'POST':
+        form = SubjectaddForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Subject details uploaded successfully.")
+            return redirect('adddepsub')  # Redirect back to the form
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = SubjectaddForm()
+
+    return render(request, 'adddepsub.html', {'form': form})
