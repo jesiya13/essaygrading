@@ -91,6 +91,15 @@
 					
 				</li>
 				<li>
+					
+					<a href="{% url 'admindepartment' %}">
+					<div class="parent-icon"><i class='bx bx-book'></i>
+					</div>
+					<div class="menu-title">Department Subjects</div>
+				</a>
+				
+			</li>
+				<li>
 					<a href="{% url 'subjectview' %}">
 						<div class="parent-icon"><i class='bx bx-book-open'></i>
 						</div>
@@ -867,7 +876,7 @@
 							<br>
 							<div class="ms-auto">
 								<div class="btn-group">
-									<button type="button" class="btn btn-secondary"><a href="{% url 'login' %}">Log out</button>
+									<button type="button" class="btn btn-secondary"><a href="{% url 'main' %}">Log out</button>
 									</button>
 									
 								</div>
@@ -891,9 +900,9 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Revenue</p>
-										<h4 class="my-1">$4805</h4>
-										<p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>$34 Since last week</p>
+										<p class="mb-0">Teacher Registration</p>
+										<h4 class="my-1">{{ t_count }} Teachers Registered</h4>
+										{% comment %} <p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>$34 Since last week</p> {% endcomment %}
 									</div>
 									<div class="widgets-icons ms-auto"><i class='bx bxs-wallet'></i>
 									</div>
@@ -907,9 +916,9 @@
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
-										<p class="mb-0">Total Customers</p>
-										<h4 class="my-1">8.4K</h4>
-										<p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>14% Since last week</p>
+										<p class="mb-0">Student Registration</p>
+										<h4 class="my-1">{{ user_count }} students registered</h4>
+										{% comment %} <p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>14% Since last week</p> {% endcomment %}
 									</div>
 									<div class="widgets-icons ms-auto"><i class='bx bxs-group'></i>
 									</div>
@@ -918,7 +927,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-12">
+					{% comment %} <div class="col-lg-12">
 						<div class="card radius-10">
 							<div class="card-body">
 								<div class="d-flex align-items-center">
@@ -933,7 +942,7 @@
 								<div id="chart3"></div>
 							</div>
 						</div>
-					</div>
+					</div> {% endcomment %}
 				</div>
 				<!--end row-->
 				{% comment %} <div class="row row-cols-1 row-cols-xl-2">
@@ -1468,7 +1477,7 @@
 				<!--end row-->
 				<div class="row row-cols-1 row-cols-lg-3">
 					<div class="col d-flex">
-						<div class="card radius-10 w-100">
+						{% comment %} <div class="card radius-10 w-100">
 							<div class="card-body">
 								<div class="d-flex align-items-center">
 									<div>
@@ -1502,7 +1511,7 @@
 								<li class="list-group-item d-flex bg-transparent justify-content-between align-items-center">Furniture <span class="badge bg-light-white-4 text-white rounded-pill">14</span>
 								</li>
 							</ul>
-						</div>
+						</div> {% endcomment %}
 					</div>
 					{% comment %} <div class="col d-flex">
 						<div class="card radius-10 w-100">
@@ -1999,9 +2008,9 @@
 		<!--end overlay-->
 		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 		<!--End Back To Top Button-->
-		<footer class="page-footer">
+		{% comment %} <footer class="page-footer">
 			<p class="mb-0">Copyright © 2025. All right reserved.</p>
-		</footer>
+		</footer> {% endcomment %}
 	</div>
 	<!--end wrapper-->
 	<!--start switcher-->

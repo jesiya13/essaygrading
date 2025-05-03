@@ -1,5 +1,6 @@
 from django.db import models    
 import uuid
+from django.contrib.postgres.fields import JSONField
 
 class Studentreg(models.Model):
     photo=models.FileField(upload_to='uploads/')
@@ -59,6 +60,7 @@ class Answer(models.Model):
     t_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
 
 class Omr(models.Model):
+    question_paper = models.FileField(upload_to='uploads/')
     omr=models.FileField(upload_to='uploads/')
     current_date=models.DateTimeField(auto_now_add=True)
     login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
@@ -181,22 +183,43 @@ class StudentSubjectSelection(models.Model):
         return f"{self.student.name} - {self.subject.dept} Sem {self.subject.sem} Selection"
     
 class Subjectadd(models.Model):
-    major1 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
-    major2 = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
-    major3= models.TextField(null=True, blank=True)   # Example: "Math, Physics"
-    minorsone = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
-    minortwo = models.TextField(null=True, blank=True)   # Example: "Math, Physics"
-    aeca = models.TextField(null=True, blank=True)      # Example: "Art, Music"
-    aecb = models.TextField(null=True, blank=True)      # Example: "Art, Music"
-    mdc = models.CharField(max_length=60, null=True, blank=True)
-    vac1 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
-    vac2 = models.TextField(null=True, blank=True)      # Example: "Sports, Drama"
-    sec = models.CharField(max_length=60, null=True, blank=True)
-    elective1 = models.TextField(null=True, blank=True)  # Example: "Art, Music"
-    elective2= models.TextField(null=True, blank=True)  # Example: "Art, Music"
+    hod = models.ForeignKey('teacherreg', on_delete=models.CASCADE)  # Add this line
 
+    major1 = models.TextField(null=True, blank=True)
+    major2 = models.TextField(null=True, blank=True)
+    major3 = models.TextField(null=True, blank=True)
+    minorsone = models.TextField(null=True, blank=True)
+    minortwo = models.TextField(null=True, blank=True)
+    aeca = models.TextField(null=True, blank=True)
+    aecb = models.TextField(null=True, blank=True)
+    mdc = models.CharField(max_length=60, null=True, blank=True)
+    vac1 = models.TextField(null=True, blank=True)
+    vac2 = models.TextField(null=True, blank=True)
+    sec = models.CharField(max_length=60, null=True, blank=True)
+    elective1 = models.TextField(null=True, blank=True)
+    elective2 = models.TextField(null=True, blank=True)
 
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='deta')
 
     def __str__(self):
         return f"Details for {self.subject.dept} - {self.subject.sem}"
+class EvaluatedAnswer(models.Model):
+    answer = models.ForeignKey('Answer', on_delete=models.CASCADE, related_name='evaluations')
+    question_paper = models.FileField(upload_to='evaluated_papers/')
+    total_marks = models.FloatField()
+    evaluated_on = models.DateTimeField(auto_now_add=True)
+    
+    details = models.JSONField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Evaluated: {self.answer.login_id.student_as_loginid.name} - {self.total_marks} marks"
+    
+
+class EvaluationResult(models.Model):
+    student = models.ForeignKey('Login', on_delete=models.CASCADE)
+    teacher = models.ForeignKey('teacherreg', on_delete=models.CASCADE)
+    answer = models.ForeignKey('Answer', on_delete=models.CASCADE)
+    total_score = models.FloatField()
+    details = models.TextField()  
+    evaluated_at = models.DateTimeField(auto_now_add=True)
+

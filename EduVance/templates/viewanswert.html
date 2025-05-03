@@ -293,38 +293,29 @@
         </div>			
     </header>
    
-    <form method="GET">
-        <table align="center" >
-            <thead>
-                <tr>
-                    <th>ADMIN NO</th>
-                    <th>NAME </th>
-                    <th>DEPARTMENT</th>
-                    <th>SEMESTER</th>
-                    <th>UPLOADED ANSWER SHEET</th>
-                    <th>REMOVE</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in view_ans %}
-                <tr>
-                    
-                    <td>{{ item.login_id.student_as_loginid.admno }}</td>
-                    <td>{{ item.login_id.student_as_loginid.name }}</td>
-                    <td>{{ item.login_id.student_as_loginid.department }}</td>
-                    <td>{{ item.login_id.student_as_loginid.semester }}</td>
-                    <td>
-                      <a href="{{item.answer.answer.url}}" target="_blank" download> Download</a>
-                      <td><a href="{% url 'removeanswert' item.id %}">Remove</a></td>
-
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
-    
+    <tbody>
+        {% for item in view_ans %}
+        <tr>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'evaluate_answers' item.id %}">
+                {% csrf_token %}
+                <td>{{ item.login_id.student_as_loginid.admno }}</td>
+                <td>{{ item.login_id.student_as_loginid.name }}</td>
+                <td>{{ item.login_id.student_as_loginid.department }}</td>
+                <td>{{ item.login_id.student_as_loginid.semester }}</td>
+                <td>
+                    <a href="{{ item.answer.url }}" target="_blank" download>Download</a>
+                </td>
+                <td>
+                    <a href="{% url 'removeanswert' item.id %}">Remove</a>
+                </td>
+                <td>
+                    <input type="file" name="question_paper" required>
+                    <button type="submit">Evaluate</button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
     
 
     

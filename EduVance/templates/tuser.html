@@ -122,12 +122,16 @@
 										<li><a href="{% url 'teacher_view_marks' %}">view uploaded marks</a></li>
 
 									</ul>
+								</li>	
+								<li class="menu-item-has-children">
+									<a href="">Department</a>
+									<ul class="sub-menu">
+										<li><a href="{% url 'adddepsub' %}">Add Subject</a></li>
+										<li><a href="{% url 'viewsub' %}">view Subjects</a></li>
+
+									</ul>
 								</li>		
-								
-                                <li>
-									<a href="{% url 'adddepsub' %}">Add Subject</a>
-								</li>
-								
+								 
 								<li>
 									<a href="{% url 'tprofile' %}">Profile</a>
 								</li>

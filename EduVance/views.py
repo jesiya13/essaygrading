@@ -6,12 +6,24 @@ from django.db.models import Q
 from datetime import date 
 from django.http import JsonResponse
 from django.http import HttpResponseNotFound
-
-
+import re
+import cv2
+import numpy as np
+import requests
+import json
+from PyPDF2 import PdfReader
+from django.core.files.storage import default_storage
+import os
+import tempfile
+import fitz 
+NVIDIA_API_KEY = "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"
+CHOICES = ['A', 'B', 'C', 'D']
 def main(request):
     return render(request, 'main.html')
 def admin(request):
-    return render(request, 'admin.html')
+    user_count = Studentreg.objects.all().count()
+    t_count = teacherreg.objects.all().count()
+    return render(request, 'admin.html',{'user_count': user_count,'t_count':t_count})
 def user(request):
     results =exam.objects.all()
     return render(request, 'user.html',{'data':results})
@@ -269,21 +281,6 @@ def removeanswert(request,id):
     b.delete()
     return redirect('viewanswert')
 
-def uploadomr(request,id):
-    stud_id=request.session.get('stud_id')   
-    login_details=get_object_or_404(Login,id=stud_id)
-    tc_id=get_object_or_404(teacherreg,id=id)
-    if request.method=='POST':
-        form=omr(request.POST,request.FILES)
-        if form.is_valid():
-            a=form.save(commit=False)
-            a.login_id=login_details
-            a.tc_id=tc_id
-            a.save()
-            return redirect('user')
-    else:
-        form=omr()
-    return render(request, 'uploadomr.html',{'form':form})
 
 def viewomr(request):
     stud_id=request.session.get('stud_id')
@@ -1305,12 +1302,294 @@ def add_subject_detail(request):
     if request.method == 'POST':
         form = SubjectaddForm(request.POST)
         if form.is_valid():
-            form.save()
+            subject_instance = form.save(commit=False)
+            subject_instance.hod = teacher  # 👈 Assign HOD here
+            subject_instance.save()
             messages.success(request, "Subject details uploaded successfully.")
-            return redirect('adddepsub')  # Redirect back to the form
+            return redirect('adddepsub')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = SubjectaddForm()
 
     return render(request, 'adddepsub.html', {'form': form})
+def view_subjects_by_dept_and_hod(request):
+    teacher_id = request.session.get('t_id')
+    if not teacher_id:
+        return redirect('login')
+
+    hod = get_object_or_404(teacherreg, login_id=teacher_id)
+
+    semester = request.GET.get('tsemester')  # Get from URL: ?semester=Sem 1
+    subjects = Subjectadd.objects.filter(hod=hod, subject__dept=hod.tdepartment)
+
+    if semester:
+        subjects = subjects.filter(subject__sem=semester)
+
+    return render(request, 'viewsub.html', {
+        'subjects': subjects,
+        'dept': hod.tdepartment,
+        'semester': semester
+    })
+def view_subjects_by_hod(request):
+    teacher_id = request.session.get('t_id')
+    if not teacher_id:
+        return redirect('login')  # redirect if not logged in
+
+    hod = get_object_or_404(teacherreg, login_id=teacher_id)
+    semester = request.GET.get('semester')  # e.g., ?semester=Sem 1
+
+    # Base filter: only this HOD's department subjects
+    subjects = Subjectadd.objects.filter(
+        hod=hod,
+        subject__dept=hod.tdepartment
+    )
+
+    # Optional filter by semester
+    if semester:
+        subjects = subjects.filter(subject__sem=semester)
+
+    return render(request, 'viewsub.html', {
+        'subjects': subjects,
+        'dept': hod.tdepartment,
+        'semester': semester
+    })
+
+def admindepartment(request):
+    teacher_id = request.session.get('t_id')
+    if not teacher_id:
+        return redirect('login')  # User not logged in
+
+    # Get the HOD (teacher) object
+    hod = get_object_or_404(teacherreg, login_id=teacher_id)
+
+    # Get semester from request parameters (e.g., ?tsemester=Sem 1)
+    semester = request.GET.get('tsemester')
+
+    # Fetch subjects for this HOD
+    subjects = Subjectadd.objects.filter(hod=hod)
+
+    # Optional: filter by semester if provided
+    if semester:
+        subjects = subjects.filter(subject__sem=semester)
+
+    # Pass the data to the template
+    context = {
+        'subjects': subjects,
+        'dept': hod.tdepartment,
+        'semester': semester,
+    }
+
+    return render(request, 'admindepartment.html', context)
+
+
+def extract_questions_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+    return ''.join(page.extract_text() for page in reader.pages)
+
+def parse_mcqs(text):
+    pattern = r"(\d+)\.\s*(.*?)\nA\.\s*(.*?)\nB\.\s*(.*?)\nC\.\s*(.*?)\nD\.\s*(.*?)\n"
+    matches = re.findall(pattern, text, re.DOTALL)
+    return [{
+        'question': m[1].strip(),
+        'A': m[2].strip(),
+        'B': m[3].strip(),
+        'C': m[4].strip(),
+        'D': m[5].strip(),
+    } for m in matches]
+
+def infer_correct_answers_nemotron(questions):
+    endpoint = "https://integrate.api.nvidia.com/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {NVIDIA_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    predicted = {}
+    for i, q in enumerate(questions):
+        prompt = (
+            f"Question: {q['question']}\n"
+            f"A. {q['A']}\nB. {q['B']}\nC. {q['C']}\nD. {q['D']}\n"
+            f"Choose the correct option (A, B, C, or D) only:"
+        )
+        payload = {
+            "model": "nvidia/llama-3.1-nemotron-70b-instruct",
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2,
+            "max_tokens": 10
+        }
+        try:
+            response = requests.post(endpoint, headers=headers, json=payload)
+            result = response.json()
+            ans = result['choices'][0]['message']['content'].strip()
+            predicted[i] = next((c for c in ans if c in CHOICES), '?')
+        except Exception as e:
+            print(f"API error for Q{i+1}: {e}")
+            predicted[i] = '?'
+    return predicted
+
+def extract_student_answers(img_path):
+    image = cv2.imread(img_path)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(blurred, 75, 200)
+
+    cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    question_cnts = [c for c in cnts if 15 <= cv2.boundingRect(c)[2] <= 60 and
+                     15 <= cv2.boundingRect(c)[3] <= 60 and
+                     0.8 <= cv2.boundingRect(c)[2] / float(cv2.boundingRect(c)[3]) <= 1.2]
+
+    question_cnts = sorted(question_cnts, key=lambda c: cv2.boundingRect(c)[1])
+    student_answers = {}
+
+    for i in range(0, len(question_cnts) // 4):
+        row = sorted(question_cnts[i*4:(i+1)*4], key=lambda c: cv2.boundingRect(c)[0])
+        filled, max_val = None, 0
+        for idx, cnt in enumerate(row):
+            mask = np.zeros(gray.shape, dtype="uint8")
+            cv2.drawContours(mask, [cnt], -1, 255, -1)
+            total = cv2.countNonZero(cv2.bitwise_and(gray, gray, mask=mask))
+            if total > max_val:
+                max_val, filled = total, idx
+        if filled is not None:
+            student_answers[i] = CHOICES[filled]
+    return student_answers
+
+def uploadomr(request, id):
+    stud_id = request.session.get('stud_id')
+    login_details = get_object_or_404(Login, id=stud_id)
+    tc_id = get_object_or_404(teacherreg, id=id)
+
+    score, ai_answers, student_answers = 0, {}, {}
+
+    if request.method == 'POST':
+        form = omr(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.login_id = login_details
+            obj.tc_id = tc_id
+            obj.save()
+
+            qfile = request.FILES['question_paper']
+            omrfile = request.FILES['omr']
+            qpath = default_storage.save('temp/questions.pdf', qfile)
+            opath = default_storage.save('temp/omr.jpg', omrfile)
+
+            text = extract_questions_from_pdf(default_storage.path(qpath))
+            parsed_questions = parse_mcqs(text)
+            ai_answers = infer_correct_answers_nemotron(parsed_questions)
+            student_answers = extract_student_answers(default_storage.path(opath))
+
+            for i, s_ans in student_answers.items():
+                if ai_answers.get(i) == s_ans:
+                    score += 1
+
+    else:
+        form = omr()
+
+    return render(request, 'uploadomr.html', {
+        'form': form,
+        'score': score,
+        'ai_answers': ai_answers,
+        'student_answers': student_answers
+    })
+
+
+def extract_questions_and_marks_from_pdf(pdf_path):
+    doc = fitz.open(pdf_path)
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    # Example pattern: 1. What is 2+2? (5 marks)
+    pattern = r"\d+\.\s*(.*?)\s*\((\d+)\s*marks?\)"
+    matches = re.findall(pattern, text, re.DOTALL)
+    questions = [{'question': q.strip(), 'marks': int(m)} for q, m in matches]
+    return questions
+
+def evaluate_with_ai(question, student_answer):
+    endpoint = "https://integrate.api.nvidia.com/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {NVIDIA_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    prompt = (
+        f"Evaluate the student's answer.\n"
+        f"Question: {question}\n"
+        f"Student's Answer: {student_answer}\n"
+        f"Provide marks out of 10 and justification."
+    )
+    payload = {
+        "model": "nvidia/llama-3.1-nemotron-70b-instruct",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.2,
+        "max_tokens": 100
+    }
+    response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
+    if response.status_code == 200:
+        content = response.json()['choices'][0]['message']['content']
+        match = re.search(r'(\d+)/10', content)
+        marks = int(match.group(1)) if match else 0
+        return marks, content
+    return 0, "AI response failed."
+
+def extract_student_answers_from_pdf(pdf_path):
+    doc = fitz.open(pdf_path)
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    # Assuming answer format: 1. answer text
+    pattern = r"\d+\.\s*(.*?)(?=\d+\.|$)"
+    answers = re.findall(pattern, text, re.DOTALL)
+    return [ans.strip() for ans in answers]
+
+def evaluate_answers(request, answer_id):
+    if request.method == 'POST':
+        teacher_id = request.session.get('t_id')
+        teacher = get_object_or_404(teacherreg, login_id=teacher_id)
+        answer_obj = get_object_or_404(Answer, id=answer_id)
+
+        # Save uploaded question paper
+        question_paper = request.FILES.get('question_paper')
+        if not question_paper:
+            return render(request, 'error.html', {'message': 'No question paper uploaded.'})
+
+        question_path = default_storage.save('temp/questions.pdf', question_paper)
+        question_full_path = default_storage.path(question_path)
+
+        questions = extract_questions_and_marks_from_pdf(question_full_path)
+        student_answer_path = default_storage.path(answer_obj.answer.name)
+        student_answers = extract_student_answers_from_pdf(student_answer_path)
+
+        total_score = 0
+        evaluations = []
+
+        for i, q in enumerate(questions):
+            student_ans = student_answers[i] if i < len(student_answers) else ""
+            score, feedback = evaluate_with_ai(q['question'], student_ans)
+            max_marks = q['marks']
+            actual_score = min(score, max_marks)  # Clamp to question's max mark
+
+            evaluations.append({
+                'question': q['question'],
+                'student_answer': student_ans,
+                'score': actual_score,
+                'max': max_marks,
+                'feedback': feedback
+            })
+            total_score += actual_score
+
+        # Save result
+        EvaluationResult.objects.create(
+            student=answer_obj.login_id,
+            teacher=teacher,
+            answer=answer_obj,
+            total_score=total_score,
+            details=json.dumps(evaluations)
+        )
+
+        return render(request, 'evaluation_result.html', {
+            'student': answer_obj.login_id.student_as_loginid,
+            'evaluations': evaluations,
+            'total_score': total_score
+        })
+
+    return redirect('home')

@@ -1038,56 +1038,56 @@
 			</div>
 
 				
-				{% for semester, details in details_by_semester.items %}
-					<h2>Semester: {{ semester }}</h2>
-				
-					{% if details %}
-						<table class="table">
-							<thead>
-								<tr>
-									{% comment %} <th>Subject</th> {% endcomment %}
-									<th>Department</th>
-									<th>Major 1</th>
-									<th>Major 2</th>
-									<th>Major 3</th>
-									<th>Minor 1</th>
-									<th>Minor 2</th>
-									<th>AEC A</th>
-									<th>AEC B</th>
-									<th>MDC</th>
-									<th>VAC 1</th>
-									<th>VAC 2</th>
-									<th>SEC</th>
-									<th>Elective 1</th>
-									<th>Elective 2</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for detail in details %}
-									<tr>
-										{% comment %} <td>{{ detail.subject.name }}</td> {% endcomment %}
-										<td>{{ detail.subject.dept }}</td>
-										<td>{{ detail.major1 }}</td>
-										<td>{{ detail.major2 }}</td>
-										<td>{{ detail.major3 }}</td>
-										<td>{{ detail.minorsone }}</td>
-										<td>{{ detail.minortwo }}</td>
-										<td>{{ detail.aeca }}</td>
-										<td>{{ detail.aecb }}</td>
-										<td>{{ detail.mdc }}</td>
-										<td>{{ detail.vac1 }}</td>
-										<td>{{ detail.vac2 }}</td>
-										<td>{{ detail.sec }}</td>
-										<td>{{ detail.elective1 }}</td>
-										<td>{{ detail.elective2 }}</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					{% else %}
-						<p>No subject details for this semester.</p>
-					{% endif %}
-				{% endfor %}
+			{% for semester, details in details_by_semester.items %}
+			<h2>Semester: {{ semester }}</h2>
+		
+			{% if details %}
+				<table class="table">
+					<thead>
+						<tr>
+							{% comment %} <th>Subject</th> {% endcomment %}
+							<th>Department</th>
+							<th>Major 1</th>
+							<th>Major 2</th>
+							<th>Major 3</th>
+							<th>Minor 1</th>
+							<th>Minor 2</th>
+							<th>AEC A</th>
+							<th>AEC B</th>
+							<th>MDC</th>
+							<th>VAC 1</th>
+							<th>VAC 2</th>
+							<th>SEC</th>
+							<th>Elective 1</th>
+							<th>Elective 2</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for detail in details %}
+							<tr>
+								{% comment %} <td>{{ detail.subject.name }}</td> {% endcomment %}
+								<td>{{ detail.subject.dept }}</td>
+								<td>{{ detail.major1 }}</td>
+								<td>{{ detail.major2 }}</td>
+								<td>{{ detail.major3 }}</td>
+								<td>{{ detail.minorsone }}</td>
+								<td>{{ detail.minortwo }}</td>
+								<td>{{ detail.aeca }}</td>
+								<td>{{ detail.aecb }}</td>
+								<td>{{ detail.mdc }}</td>
+								<td>{{ detail.vac1 }}</td>
+								<td>{{ detail.vac2 }}</td>
+								<td>{{ detail.sec }}</td>
+								<td>{{ detail.elective1 }}</td>
+								<td>{{ detail.elective2 }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<p>No subject details for this semester.</p>
+			{% endif %}
+		{% endfor %}
 				
 					</div>
 				</div>

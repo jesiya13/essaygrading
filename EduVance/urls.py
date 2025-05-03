@@ -78,7 +78,9 @@ urlpatterns=[
     path('upload_marks_major/<int:student_id>/<str:subject_name>/', views.internals_major, name='upload_marks_major'),
     path('teacher/view_marks/', views.teacher_view_marks, name='teacher_view_marks'),
     path('adddepsub', views.add_subject_detail, name='adddepsub'),
-
+    path('viewsub', views.view_subjects_by_dept_and_hod, name='viewsub'),
+    path('admindepartment', views.admindepartment, name='admindepartment'),
+    path('evaluate_answers/<int:answer_id>/', views.evaluate_answers, name='evaluate_answers'),
   
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 

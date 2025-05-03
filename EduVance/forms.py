@@ -120,7 +120,7 @@ class answersheet(forms.ModelForm):
 class omr(forms.ModelForm):
     class Meta:
         model=Omr
-        fields=['omr']
+        fields=['question_paper','omr']
 
 class assignment(forms.ModelForm):
     class Meta:
@@ -495,3 +495,5 @@ class SubjectaddForm(forms.ModelForm):
             'elective2': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'subject': forms.Select(attrs={'class': 'form-control'}),
         }
+class QuestionPaperUploadForm(forms.Form):
+    question_paper = forms.FileField(label="Upload Question Paper (PDF)")

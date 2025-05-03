@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Evaluation Results</title>
+</head>
+<body>
+    <h1>Evaluation Results</h1>
+
+    <p><strong>Student:</strong> {{ student.name }} ({{ student.admno }})</p>
+    <p><strong>Score:</strong> {{ score }}/{{ total }}</p>
+
+    <h2>Detailed Evaluation</h2>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Correct Answer</th>
+                <th>Student Answer</th>
+                <th>Mark</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in evaluation %}
+            <tr>
+                <td>{{ item.question }}</td>
+                <td>{{ item.correct }}</td>
+                <td>{{ item.student }}</td>
+                <td>
+                    {% if item.correct == item.student %}
+                        {{ item.mark }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{% url 'viewanswert' %}">Back to Answer Sheets</a>
+</body>
+</html>
