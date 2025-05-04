@@ -302,6 +302,7 @@
                     <th>DEPARTMENT</th>
                     <th>SEMESTER</th>
                     <th>UPLOADED OMR</th>
+                    <th>CHECK OMR</th>
                     <th>REMOVE</th>
 
                 </tr>
@@ -316,7 +317,9 @@
                     <td>{{ item.login_id.student_as_loginid.semester }}</td>
                     <td>
                       <a href="{{item.omr.omr.url}}" target="_blank" download> Download</a>
+                      <td><a href="{% url 'uploadomr' item.id %}" class= "btn btn-primary">Cheak</a></td>
                       <td><a href="{% url 'removeomrt' item.id %}">Remove</a></td>
+
                     </td>
                 </tr>
                 {% endfor %}

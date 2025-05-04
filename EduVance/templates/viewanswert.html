@@ -293,11 +293,21 @@
         </div>			
     </header>
    
-    <tbody>
-        {% for item in view_ans %}
-        <tr>
-            <form method="POST" enctype="multipart/form-data" action="{% url 'evaluate_answers' item.id %}">
-                {% csrf_token %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Admission No</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Semester</th>
+                <th>Answer (Download)</th>
+                <th>Remove</th>
+                <th>Upload Question Paper</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in view_ans %}
+            <tr>
                 <td>{{ item.login_id.student_as_loginid.admno }}</td>
                 <td>{{ item.login_id.student_as_loginid.name }}</td>
                 <td>{{ item.login_id.student_as_loginid.department }}</td>
@@ -309,13 +319,17 @@
                     <a href="{% url 'removeanswert' item.id %}">Remove</a>
                 </td>
                 <td>
-                    <input type="file" name="question_paper" required>
-                    <button type="submit">Evaluate</button>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'evaluate_answers' item.id %}">
+                        {% csrf_token %}
+                        <input type="file" name="question_paper" required>
+                        <button type="submit" class= "btn btn-primary">Evaluate</button>
+                    </form>
                 </td>
-            </form>
-        </tr>
-        {% endfor %}
-    </tbody>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
     
 
     

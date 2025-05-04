@@ -155,35 +155,55 @@
 		</section>
 		<!-- End Main Banner -->
          <br>
-    <form method="post" enctype="multipart/form-data">
-        <center>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Check Plagiarism</button>
-    <h2>Plagiarism Check Results</h2>
-
-    <p><strong>Plagiarism Percentage:</strong> {{ plagiarism_percentage }}%</p>
-    <p><strong>Grade:</strong> {{ grade }}</p>
-    
-    {% if plagiarism_results %}
-        <h3>Plagiarized Sentences and Sources</h3>
-        <ul>
-            {% for sentence, links in plagiarism_results.items %}
-                <li>
-                    <b>"{{ sentence }}"</b>
-                    <ul>
-                        {% for link in links %}
-                            <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No plagiarism detected. The essay is original!</p>
-    {% endif %}
-    </center>
-</form>
+         <form method="post" enctype="multipart/form-data">
+            <center>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Check Plagiarism</button>
+            </center>
+        </form>
+        
+        {% if plagiarism_results %}
+            <center>
+                <h2>Plagiarism Check Results</h2>
+        
+                <p><strong>Plagiarism Percentage:</strong> {{ plagiarism_percentage }}%</p>
+                <p><strong>Grade:</strong> {{ grade }}</p>
+                {% comment %} <p>{{essay}}</p> {% endcomment %}
+                {% if essay and essay.id %}
+               
+                <form method="post" action="{% url 'save_essay_marks' essay.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="mark" value="{{ plagiarism_percentage }}">
+                    <input type="hidden" name="grade" value="{{ grade }}">
+                    <button type="submit" class="btn btn-success">Save Mark & Grade</button>
+                </form>
+                {% else %}
+                    <p style="color:red;">Essay ID not found. Cannot save marks.</p>
+                {% endif %}
+        
+                <h3>Plagiarized Sentences and Sources</h3>
+                <ul>
+                    {% for sentence, links in plagiarism_results.items %}
+                        <li>
+                            <b>"{{ sentence }}"</b>
+                            <ul>
+                                {% for link in links %}
+                                    <li><a href="{{ link }}" target="_blank">{{ link }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </center>
+        {% else %}
+            {% if grade != "N/A" %}
+                <center>
+                    <p>No plagiarism detected. The essay is original!</p>
+                </center>
+            {% endif %}
+        {% endif %}
+        
     <br>
     <!-- Start Footer -->
 <section class="footer fstyle-2">

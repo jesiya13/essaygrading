@@ -296,7 +296,8 @@ def removeomr(request,id):
 def viewomrt(request):
     tea_id=request.session.get('t_id')
     login_details=get_object_or_404(teacherreg,login_id=tea_id)
-    view_id=Answer.objects.filter(t_id = login_details).select_related('login_id__student_as_loginid')
+    view_id=Omr.objects.filter(tc_id = login_details).select_related('login_id__student_as_loginid')
+    # print(view_id)
    
     return render(request, 'viewomrt.html', {'view_omr': view_id})
 
@@ -1029,7 +1030,7 @@ def extract_text_from_pdf(pdf_file):
 
 import requests
 
-SERPAPI_KEY = "94b65f1294f187c198929c1c4f9c88d51a8206980ce972b9bcf04ba1ca4e8879"  # Replace with your SerpAPI key
+SERPAPI_KEY = "7c8d23c1d5c1cdbab8a8517a0bde42da6cefda61c0af21bdeebf362d403cfa29"  # Replace with your SerpAPI key
 
 def search_serpapi(query):
     """Searches Google Scholar using SerpAPI."""
@@ -1072,11 +1073,19 @@ def check_plagiarism(text):
     return plagiarism_results, plagiarism_percentage
 
 
-def essaycheck(request):
+def essaycheck(request, id):
+    log_id = request.session.get('t_id')
+    essay_id = get_object_or_404(Essay,id = id)
+    tc_id = get_object_or_404(teacherreg, login_id=log_id)
+    essay = Essay.objects.filter(tea_id=tc_id).last()
+
+
     plagiarism_results = None
     plagiarism_percentage = 0
     grade = "N/A"
     extracted_text = ""
+    # essay = Essay.objects.get(pk=essay_id)
+
 
     if request.method == 'POST':
         form = Essayup(request.POST, request.FILES)
@@ -1092,14 +1101,34 @@ def essaycheck(request):
 
     else:
         form = Essayup()
-
+        # essay = Essay.objects.filter(tea_id=tc_id).last() 
     return render(request, 'essaycheck.html', {
         'form': form,
+        'essay': essay,
         'plagiarism_results': plagiarism_results,
         'plagiarism_percentage': plagiarism_percentage,
         'grade': grade,
-        'extracted_text': extracted_text[:500]  # Show first 500 chars
+        'extracted_text': extracted_text[:500],  # Show first 500 chars
+        # 'essay': essay
+
     })
+
+def save_essay_marks(request,essay_id):
+    # print(essay_id)
+    if request.method == 'POST':
+        essay = get_object_or_404(Essay, pk=essay_id)
+        mark = request.POST.get('mark')
+        grade = request.POST.get('grade')
+        # print(essay)
+
+        # Assuming your Essay model has fields for mark and grade
+        essay.mark = mark
+        essay.grade = grade
+        essay.save()
+
+        return redirect('viewessayt')
+
+    return redirect('essaycheck')  # or some error page
 
 def subject_selection_view(request):
     st = request.session.get('stud_id')
@@ -1453,11 +1482,28 @@ def extract_student_answers(img_path):
         if filled is not None:
             student_answers[i] = CHOICES[filled]
     return student_answers
-
-def uploadomr(request, id):
-    stud_id = request.session.get('stud_id')
+def uploadtechs(request, id):
+    stud_id = request.session.get('stud_id')   
     login_details = get_object_or_404(Login, id=stud_id)
     tc_id = get_object_or_404(teacherreg, id=id)
+
+    if request.method == 'POST':
+        form = omr(request.POST, request.FILES)
+        if form.is_valid():
+            a = form.save(commit=False)
+            a.login_id = login_details
+            a.tc_id = tc_id
+            a.save()
+            return redirect('uploadtechs')
+    else:
+        form = omr()
+
+    return render(request, 'uploadtechs.html', {'form': form})
+
+def uploadomr(request, id):
+    stud_id = request.session.get('t_id')
+    login_details = get_object_or_404(Login, id=stud_id)
+    tc_id = get_object_or_404(teacherreg, login_id=login_details)
 
     score, ai_answers, student_answers = 0, {}, {}
 

@@ -33,6 +33,7 @@ urlpatterns=[
     path('search_teacher', views.search_teacher, name='search_teacher'),
     path('removeessayt/<int:id>', views.removeessayt, name='removeessayt'),
     path('uploadomr/<int:id>', views.uploadomr, name='uploadomr'),
+    path('uploadtechs/<int:id>', views.uploadtechs, name='uploadtechs'),
     path('viewomr', views.viewomr, name='viewomr'),
     path('removeomr/<int:id>', views.removeomr, name='removeomr'),
     path('viewomrt', views.viewomrt, name='viewomrt'),
@@ -71,7 +72,7 @@ urlpatterns=[
     path('adminexam', views.adminexam, name='adminexam'),
     path('notifications', views.notifications, name='notifications'),
     path('notificationt', views.notificationt, name='notificationt'),
-    path('essaycheck', views.essaycheck, name='essaycheck'),
+    path('essaycheck/<int:id>/', views.essaycheck, name='essaycheck'),
     path('approvet/<int:id>', views.approvet, name='approvet'),
     path('subject_detail_view', views.subject_selection_view,name='subject_detail_view'),
     path('upload_marks/<int:student_id>/<str:subject_name>/', views.internals_elective, name='upload_internal_marks'),
@@ -81,6 +82,8 @@ urlpatterns=[
     path('viewsub', views.view_subjects_by_dept_and_hod, name='viewsub'),
     path('admindepartment', views.admindepartment, name='admindepartment'),
     path('evaluate_answers/<int:answer_id>/', views.evaluate_answers, name='evaluate_answers'),
+    path('save_essay_marks/<int:essay_id>/', views.save_essay_marks, name='save_essay_marks'),
+
   
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
 
