@@ -51,11 +51,14 @@ class Essay(models.Model):
     current_date=models.DateTimeField(auto_now_add=True)
     login_id=models.ForeignKey('Login', on_delete=models.CASCADE)
     tea_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
+    student = models.ForeignKey('Studentreg', on_delete=models.CASCADE)
     mark = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     grade = models.CharField(max_length=2, null=True, blank=True)
+    status=models.IntegerField(default=0)
+
 
     def __str__(self):
-        return self.title
+        return f"Essay by {self.login_id} for {self.tea_id}"
 
     
 class Answer(models.Model):
@@ -75,6 +78,8 @@ class Assignment(models.Model):
     current_date=models.DateTimeField(auto_now_add=True)
     login_id=models.ForeignKey('Studentreg', on_delete=models.CASCADE)
     ta_id=models.ForeignKey('teacherreg', on_delete=models.CASCADE)
+    mark = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
 
 class Attendance(models.Model):
     login_id=models.ForeignKey('Studentreg', on_delete=models.CASCADE)

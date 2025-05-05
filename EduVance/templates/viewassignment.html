@@ -150,15 +150,23 @@
         <table align="center" >
             <thead>
                 <tr>
+                    <th>NAME</th>
                     <th>Assignments uploaded</th>
                     <th>Remove your assignment </th>
+                    <th>Mark</th>
                 </tr>
             </thead>
             <tbody>
                 {% for a in data %}
                     <tr>
+						<td>{{a.login_id.name}}</td>
                         <td><a href="{{ a.assignment.url }}" target="_blank" download>download</td>
                         <td><a href="{% url 'removeassignment' a.id %}">Remove</a></td>
+                        {% if mark == ''%}
+                        <td>none</td>
+                        {% else %}
+                        <td>{{a.mark}}</td>
+{% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

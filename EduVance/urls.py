@@ -83,6 +83,10 @@ urlpatterns=[
     path('admindepartment', views.admindepartment, name='admindepartment'),
     path('evaluate_answers/<int:answer_id>/', views.evaluate_answers, name='evaluate_answers'),
     path('save_essay_marks/<int:essay_id>/', views.save_essay_marks, name='save_essay_marks'),
+    # urls.py
+    path('upload_assignment_mark/<int:id>/upload-mark/', views.upload_assignment_mark, name='upload_assignment_mark'),
+    
+
 
   
  ]+static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

@@ -4,7 +4,7 @@ from .models import *
 from django.contrib import messages
 from django.db.models import Q
 from datetime import date 
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseNotFound
 import re
 import cv2
@@ -188,9 +188,18 @@ def search_student(request):
     return render(request, 'studentsview.html', {'results': results, 'query': query})
 
 def teachersview(request):
-    view_id=teacherreg.objects.all()
-    print(view_id)
-    return render(request,'teachersview.html',{'data':view_id})
+    query = request.GET.get('q')  # Get the search query from the input field
+    teachers = teacherreg.objects.filter(
+        login_id__status='1',
+        login_id__usertype=2
+    )
+
+    if query:
+        teachers = teachers.filter(
+            Q(tname__icontains=query) | Q(tdepartment__icontains=query)
+        )
+
+    return render(request, 'teachersview.html', {'data': teachers})
 
 def search_teacher(request):
     query = request.GET.get('q', '') 
@@ -208,12 +217,13 @@ def uploadessay(request,id):
     stud_id=request.session.get('stud_id')   
     login_details=get_object_or_404(Login,id=stud_id)
     te_id=get_object_or_404(teacherreg,id=id)
-
+    stud = get_object_or_404(Studentreg,login_id = stud_id)
     if request.method=='POST':
         form=essayuploadform(request.POST,request.FILES)
         if form.is_valid():
             a=form.save(commit=False)
             a.login_id=login_details
+            a.student = stud
             a.tea_id=te_id
             a.save()
             return redirect('user')
@@ -348,6 +358,20 @@ def viewassignmentt(request):
            Q(login_id__department__icontains=query)
         )
     return render(request, 'viewassignmentt.html', {'view_assignment': results, 'query':query})
+
+def upload_assignment_mark(request, id):
+    assignments = get_object_or_404(Assignment, id=id)
+
+    if request.method == 'POST':
+        form = assignment(request.POST, instance=assignments)
+        if form.is_valid():
+            form.save()
+            return redirect('viewassignmentt')  # Replace with your actual list view
+    else:
+        form = assignment(instance=assignments)
+
+    return render(request, 'assignmentmark.html', {'form': form, 'student': assignments.login_id})
+
 
 def removeassignmentt(request,id):
     b=get_object_or_404(Assignment,id=id)
@@ -1482,21 +1506,23 @@ def extract_student_answers(img_path):
         if filled is not None:
             student_answers[i] = CHOICES[filled]
     return student_answers
+
 def uploadtechs(request, id):
     stud_id = request.session.get('stud_id')   
     login_details = get_object_or_404(Login, id=stud_id)
     tc_id = get_object_or_404(teacherreg, id=id)
-
+    print('hiii')
     if request.method == 'POST':
-        form = omr(request.POST, request.FILES)
+        form = omrform(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             a = form.save(commit=False)
             a.login_id = login_details
             a.tc_id = tc_id
             a.save()
-            return redirect('uploadtechs')
+            return redirect('user')
     else:
-        form = omr()
+        form = omrform()
 
     return render(request, 'uploadtechs.html', {'form': form})
 
@@ -1528,7 +1554,6 @@ def uploadomr(request, id):
             for i, s_ans in student_answers.items():
                 if ai_answers.get(i) == s_ans:
                     score += 1
-
     else:
         form = omr()
 
@@ -1638,4 +1663,13 @@ def evaluate_answers(request, answer_id):
             'total_score': total_score
         })
 
-    return redirect('home')
+    return redirect('tuser')
+
+# def teacher_essays(request, id):
+#     teacher = get_object_or_404(teacherreg, id=id)
+#     essays = Essay.objects.filter(tea_id=teacher)
+
+#     return render(request, 'teacher_essays.html', {
+#         'teacher': teacher,
+#         'essays': essays
+#     })

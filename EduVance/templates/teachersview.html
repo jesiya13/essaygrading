@@ -302,11 +302,15 @@
     </header>
     <center>
     <h4>Search for teachers...</h4><br>
-    <form method="GET" action="{% url 'search_teacher' %}">
-        <input type="text" name="q" placeholder="Search department, name" value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
     
+    <div class="col-xl-5 col-lg-5 align-self-center wow fadeIn">
+        <div class="newsletter">
+            <form method="GET" action="{% url 'teachersview' %}">
+                <input type="text" name="q" placeholder="Search department, name" value="{{ query }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
     {% if data %}
         <br><h5>Search Results:</h5>
         <table>
@@ -331,10 +335,10 @@
                         <td>{{ a.tname }}</td>
                         <td>{{ a.tdepartment }}</td>
                         <td>{{ a.login_id.email }}</td>
-                        <td><button><a href=" uploadessay/{{a.id}} ">UPLOAD</a></button></td>
-                        <td><button><a href="uploadanswer/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadtechs/{{a.id}}">UPLOAD</a></button></td>
-                        <td><button><a href="uploadassignment/{{a.id}}">UPLOAD</a></button></td>
+                        <td><a href=" uploadessay/{{a.id}}" class="btn btn-primary">UPLOAD</a></td>
+                        <td><a href="uploadanswer/{{a.id}}" class="btn btn-primary">UPLOAD</a></td>
+                        <td><a href="uploadtechs/{{a.id}}" class="btn btn-primary">UPLOAD</a></td>
+                        <td><a href="uploadassignment/{{a.id}}" class="btn btn-primary">UPLOAD</a></td>
 
                     </tr>
                 {% endfor %}

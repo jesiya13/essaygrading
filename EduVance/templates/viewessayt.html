@@ -164,6 +164,10 @@
                     <th>SEMESTER</th>
                     <th>ESSAY UPLOAD</th>
                     <th>ESSAY CHEAK</th>
+                    <th> uploded grade</th>
+                    <th> uploaded percentage</th>
+
+
 
                     <th>REMOVE</th>
 
@@ -180,6 +184,8 @@
                     <td>
                       <a href="{{item.essay.essay.url}}" target="_blank" download> Download</a>
                       <td><a href="{% url 'essaycheck' item.id %}" class= "btn btn-primary">check</a></td>
+                      <td>{{ item.grade }}</td>
+                      <td>{{ item.mark }}</td>
                       <td><a href="{% url 'removeessayt' item.id %}">Remove</a></td>
                     </td>
                 </tr>

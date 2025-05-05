@@ -122,10 +122,15 @@ class omr(forms.ModelForm):
         model=Omr
         fields=['question_paper','omr']
 
+class omrform(forms.ModelForm):
+    class Meta:
+        model=Omr
+        fields=['omr']
+
 class assignment(forms.ModelForm):
     class Meta:
         model=Assignment
-        fields=['assignment']
+        fields=['assignment','mark']
 
 
 

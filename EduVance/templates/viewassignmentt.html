@@ -308,6 +308,10 @@
                     <th>SEMESTER</th>
                     <th>UPLOADED ASSIGNMENT</th>
                     <th>REMOVE</th>
+                    <th>UPLOADED MARK</th>
+                    <th>VIEW MARK</th>
+
+
 
                 </tr>
             </thead>
@@ -323,6 +327,10 @@
                       <a href="{{item.assignment.url}}" target="_blank" download> Download</a>
                       <td><a href="{% url 'removeassignmentt' item.id %}">Remove</a></td>
                     </td>
+                    <td><a href="{% url 'upload_assignment_mark' item.id %}">upload</a></td>
+                    <td>{{ item.mark }}</td>
+
+
                 </tr>
                 {% endfor %}
             </tbody>
